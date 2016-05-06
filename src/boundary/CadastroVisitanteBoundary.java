@@ -22,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import controller.VisitanteController;
 import entity.VisitanteEntity;
 
 public class CadastroVisitanteBoundary extends JFrame{
@@ -32,11 +33,11 @@ public class CadastroVisitanteBoundary extends JFrame{
 	private JButton btnRemover;
 	private JButton btnPesquisar;
 	private JTextField txtCPF;
-	
 	private JTextField txtIdade;
 	private JCheckBox cbBrasileiro;
 	private JRadioButton rdOutro;
-	
+	private JTable tabelaVisitante;
+	private VisitanteController control = new VisitanteController();
 	
 	 
 	
@@ -50,6 +51,7 @@ public class CadastroVisitanteBoundary extends JFrame{
 		panelVisitantes.add(topo(),BorderLayout.NORTH);
 		panelVisitantes.add(botoes(), BorderLayout.SOUTH);
 		panelVisitantes.add(principal(),BorderLayout.CENTER);
+		
 		
 		
 		
@@ -93,10 +95,11 @@ public class CadastroVisitanteBoundary extends JFrame{
 	
 	public JComponent principal(){
 		JPanel panelPrincipal = new JPanel(new FlowLayout());
-		JTable tabelaVisitante = new JTable();
+		
+		tabelaVisitante = new JTable(control);
 		JScrollPane panTableVisitante = new JScrollPane();
 		panelPrincipal.add(panTableVisitante);
-
+		
 		panTableVisitante.getViewport().add(tabelaVisitante);
 		
 		
