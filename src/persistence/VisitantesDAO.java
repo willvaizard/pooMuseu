@@ -8,7 +8,7 @@ import java.sql.*;
 
 import entity.VisitanteEntity;
 
-public class VisitantesDAO implements iVisitantesDao{
+public class VisitantesDAO implements iGenericDao{
 	Connection  con;
 	public VisitantesDAO()throws SQLException {
 	con =  JDBCUtil.getConnection();

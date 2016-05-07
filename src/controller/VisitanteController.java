@@ -21,14 +21,25 @@ public class VisitanteController implements TableModel{
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		// TODO Auto-generated method stub
+		switch (columnIndex) {
+		case 0: return String.class;
+		case 1: return String.class;
+		case 2: return int.class;
+		case 3: return String.class;
+		case 4: return String.class;
+		case 5: return String.class;
+		case 6: return String.class;
+
+		}
+					
+
 		return null;
 	}
 
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 7;
 	}
 
 
@@ -40,7 +51,16 @@ public class VisitanteController implements TableModel{
 	@Override
 	public String getColumnName(int columnIndex) {
 		
-		String nomeColunas[] = {"CPF", "Idade", "Sexo", "Grau de Instrução", "Meio de Transpornte", "Data Visita"}; 
+		String nomeColunas[] = {"CPF","Nacionalidade", "Idade", "Sexo", 
+				"Grau de Instrução", "Meio de Transporte", "Data Visita"};
+		
+		
+		
+		
+		
+		
+		
+		
 		return nomeColunas[columnIndex];
 	}
 
@@ -52,7 +72,20 @@ public class VisitanteController implements TableModel{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
+		VisitanteEntity v = lista.get(rowIndex);
+		switch (columnIndex) {
+		case 0: return v.getCpf();
+		case 1: return v.getNacionalidade();
+		case 2: return v.getIdade();
+		case 3: return v.getSexo();
+		case 4: return v.getInstrucao();
+		case 5: return v.getTransporte();
+		case 6: return v.getDataVisita();
+				
+		}
+		
+
+		
 		return null;
 	}
 
@@ -80,12 +113,13 @@ public class VisitanteController implements TableModel{
 		try {
 			vDao = new VisitantesDAO();
 			 list = vDao.ConsultaVisitantes();
-			for (VisitanteEntity c : list){
-							
+			for (VisitanteEntity V : list){
+						V.getCpf();
+						V.getDataVisita();
 				
 				
 				
-				
+				list.add(V);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

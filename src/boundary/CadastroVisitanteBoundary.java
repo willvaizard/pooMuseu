@@ -44,16 +44,24 @@ public class CadastroVisitanteBoundary extends JFrame{
 	
 	
 	public CadastroVisitanteBoundary(){
+		JPanel panelPrincipal = new JPanel(new FlowLayout());
 		JFrame janela = new JFrame("Cadastro de Visitantes");
+		
+		//JScrollPane panTableVisitante = new JScrollPane();
 		panelVisitantes = new JPanel(new BorderLayout());
 		panelVisitantes.setBackground(Color.WHITE);
 		
 		panelVisitantes.add(topo(),BorderLayout.NORTH);
 		panelVisitantes.add(botoes(), BorderLayout.SOUTH);
+		
+		
+		
+		//panelPrincipal.add(panTableVisitante);
+	
 		panelVisitantes.add(principal(),BorderLayout.CENTER);
-		
-		
-		
+		tabelaVisitante = new JTable(control);
+		//panTableVisitante.getViewport().add(tabelaVisitante);
+		control.getLista(); 
 		
 		janela.setContentPane(panelVisitantes);
 		janela.setSize(1000,600);
@@ -94,16 +102,19 @@ public class CadastroVisitanteBoundary extends JFrame{
 	}
 	
 	public JComponent principal(){
-		JPanel panelPrincipal = new JPanel(new FlowLayout());
 		
-		tabelaVisitante = new JTable(control);
+		
+		
+		JPanel panelPrincipal = new JPanel(new FlowLayout());
 		JScrollPane panTableVisitante = new JScrollPane();
-		panelPrincipal.add(panTableVisitante);
+		tabelaVisitante = new JTable(control);
+		
+		
+		
 		
 		panTableVisitante.getViewport().add(tabelaVisitante);
-		
-		
-		
+		panelPrincipal.add(panTableVisitante);
+	
 		
 		return panelPrincipal;
 	}

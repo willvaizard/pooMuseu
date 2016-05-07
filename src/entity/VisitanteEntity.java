@@ -8,6 +8,7 @@ public class VisitanteEntity {
 	private String instrucao;
 	private String Transporte;
 	private String dataVisita;
+	
 	public String getDataVisita() {
 		return dataVisita;
 	}

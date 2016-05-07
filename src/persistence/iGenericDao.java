@@ -5,7 +5,7 @@ import java.util.List;
 
 import entity.VisitanteEntity;
 
-public interface iVisitantesDao {
+public interface iGenericDao {
 	public void InsereVisitante ();
 	public List<VisitanteEntity> ConsultaVisitantes() throws SQLException;
 	
