@@ -12,6 +12,22 @@ import javax.swing.table.TableModel;
 
 
 public class VisitanteController implements TableModel{
+	
+	public VisitanteController() {
+		VisitantesDAO vDao;
+		try {
+			vDao = new VisitantesDAO();
+			 List<VisitanteEntity> list = vDao.ConsultaVisitantes();
+			 
+			for (VisitanteEntity V : list){
+				lista.add(V);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	List<VisitanteEntity> lista = new ArrayList<VisitanteEntity>();
 	@Override
 	public void addTableModelListener(TableModelListener arg0) {
@@ -86,7 +102,7 @@ public class VisitanteController implements TableModel{
 		
 
 		
-		return null;
+		return v;
 	}
 
 	@Override
@@ -108,25 +124,10 @@ public class VisitanteController implements TableModel{
 	}
 	
 	public List<VisitanteEntity> getLista(){
-		List<VisitanteEntity> list = null;
-		VisitantesDAO vDao;
-		try {
-			vDao = new VisitantesDAO();
-			 list = vDao.ConsultaVisitantes();
-			for (VisitanteEntity V : list){
-						V.getCpf();
-						V.getDataVisita();
-				
-				
-				
-				list.add(V);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		return list;
+
+		
+		return lista;
 			
 		
 	}
