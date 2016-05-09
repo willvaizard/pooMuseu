@@ -26,7 +26,7 @@ public class VisitantesDAO implements iGenericDao{
 	
 		List<VisitanteEntity> list = new ArrayList<VisitanteEntity>();
 		
-		String sql ="SELECT CPF, Nacionalidade, Idade, Sexo, GrauInstrucao, MeioTransporte, DATE_FORMAT(dataVisita, '%d/%m/%Y') as dataVisita FROM Visitantes;";
+		String sql ="SELECT CPF, Nacionalidade, Idade, Sexo, GrauInstrucao, MeioTransporte, DATE_FORMAT(dataVisita, '%d/%m/%Y') as dataVisita FROM visitantes;";
 		
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
