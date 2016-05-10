@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -131,5 +132,23 @@ public class VisitanteController implements TableModel{
 			
 		
 	}
+
+	public void incluivisitante (VisitanteEntity vst){
+		try {
+			VisitantesDAO vDao = new VisitantesDAO();
+			vDao.InsereVisitante(vst);
+			JOptionPane.showMessageDialog(null, "Visitante  cadastrado com sucesso","Sucesso",
+					JOptionPane.INFORMATION_MESSAGE);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, e.getMessage(),"ERRO", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	
 
 }

@@ -13,13 +13,24 @@ public class VisitantesDAO implements iGenericDao{
 	public VisitantesDAO()throws SQLException {
 	con =  JDBCUtil.getConnection();
 	}
+	
 	@Override
-	public void InsereVisitante() {
+	public void InsereVisitante(VisitanteEntity vst) throws SQLException {
+		String sql = "INSERT INTO `visitantes` (`CPF`,`Nacionalidade`, `Idade`, `Sexo`, `GrauInstrucao`, `MeioTransporte`)"
+				+ "VALUES (? , ? , ? , ? , ? , ?)";
+		PreparedStatement ps = con.prepareStatement(sql);
 		
-		
-		
+		ps.setString(1, vst.getCpf());
+		ps.setString(2, vst.getNacionalidade());
+		ps.setInt(3, vst.getIdade());
+		ps.setString(4, vst.getSexo());
+		ps.setString(5, vst.getInstrucao());
+		ps.setString(6, vst.getTransporte());
+		ps.execute();
+		ps.close();
 		
 	}
+
 
 	@Override
 	public List<VisitanteEntity> ConsultaVisitantes() throws SQLException {
@@ -48,6 +59,9 @@ public class VisitantesDAO implements iGenericDao{
 		
 		return list;
 	}
+
+
+	
 
 	
 }

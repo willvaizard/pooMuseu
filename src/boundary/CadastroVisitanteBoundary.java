@@ -5,7 +5,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.ParseException;
 
 import javax.swing.ButtonGroup;
@@ -41,16 +46,17 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import sun.swing.SwingAccessor.JLightweightFrameAccessor;
 
-public class CadastroVisitanteBoundary extends JFrame{
+public class CadastroVisitanteBoundary extends JFrame implements ActionListener{
 	
 	private JPanel panelVisitantes;
 	private JButton btnSalvar;
 	private JButton btnAlterar;
-	private JButton btnRemover;
+	private JButton btnNovo;
 	private JButton btnPesquisar;
 	private JFormattedTextField txtCPF;
 	private JTextField txtIdade;
-	private JCheckBox cbBrasileiro;
+	private JComboBox cbNacionalidade;
+	private JComboBox cbGrauInstrucao;
 	private JComboBox cbSexo;
 	private JComboBox cbTransporte;
 	private JTable tabelaVisitante;
@@ -77,11 +83,13 @@ public class CadastroVisitanteBoundary extends JFrame{
 		panelVisitantes.add(principal(),BorderLayout.NORTH);
 		panelVisitantes.add(Campos(),BorderLayout.CENTER);
 		tabelaVisitante = new JTable(control);
+		
+		
 		//panTableVisitante.getViewport().add(tabelaVisitante);
 	
 		
 		janela.setContentPane(panelVisitantes);
-		janela.setSize(780,650);
+		janela.setSize(780,680);
 		janela.setVisible(true);
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -104,7 +112,7 @@ public class CadastroVisitanteBoundary extends JFrame{
 	
 	
 	public JComponent Campos(){
-		JPanel panelCampos = new JPanel(new GridLayout(5,1));
+		JPanel panelCampos = new JPanel(new GridLayout(6,1));
 		
 		panelCampos.add(new JLabel ("CPF"));
 				txtCPF = new JFormattedTextField();
@@ -121,20 +129,36 @@ public class CadastroVisitanteBoundary extends JFrame{
 		
 		
 		panelCampos.add(new JLabel("Idade"));
-		txtIdade = new JTextField();
+		txtIdade = new JTextField(2);
 		panelCampos.add(txtIdade);
 		
-		panelCampos.add(new JLabel("Brasileiro?"));
-		cbBrasileiro = new JCheckBox("Sim");
-		panelCampos.add(cbBrasileiro);
-		panelCampos.add(new JLabel("Sexo"));
 		
+		panelCampos.add(new JLabel("Sexo"));
 		cbSexo = new JComboBox<>();
 		cbSexo.addItem("");
 		cbSexo.addItem("Masculino");
 		cbSexo.addItem("Feminino");
 		panelCampos.add(cbSexo);
 		
+		panelCampos.add(new JLabel("Nacionalidade"));
+		cbNacionalidade = new JComboBox<>();
+		cbNacionalidade.addItem("");
+		cbNacionalidade.addItem("Brasileiro");
+		cbNacionalidade.addItem("Outros");
+		panelCampos.add(cbNacionalidade);
+		
+		panelCampos.add(new JLabel("Grau de instrução"));
+		cbGrauInstrucao = new JComboBox<>();
+		cbGrauInstrucao.addItem	("");
+		cbGrauInstrucao.addItem	("Analfabeto");
+		cbGrauInstrucao.addItem("Ensino Fundamental");
+		cbGrauInstrucao.addItem("Ensino Médio");
+		cbGrauInstrucao.addItem("Ensino Superior");
+		cbGrauInstrucao.addItem("Pós Graduação");
+		cbGrauInstrucao.addItem("Doutorado");
+		cbGrauInstrucao.addItem("Mestrado");
+		panelCampos.add(cbGrauInstrucao);
+			
 		panelCampos.add(new JLabel("Meio de Transporte"));
 		cbTransporte = new JComboBox<>();
 		cbTransporte.addItem("");
@@ -195,15 +219,20 @@ public class CadastroVisitanteBoundary extends JFrame{
 	
 	
 	public JComponent botoes (){
-		JPanel panelBotoes = new JPanel( new GridLayout(1,4,5,5));
+		JPanel panelBotoes = new JPanel( new FlowLayout());
 		btnSalvar = new JButton("Salvar");
 		btnAlterar = new JButton("Alterar");
-		btnRemover = new JButton("Remover");
+		btnNovo = new JButton("Novo");
 		btnPesquisar = new JButton("Pesquisar");
-		
+		btnSalvar.addActionListener(this);
+		btnAlterar.addActionListener(this);
+		btnNovo.addActionListener(this);
+		btnPesquisar.addActionListener(this);
+		btnNovo.setEnabled(false);
+		btnAlterar.setEnabled(false);
+		panelBotoes.add(btnNovo);
 		panelBotoes.add(btnSalvar);
 		panelBotoes.add(btnAlterar);
-		panelBotoes.add(btnRemover);
 		panelBotoes.add(btnPesquisar);
 		
 		
@@ -212,6 +241,77 @@ public class CadastroVisitanteBoundary extends JFrame{
 		
 		
 	}
-	
+
+
+
+
+
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == btnSalvar){
+			
+			if(validaCampo()){
+				VisitanteEntity vst = new VisitanteEntity();
+				vst.setCpf(txtCPF.getText());
+				vst.setIdade(Integer.parseInt(txtIdade.getText()));
+				vst.setNacionalidade(cbNacionalidade.getSelectedItem().toString());
+				vst.setSexo(cbSexo.getSelectedItem().toString());
+				vst.setInstrucao(cbGrauInstrucao.getSelectedItem().toString());
+				vst.setTransporte(cbTransporte.getSelectedItem().toString());
+					
+				control.incluivisitante(vst);
+				
+			}
+			
+			
+			
+			
+		}
+		
+	}
+
+
+
+
+
+
+
+	private boolean validaCampo() {
+		if(txtCPF.getText().replace(".","").replace("-", "").trim().length() <= 0){
+			JOptionPane.showMessageDialog(null, "O Cpf deve ser informado", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;			
+		}
+		else if(txtIdade.getText().trim().length()<=0){
+			JOptionPane.showMessageDialog(null, "A idade deve ser informado", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}else if(cbSexo.getSelectedItem().toString() == ""){
+			JOptionPane.showMessageDialog(null, "O Sexo deve ser informado", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}else if(cbNacionalidade.getSelectedItem().toString() == ""){
+			JOptionPane.showMessageDialog(null, "A Nacionalidade deve ser informada", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}else if (cbGrauInstrucao.getSelectedItem().toString()== ""){
+			JOptionPane.showMessageDialog(null, "O grau de instrução deve ser informado", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}else if (cbTransporte.getSelectedItem().toString()==""){
+			JOptionPane.showMessageDialog(null, "O Meio de transporte deve ser informado", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}else {
+		
+		return true;
+		}
+		
+		
+		
+	}
+
+
+
+
+
+
+
 
 }
