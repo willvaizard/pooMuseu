@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.ParseException;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.CellRendererPane;
@@ -31,6 +32,10 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.text.MaskFormatter;
@@ -46,7 +51,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import sun.swing.SwingAccessor.JLightweightFrameAccessor;
 
-public class CadastroVisitanteBoundary extends JFrame implements ActionListener{
+public class CadastroVisitanteBoundary extends JFrame implements ActionListener, ListSelectionListener{
 	
 	private JPanel panelVisitantes;
 	private JButton btnSalvar;
@@ -61,6 +66,7 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener{
 	private JComboBox cbTransporte;
 	private JTable tabelaVisitante;
 	private VisitanteController control = new VisitanteController();
+	private JScrollPane panTableVisitante;
 	
 	 
 	
@@ -82,7 +88,7 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener{
 	
 		panelVisitantes.add(principal(),BorderLayout.NORTH);
 		panelVisitantes.add(Campos(),BorderLayout.CENTER);
-		tabelaVisitante = new JTable(control);
+		
 		
 		
 		//panTableVisitante.getViewport().add(tabelaVisitante);
@@ -182,10 +188,10 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener{
 	
 	public JComponent principal(){
 		JPanel panelPrincipal = new JPanel(new BorderLayout());
-		JScrollPane panTableVisitante = new JScrollPane();
+		panTableVisitante = new JScrollPane();
 		
 		JLabel nomeJanela = new JLabel("Cadastro de Visitante");
-		nomeJanela.setFont(new Font("Tahoma",Font.BOLD,19));
+		nomeJanela.setFont(new Font("Paladino",Font.BOLD,22));
 		nomeJanela.setHorizontalAlignment(JLabel.CENTER);
 		nomeJanela.setVerticalAlignment(JLabel.NORTH);
 		panelPrincipal.add(nomeJanela, BorderLayout.NORTH);
@@ -200,16 +206,21 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener{
 		tabelaVisitante.getColumnModel().getColumn(2).setPreferredWidth(10);
 		tabelaVisitante.getColumnModel().getColumn(4).setPreferredWidth(110);
 		tabelaVisitante.getColumnModel().getColumn(5).setPreferredWidth(135);
+		
 		DefaultTableCellRenderer centro = new DefaultTableCellRenderer();
 		centro.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0;i<7;i++)
 		tabelaVisitante.getColumnModel().getColumn(i).setCellRenderer(centro);
 		
 		
+		
+		
+		
 
 		
 		
 		panTableVisitante.getViewport().add(tabelaVisitante);
+		tabelaVisitante.getSelectionModel().addListSelectionListener(this);
 		panelPrincipal.add(panTableVisitante, BorderLayout.CENTER);
 	
 		
@@ -241,7 +252,18 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener{
 		
 		
 	}
+public VisitanteEntity formVisitanteDados(){
+	
+	VisitanteEntity vst = new VisitanteEntity();
+	vst.setCpf(txtCPF.getText());
+	vst.setIdade(Integer.parseInt(txtIdade.getText()));
+	vst.setNacionalidade(cbNacionalidade.getSelectedItem().toString());
+	vst.setSexo(cbSexo.getSelectedItem().toString());
+	vst.setInstrucao(cbGrauInstrucao.getSelectedItem().toString());
+	vst.setTransporte(cbTransporte.getSelectedItem().toString());
+	return vst;
 
+}
 
 
 
@@ -253,22 +275,38 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener{
 		if(e.getSource() == btnSalvar){
 			
 			if(validaCampo()){
-				VisitanteEntity vst = new VisitanteEntity();
-				vst.setCpf(txtCPF.getText());
-				vst.setIdade(Integer.parseInt(txtIdade.getText()));
-				vst.setNacionalidade(cbNacionalidade.getSelectedItem().toString());
-				vst.setSexo(cbSexo.getSelectedItem().toString());
-				vst.setInstrucao(cbGrauInstrucao.getSelectedItem().toString());
-				vst.setTransporte(cbTransporte.getSelectedItem().toString());
-					
-				control.incluivisitante(vst);
+									
+				control.incluiVisitante(formVisitanteDados());
+				camposDefault();
+			
 				
+			}			
+			
+			
+		}else if(e.getSource() == btnNovo){
+			
+			camposDefault();
+			
+		}else if (e.getSource() == btnAlterar){
+			if(validaCampo()){
+			control.atualizaVisitante(formVisitanteDados());
+			camposDefault();
+			}else if (e.getSource() == btnPesquisar){
+				
+				List<VisitanteEntity> list = control.pesquisar(txtCPF.getText().trim());
+				if(list.size()>0){
+					VisitanteEntity vst = list.get(0);
+					VisitanteToForm(vst);
+				}
 			}
 			
 			
 			
-			
 		}
+		
+		
+		
+		
 		
 	}
 
@@ -306,9 +344,69 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener{
 		
 		
 	}
+	public void VisitanteToForm(VisitanteEntity vst){
+		txtCPF.setText(String.valueOf(vst.getCpf()));
+		txtIdade.setText(String.valueOf(vst.getIdade()));
+		cbSexo.setSelectedItem(vst.getSexo());
+		cbNacionalidade.setSelectedItem(vst.getNacionalidade());
+		cbTransporte.setSelectedItem(vst.getTransporte());
+		cbGrauInstrucao.setSelectedItem(vst.getInstrucao());
+		
+		
+		
+	}
 
 
 
+
+
+
+
+	@Override
+	public void valueChanged(ListSelectionEvent arg0) {
+		
+		btnSalvar.setEnabled(false);
+		btnAlterar.setEnabled(true);
+		btnNovo.setEnabled(true);
+		btnPesquisar.setEnabled(false);
+
+		int linha = tabelaVisitante.getSelectedRow();
+		VisitanteEntity vst = control.getLista().get(linha);
+		VisitanteToForm(vst);
+		
+
+				
+		
+	}
+
+
+public void  camposDefault(){
+	
+	txtCPF.setText("");
+	txtIdade.setText("");
+	cbSexo.setSelectedIndex(0);
+	cbGrauInstrucao.setSelectedIndex(0);
+	cbNacionalidade.setSelectedIndex(0);
+	cbTransporte.setSelectedIndex(0);
+	btnPesquisar.setEnabled(true);
+	
+	
+	
+	
+	
+}
+
+
+
+
+	
+
+
+
+
+
+
+	
 
 
 

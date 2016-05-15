@@ -37,7 +37,8 @@ public class VisitantesDAO implements iGenericDao{
 	
 		List<VisitanteEntity> list = new ArrayList<VisitanteEntity>();
 		
-		String sql ="SELECT CPF, Nacionalidade, Idade, Sexo, GrauInstrucao, MeioTransporte, DATE_FORMAT(dataVisita, '%d/%m/%Y') as dataVisita FROM visitantes;";
+		String sql ="SELECT CPF, Nacionalidade, Idade, Sexo, GrauInstrucao, MeioTransporte,"
+				+ " DATE_FORMAT(dataVisita, '%d/%m/%Y') as dataVisita FROM visitantes";
 		
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
@@ -60,7 +61,26 @@ public class VisitantesDAO implements iGenericDao{
 		return list;
 	}
 
-
+public void AtualizaCliente (VisitanteEntity vst)  throws SQLException{
+	
+	String sql = "UPDATE visitantes set Nacionalidade = ?, Idade = ?, Sexo = ?, GrauInstrucao = ?, MeioTransporte = ? where CPF = ?";
+	PreparedStatement ps = con.prepareStatement(sql);
+	ps.setString(1, vst.getNacionalidade());
+	ps.setInt(2, vst.getIdade());
+	ps.setString(3, vst.getSexo());
+	ps.setString(4, vst.getInstrucao());
+	ps.setString(5, vst.getTransporte());
+	ps.setString(6, vst.getCpf());
+	ps.execute();
+	ps.close();
+	
+	
+	
+	
+	
+	
+	
+}
 	
 
 	

@@ -13,7 +13,7 @@ import javax.swing.table.TableModel;
 
 
 public class VisitanteController implements TableModel{
-	
+	List<VisitanteEntity> lista = new ArrayList<VisitanteEntity>();
 	public VisitanteController() {
 		VisitantesDAO vDao;
 		try {
@@ -29,7 +29,7 @@ public class VisitanteController implements TableModel{
 		}
 	}
 	
-	List<VisitanteEntity> lista = new ArrayList<VisitanteEntity>();
+	
 	@Override
 	public void addTableModelListener(TableModelListener arg0) {
 		// TODO Auto-generated method stub
@@ -133,7 +133,7 @@ public class VisitanteController implements TableModel{
 		
 	}
 
-	public void incluivisitante (VisitanteEntity vst){
+	public void incluiVisitante (VisitanteEntity vst){
 		try {
 			VisitantesDAO vDao = new VisitantesDAO();
 			vDao.InsereVisitante(vst);
@@ -149,6 +149,33 @@ public class VisitanteController implements TableModel{
 		
 	}
 	
-	
+	public void atualizaVisitante (VisitanteEntity vst ){
+		
+		try {
+			VisitantesDAO vDao = new VisitantesDAO();
+			vDao.AtualizaCliente(vst);
+			JOptionPane.showMessageDialog(null, "Visitante  atualizado com sucesso","Sucesso",
+					JOptionPane.INFORMATION_MESSAGE);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	public List<VisitanteEntity> pesquisar (String cpf){
+		
+		List<VisitanteEntity> resultado = new ArrayList<VisitanteEntity>();
+		
+		for(VisitanteEntity vst: lista){
+			if(vst.getCpf().contains(cpf)){
+				resultado.add(vst);
+			}
+			
+		}
+		
+		return resultado;
+	}
 
 }
