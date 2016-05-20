@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -20,7 +22,7 @@ import javafx.scene.layout.Border;
 
 
 
-public class TelaPrincipalBoundary {
+public class TelaPrincipalBoundary implements ActionListener{
 	JPanel panel = new JPanel(new BorderLayout());
 	JFrame janela = new JFrame("Controle Museu - Principal");
 	JButton BtnVisitantes;
@@ -66,14 +68,14 @@ public class TelaPrincipalBoundary {
 		BtnVisitantes.setIcon(new ImageIcon
 				(TelaPrincipalBoundary.class.getResource("/resources/visitantes.png")));
 		panelCentro.add(BtnVisitantes);
-		
+		BtnVisitantes.addActionListener(this);
 		BtnObras = new JButton("Obras");
 		BtnObras.setFont( new Font("Paladinos", Font.BOLD, 16));
 		BtnObras.setIcon(new ImageIcon
 				(TelaPrincipalBoundary.class.getResource("/resources/obras.png")));
 		panelCentro.add(BtnObras);
 		
-		BtnIngressos = new JButton("Ingresos");
+		BtnIngressos = new JButton("Ingressos");
 		BtnIngressos.setFont(new Font("Paladinos", Font.BOLD, 16));
 		BtnIngressos.setIcon(new ImageIcon(
 				TelaPrincipalBoundary.class.getResource("/resources/ingressos.png")));
@@ -88,7 +90,18 @@ public class TelaPrincipalBoundary {
 	}
 	
 	
+
+
 public static void main(String[] args) {
 	new TelaPrincipalBoundary();
+}
+
+@Override
+public void actionPerformed(ActionEvent arg0) {
+	if(arg0.getSource() == BtnVisitantes){
+		
+		new CadastroVisitanteBoundary();
+	}
+	
 }
 }

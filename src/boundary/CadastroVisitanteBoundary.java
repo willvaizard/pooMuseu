@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -74,7 +75,7 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener,
 	
 	public CadastroVisitanteBoundary(){
 		JPanel panelPrincipal = new JPanel(new FlowLayout());
-		JFrame janela = new JFrame("Cadastro de Visitantes");
+		JDialog janela = new JDialog();
 		
 		//JScrollPane panTableVisitante = new JScrollPane();
 		panelVisitantes = new JPanel(new BorderLayout());
@@ -89,15 +90,23 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener,
 		panelVisitantes.add(principal(),BorderLayout.NORTH);
 		panelVisitantes.add(Campos(),BorderLayout.CENTER);
 		
-		
+
+		janela.setModal(true);
+		janela.setLocationRelativeTo(null);
+		janela.setResizable(false);
+		janela.setContentPane(panelPrincipal);
+		janela.setSize(700, 500);
+		janela.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		janela.setLocationRelativeTo(null);
+		janela.setVisible(true);
 		
 		//panTableVisitante.getViewport().add(tabelaVisitante);
 	
 		
-		janela.setContentPane(panelVisitantes);
-		janela.setSize(780,680);
-		janela.setVisible(true);
-		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//janela.setContentPane(panelVisitantes);
+		//janela.setSize(780,680);
+		//janela.setVisible(true);
+		//janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 			
 		
