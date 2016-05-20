@@ -69,6 +69,7 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener,
 	private VisitanteController control = new VisitanteController();
 	private JScrollPane panTableVisitante;
 	
+	
 	 
 	
 	

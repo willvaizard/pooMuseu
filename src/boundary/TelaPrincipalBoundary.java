@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Icon;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -18,16 +19,19 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import javafx.scene.layout.Border;
+
+
 
 
 
 public class TelaPrincipalBoundary implements ActionListener{
-	JPanel panel = new JPanel(new BorderLayout());
-	JFrame janela = new JFrame("Controle Museu - Principal");
-	JButton BtnVisitantes;
-	JButton BtnIngressos;
-	JButton BtnObras;
+
+	private JPanel panel = new JPanel(new BorderLayout());
+	private JFrame janela = new JFrame("Controle Museu - Principal");
+	private JButton BtnVisitantes;
+	private JButton BtnIngressos;
+	private JButton BtnObras;
+
 	public TelaPrincipalBoundary() {
 		
 		
