@@ -97,7 +97,7 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener,
 		CadDialog.setLocationRelativeTo(null);
 		CadDialog.setResizable(false);
 		CadDialog.setContentPane(panelVisitantes);
-		CadDialog.setSize(700, 650);
+		CadDialog.setSize(700, 660);
 		
 		CadDialog.setLocationRelativeTo(null);
 		CadDialog.setVisible(true);
@@ -270,9 +270,11 @@ panelSul.add(botoes(), BorderLayout.PAGE_END);
 		btnNovo = new JButton("Novo");
 		btnNovo.setIcon(new ImageIcon(CadastroVisitanteBoundary.class.getResource("/resources/new.png")));
 		btnPesquisar = new JButton("Pesquisar");
+		btnPesquisar.setIcon(new ImageIcon(CadastroVisitanteBoundary.class.getResource("/resources/lupa.png")));
 		btnSalvar.addActionListener(this);
-		
+		btnSalvar.setIcon(new ImageIcon(CadastroVisitanteBoundary.class.getResource("/resources/salvar.png")));
 		btnAlterar.addActionListener(this);
+		btnAlterar.setIcon(new ImageIcon(CadastroVisitanteBoundary.class.getResource("/resources/edit.png")));
 		btnNovo.addActionListener(this);
 		btnPesquisar.addActionListener(this);
 		btnNovo.setEnabled(false);
