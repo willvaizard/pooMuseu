@@ -3,9 +3,9 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DadosEstaticos {
+public class comboBox {
 	
-	public DadosEstaticos() {
+	public comboBox() {
 		// TODO Auto-generated constructor stub
 	}
 	
