@@ -34,6 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -235,7 +236,7 @@ panelSul.add(botoes(), BorderLayout.PAGE_END);
 		tabelaVisitante.getColumnModel().getColumn(2).setPreferredWidth(10);
 		tabelaVisitante.getColumnModel().getColumn(4).setPreferredWidth(110);
 		tabelaVisitante.getColumnModel().getColumn(5).setPreferredWidth(135);
-		
+		tabelaVisitante.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		DefaultTableCellRenderer centro = new DefaultTableCellRenderer();
 		centro.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0;i<7;i++)

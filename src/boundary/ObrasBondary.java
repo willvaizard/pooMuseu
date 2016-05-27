@@ -84,18 +84,18 @@ public class ObrasBondary {
 		lblNomeObra.setBounds(20, 25, 110, 14);
 		panelPrincipal.add(lblNomeObra);
 		txtNomeObra = new JTextField(50);
-		txtNomeObra.setBounds(125, 22, 406, 20);
+		txtNomeObra.setBounds(125, 22, 500, 20);
 		panelPrincipal.add(txtNomeObra);
 		btnPesquisarObra = new JButton("");
 		btnPesquisarObra.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/lupa.png")));
-		btnPesquisarObra.setBounds(551, 12, 40, 40);
+		btnPesquisarObra.setBounds(635, 11, 40, 40);
 		panelPrincipal.add(btnPesquisarObra);
 		
 		JLabel lblNomeAutor = new JLabel("Nome Autor:");
 		lblNomeAutor.setBounds(20, 80, 110, 14);
 		panelPrincipal.add(lblNomeAutor);
 		txtNomeAutor = new JTextField(60);
-		txtNomeAutor.setBounds(125, 77, 406, 20);
+		txtNomeAutor.setBounds(125, 77, 500, 20);
 		panelPrincipal.add(txtNomeAutor);
 		
 		
@@ -109,7 +109,7 @@ public class ObrasBondary {
 		DataObra.setBounds(106, 242, 124, 20);
 		panelPrincipal.add(DataObra);
 		
-		JCheckBox disponibidadade = new JCheckBox("Disponivel para emprestimo");
+		JCheckBox disponibidadade = new JCheckBox("Disponivel para empréstimo");
 		disponibidadade.setBounds(263, 242, 327, 23);
 		panelPrincipal.add(disponibidadade);
 		JLabel lblTipoObra = new JLabel("Tipo de Obra:");
@@ -152,7 +152,7 @@ public class ObrasBondary {
 		panelPrincipal.add(lblDtObra);
 		
 		btnPesquisarAutor = new JButton("");
-		btnPesquisarAutor.setBounds(551, 67, 40, 40);
+		btnPesquisarAutor.setBounds(635, 66, 40, 40);
 		btnPesquisarAutor.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/lupa.png")));
 		panelPrincipal.add(btnPesquisarAutor);
 		
