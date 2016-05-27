@@ -31,6 +31,7 @@ public class TelaPrincipalBoundary implements ActionListener{
 	private JButton BtnVisitantes;
 	private JButton BtnIngressos;
 	private JButton BtnObras;
+	private CadastroVisitanteBoundary cadvi;
 
 	public TelaPrincipalBoundary() {
 		
@@ -104,7 +105,9 @@ public static void main(String[] args) {
 public void actionPerformed(ActionEvent arg0) {
 	if(arg0.getSource() == BtnVisitantes){
 		
-		new CadastroVisitanteBoundary();
+		cadvi = new CadastroVisitanteBoundary();
+		
+		
 	}
 	
 }

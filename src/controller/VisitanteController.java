@@ -1,9 +1,11 @@
+
 package controller;
 import entity.VisitanteEntity;
 import persistence.VisitantesDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -45,7 +47,7 @@ public class VisitanteController implements TableModel{
 		case 3: return String.class;
 		case 4: return String.class;
 		case 5: return String.class;
-		case 6: return String.class;
+		case 6: return Date.class;
 
 		}
 					
@@ -137,6 +139,7 @@ public class VisitanteController implements TableModel{
 		try {
 			VisitantesDAO vDao = new VisitantesDAO();
 			vDao.InsereVisitante(vst);
+			lista.add(vst);
 			JOptionPane.showMessageDialog(null, "Visitante  cadastrado com sucesso","Sucesso",
 					JOptionPane.INFORMATION_MESSAGE);
 		} catch (SQLException e) {
@@ -154,6 +157,11 @@ public class VisitanteController implements TableModel{
 		try {
 			VisitantesDAO vDao = new VisitantesDAO();
 			vDao.AtualizaCliente(vst);
+			lista.remove(vst);
+			new VisitanteController();
+			
+			
+			
 			JOptionPane.showMessageDialog(null, "Visitante  atualizado com sucesso","Sucesso",
 					JOptionPane.INFORMATION_MESSAGE);
 		} catch (SQLException e) {

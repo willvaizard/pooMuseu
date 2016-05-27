@@ -3,6 +3,7 @@ package boundary;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.CellRendererPane;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -68,6 +70,8 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener,
 	private JTable tabelaVisitante;
 	private VisitanteController control = new VisitanteController();
 	private JScrollPane panTableVisitante;
+	private JFrame janela = new JFrame("Cadastro Visitante");
+	 private JDialog CadDialog = new JDialog();
 	
 	
 	 
@@ -75,31 +79,27 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener,
 	
 	
 	public CadastroVisitanteBoundary(){
-		JPanel panelPrincipal = new JPanel(new FlowLayout());
-		JDialog janela = new JDialog();
+		
+		
 		
 		//JScrollPane panTableVisitante = new JScrollPane();
 		panelVisitantes = new JPanel(new BorderLayout());
 		panelVisitantes.setBackground(Color.WHITE);
 		
-				panelVisitantes.add(botoes(), BorderLayout.PAGE_END);
 		
-		
-		
-		//panelPrincipal.add(panTableVisitante);
-	
 		panelVisitantes.add(principal(),BorderLayout.NORTH);
-		panelVisitantes.add(Campos(),BorderLayout.CENTER);
+		panelVisitantes.add(Sul(),BorderLayout.SOUTH);
+	
 		
 
-		janela.setModal(true);
-		janela.setLocationRelativeTo(null);
-		janela.setResizable(false);
-		janela.setContentPane(panelPrincipal);
-		janela.setSize(700, 500);
-		janela.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		janela.setLocationRelativeTo(null);
-		janela.setVisible(true);
+		CadDialog.setModal(true);
+		CadDialog.setLocationRelativeTo(null);
+		CadDialog.setResizable(false);
+		CadDialog.setContentPane(panelVisitantes);
+		CadDialog.setSize(700, 650);
+		
+		CadDialog.setLocationRelativeTo(null);
+		CadDialog.setVisible(true);
 		
 		//panTableVisitante.getViewport().add(tabelaVisitante);
 	
@@ -125,6 +125,27 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener,
 	
 	
 	
+	private Component Sul() {
+JPanel panelSul = new JPanel(new GridLayout(1,2));
+
+panelSul.add(Campos(),BorderLayout.CENTER);
+panelSul.add(botoes(), BorderLayout.PAGE_END);
+
+		
+		return panelSul;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 	public JComponent Campos(){
 		JPanel panelCampos = new JPanel(new GridLayout(6,1));
 		
@@ -224,6 +245,8 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener,
 		
 		
 		
+		
+		
 
 		
 		
@@ -238,12 +261,16 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener,
 	
 	
 	public JComponent botoes (){
-		JPanel panelBotoes = new JPanel( new FlowLayout());
+		JPanel panelBotoes = new JPanel( new GridLayout(4,1));
 		btnSalvar = new JButton("Salvar");
+		btnSalvar.setHorizontalAlignment(JLabel.CENTER);
+		
 		btnAlterar = new JButton("Alterar");
 		btnNovo = new JButton("Novo");
+		btnNovo.setIcon(new ImageIcon(CadastroVisitanteBoundary.class.getResource("/resources/new.png")));
 		btnPesquisar = new JButton("Pesquisar");
 		btnSalvar.addActionListener(this);
+		
 		btnAlterar.addActionListener(this);
 		btnNovo.addActionListener(this);
 		btnPesquisar.addActionListener(this);
@@ -286,7 +313,7 @@ public VisitanteEntity formVisitanteDados(){
 									
 				control.incluiVisitante(formVisitanteDados());
 				camposDefault();
-			
+				atualizaTabela();
 				
 			}			
 			
@@ -299,12 +326,15 @@ public VisitanteEntity formVisitanteDados(){
 			if(validaCampo()){
 			control.atualizaVisitante(formVisitanteDados());
 			camposDefault();
+			atualizaTabela();
+			
 			}else if (e.getSource() == btnPesquisar){
 				
 				List<VisitanteEntity> list = control.pesquisar(txtCPF.getText().trim());
 				if(list.size()>0){
 					VisitanteEntity vst = list.get(0);
 					VisitanteToForm(vst);
+					
 				}
 			}
 			
@@ -359,7 +389,7 @@ public VisitanteEntity formVisitanteDados(){
 		cbNacionalidade.setSelectedItem(vst.getNacionalidade());
 		cbTransporte.setSelectedItem(vst.getTransporte());
 		cbGrauInstrucao.setSelectedItem(vst.getInstrucao());
-		
+				
 		
 		
 	}
@@ -397,6 +427,7 @@ public void  camposDefault(){
 	cbNacionalidade.setSelectedIndex(0);
 	cbTransporte.setSelectedIndex(0);
 	btnPesquisar.setEnabled(true);
+	btnSalvar.setEnabled(true);
 	
 	
 	
@@ -415,7 +446,11 @@ public void  camposDefault(){
 
 
 	
-
+public void atualizaTabela (){
+	
+	tabelaVisitante.invalidate();
+	tabelaVisitante.revalidate();
+}
 
 
 
