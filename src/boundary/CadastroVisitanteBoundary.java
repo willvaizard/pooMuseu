@@ -4,22 +4,14 @@ package boundary;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.ParseException;
-import java.util.List;
 
-import javax.swing.ButtonGroup;
-import javax.swing.CellRendererPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -28,35 +20,25 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.text.MaskFormatter;
 
-import com.mysql.jdbc.NonRegisteringDriver;
-import com.sun.org.apache.bcel.internal.generic.SWITCH;
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
-
 import controller.VisitanteController;
 import entity.VisitanteEntity;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import sun.swing.SwingAccessor.JLightweightFrameAccessor;
 
 public class CadastroVisitanteBoundary extends JFrame implements ActionListener, ListSelectionListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel panelVisitantes;
 	private JButton btnSalvar;
 	private JButton btnAlterar;
@@ -64,14 +46,14 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener,
 	private JButton btnPesquisar;
 	private JFormattedTextField txtCPF;
 	private JTextField txtIdade;
-	private JComboBox cbNacionalidade;
-	private JComboBox cbGrauInstrucao;
-	private JComboBox cbSexo;
-	private JComboBox cbTransporte;
+	private JComboBox<Object> cbNacionalidade;
+	private JComboBox<Object> cbGrauInstrucao;
+	private JComboBox<Object> cbSexo;
+	private JComboBox<Object> cbTransporte;
 	private JTable tabelaVisitante;
 	private VisitanteController control = new VisitanteController();
 	private JScrollPane panTableVisitante;
-	private JFrame janela = new JFrame("Cadastro Visitante");
+	
 	 private JDialog CadDialog = new JDialog();
 	
 	
@@ -97,7 +79,7 @@ public class CadastroVisitanteBoundary extends JFrame implements ActionListener,
 		CadDialog.setLocationRelativeTo(null);
 		CadDialog.setResizable(false);
 		CadDialog.setContentPane(panelVisitantes);
-		CadDialog.setSize(700, 660);
+		CadDialog.setSize(720, 660);
 		
 		CadDialog.setLocationRelativeTo(null);
 		CadDialog.setVisible(true);

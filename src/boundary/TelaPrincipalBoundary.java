@@ -28,10 +28,11 @@ public class TelaPrincipalBoundary implements ActionListener{
 
 	private JPanel panel = new JPanel(new BorderLayout());
 	private JFrame janela = new JFrame("Controle Museu - Principal");
-	private JButton BtnVisitantes;
-	private JButton BtnIngressos;
-	private JButton BtnObras;
+	private JButton btnVisitantes;
+	private JButton btnIngressos;
+	private JButton btnObras;
 	private CadastroVisitanteBoundary cadvi;
+	private ObrasBondary obras;
 
 	public TelaPrincipalBoundary() {
 		
@@ -68,23 +69,24 @@ public class TelaPrincipalBoundary implements ActionListener{
 		
 		JPanel panelCentro = new JPanel(new FlowLayout());
 		panelCentro.setBackground(Color.WHITE);
-		BtnVisitantes = new JButton("Visitantes");
-		BtnVisitantes.setFont( new Font("Paladinos", Font.BOLD, 16));
-		BtnVisitantes.setIcon(new ImageIcon
+		btnVisitantes = new JButton("Visitantes");
+		btnVisitantes.setFont( new Font("Paladinos", Font.BOLD, 16));
+		btnVisitantes.setIcon(new ImageIcon
 				(TelaPrincipalBoundary.class.getResource("/resources/visitantes.png")));
-		panelCentro.add(BtnVisitantes);
-		BtnVisitantes.addActionListener(this);
-		BtnObras = new JButton("Obras");
-		BtnObras.setFont( new Font("Paladinos", Font.BOLD, 16));
-		BtnObras.setIcon(new ImageIcon
+		panelCentro.add(btnVisitantes);
+		btnVisitantes.addActionListener(this);
+		btnObras = new JButton("Obras");
+		btnObras.setFont( new Font("Paladinos", Font.BOLD, 16));
+		btnObras.setIcon(new ImageIcon
 				(TelaPrincipalBoundary.class.getResource("/resources/obras.png")));
-		panelCentro.add(BtnObras);
+		panelCentro.add(btnObras);
+		btnObras.addActionListener(this);
 		
-		BtnIngressos = new JButton("Ingressos");
-		BtnIngressos.setFont(new Font("Paladinos", Font.BOLD, 16));
-		BtnIngressos.setIcon(new ImageIcon(
+		btnIngressos = new JButton("Ingressos");
+		btnIngressos.setFont(new Font("Paladinos", Font.BOLD, 16));
+		btnIngressos.setIcon(new ImageIcon(
 				TelaPrincipalBoundary.class.getResource("/resources/ingressos.png")));
-		panelCentro.add(BtnIngressos);
+		panelCentro.add(btnIngressos);
 		
 		
 		
@@ -103,11 +105,14 @@ public static void main(String[] args) {
 
 @Override
 public void actionPerformed(ActionEvent arg0) {
-	if(arg0.getSource() == BtnVisitantes){
+	if(arg0.getSource() == btnVisitantes){
 		
 		cadvi = new CadastroVisitanteBoundary();
 		
 		
+	}
+	if(arg0.getSource() == btnObras){
+		obras = new ObrasBondary();
 	}
 	
 }

@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -41,18 +42,27 @@ public class ObrasBondary {
 	private JButton btnAlterar;
 	private JButton btnDeletar;
 	private JButton btnPesquisarAutor;
+	private JDialog ObraDialog = new JDialog();
 	public ObrasBondary() {
-	JFrame janela = new JFrame("Manter Obras");
+	//JFrame janela = new JFrame("Manter Obras");
 	
 	
 	panelObras.add(topo(),BorderLayout.NORTH);
 	panelObras.add(principal(), BorderLayout.CENTER);
 	panelObras.add(botoes(), BorderLayout.SOUTH);
-	janela.setContentPane(panelObras);
-	janela.setSize(720, 400);
-	janela.setVisible(true);
-	
-	janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	ObraDialog.setModal(true);
+	ObraDialog.setLocationRelativeTo(null);
+	ObraDialog.setResizable(false);
+	ObraDialog.setContentPane(panelObras);
+	ObraDialog.setSize(720, 400);
+	ObraDialog.setLocationRelativeTo(null);
+	ObraDialog.setVisible(true);
+	//janela.setContentPane(panelObras);
+	//janela.setSize(720, 400);
+	//janela.setVisible(true);
+	//
+	//janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
 		
 		 
@@ -182,7 +192,5 @@ public class ObrasBondary {
 	
 	
 	
-	public static void main(String[] args) {
-		new ObrasBondary();
-	}
+
 }
