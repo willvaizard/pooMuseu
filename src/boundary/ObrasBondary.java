@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import com.toedter.calendar.JDateChooser;
 
 import controller.comboBox;
+import entity.tipoObras;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -129,10 +130,10 @@ public class ObrasBondary {
 		cbTipoObra.setBounds(106, 206, 124, 20);
 		panelPrincipal.add(cbTipoObra);
 		comboBox de = new comboBox();
-		List<Object> listaObras = de.tipoObra();
+		List<tipoObras> listaObras = de.tipoObra();
 		
-		for(Object obras: listaObras)
-		cbTipoObra.addItem(obras);
+		for(tipoObras obras: listaObras)
+		cbTipoObra.addItem(obras.toString());
 		
 		
 		JLabel lblCategoria = new JLabel("Categoria:");

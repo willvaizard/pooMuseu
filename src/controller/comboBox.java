@@ -1,7 +1,11 @@
 package controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import entity.tipoObras;
+import persistence.ObrastipoObraDAO;
 
 public class comboBox {
 	
@@ -9,15 +13,18 @@ public class comboBox {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public List<Object> tipoObra (){
+	public List<tipoObras> tipoObra (){
+		ObrastipoObraDAO oDao;
+		List<tipoObras> tpObra= new ArrayList<tipoObras>();
+		try {
+			oDao = new ObrastipoObraDAO();
+			tpObra = oDao.ConsultaTipoObra();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		List<Object> tpObra = new ArrayList<Object>();
-		tpObra.add("");
-		tpObra.add("Pintura");
-		tpObra.add("Escultura");
-		tpObra.add("Fotografia");
-		tpObra.add("Livro");
-		tpObra.add("Outro");
+		
 		
 		
 		return tpObra;
