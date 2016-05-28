@@ -53,7 +53,7 @@ public class TelaPrincipalBoundary implements ActionListener{
 	public JComponent Topo(){
 		JPanel panelTopo = new JPanel();
 		
-		JLabel nomeApp = new JLabel("Controle de Museu - MUSEX");
+		JLabel nomeApp = new JLabel("Controle de Museu - LUPAWI");
 		nomeApp.setHorizontalAlignment(JLabel.CENTER);
 		nomeApp.setFont(new Font("Paladino", Font.BOLD, 18));
 		nomeApp.setForeground(Color.LIGHT_GRAY);
@@ -70,20 +70,20 @@ public class TelaPrincipalBoundary implements ActionListener{
 		JPanel panelCentro = new JPanel(new FlowLayout());
 		panelCentro.setBackground(Color.WHITE);
 		btnVisitantes = new JButton("Visitantes");
-		btnVisitantes.setFont( new Font("Paladinos", Font.BOLD, 16));
+		btnVisitantes.setFont( new Font("Tahoma", Font.BOLD, 16));
 		btnVisitantes.setIcon(new ImageIcon
 				(TelaPrincipalBoundary.class.getResource("/resources/visitantes.png")));
 		panelCentro.add(btnVisitantes);
 		btnVisitantes.addActionListener(this);
 		btnObras = new JButton("Obras");
-		btnObras.setFont( new Font("Paladinos", Font.BOLD, 16));
+		btnObras.setFont( new Font("Tahoma", Font.BOLD, 16));
 		btnObras.setIcon(new ImageIcon
 				(TelaPrincipalBoundary.class.getResource("/resources/obras.png")));
 		panelCentro.add(btnObras);
 		btnObras.addActionListener(this);
 		
 		btnIngressos = new JButton("Ingressos");
-		btnIngressos.setFont(new Font("Paladinos", Font.BOLD, 16));
+		btnIngressos.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnIngressos.setIcon(new ImageIcon(
 				TelaPrincipalBoundary.class.getResource("/resources/ingressos.png")));
 		panelCentro.add(btnIngressos);
