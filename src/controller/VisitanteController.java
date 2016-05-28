@@ -17,18 +17,7 @@ import javax.swing.table.TableModel;
 public class VisitanteController implements TableModel{
 	List<VisitanteEntity> lista = new ArrayList<VisitanteEntity>();
 	public VisitanteController() {
-		VisitantesDAO vDao;
-		try {
-			vDao = new VisitantesDAO();
-			 List<VisitanteEntity> list = vDao.ConsultaVisitantes();
-			 
-			for (VisitanteEntity V : list){
-				lista.add(V);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		populaTabela();
 	}
 	
 	
@@ -139,9 +128,11 @@ public class VisitanteController implements TableModel{
 		try {
 			VisitantesDAO vDao = new VisitantesDAO();
 			vDao.InsereVisitante(vst);
-			lista.add(vst);
+			//lista.add(vst);
+			populaTabela();
 			JOptionPane.showMessageDialog(null, "Visitante  cadastrado com sucesso","Sucesso",
 					JOptionPane.INFORMATION_MESSAGE);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, e.getMessage(),"ERRO", JOptionPane.ERROR_MESSAGE);
@@ -172,18 +163,52 @@ public class VisitanteController implements TableModel{
 		
 		
 	}
-	public List<VisitanteEntity> pesquisar (String cpf){
+	public VisitanteEntity pesquisar (String cpf){
 		
-		List<VisitanteEntity> resultado = new ArrayList<VisitanteEntity>();
+		VisitanteEntity visitante= null;
 		
 		for(VisitanteEntity vst: lista){
+			
+			
 			if(vst.getCpf().contains(cpf)){
-				resultado.add(vst);
-			}
+				
+				visitante=vst;
+				
+				}
+			
+		
+			
+			
 			
 		}
 		
-		return resultado;
+		
+		return visitante;
+		
+		
+		
+	}
+	
+	public void AdicionaNaLista(VisitanteEntity vst){
+		
+		lista.add(vst);
+		
+	}
+	
+	public void populaTabela(){
+		lista.clear();
+		VisitantesDAO vDao;
+		try {
+			vDao = new VisitantesDAO();
+			 List<VisitanteEntity> list = vDao.ConsultaVisitantes();
+			 
+			for (VisitanteEntity V : list){
+				lista.add(V);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

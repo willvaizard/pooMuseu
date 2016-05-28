@@ -321,28 +321,45 @@ public VisitanteEntity formVisitanteDados(){
 			}			
 			
 			
-		}else if(e.getSource() == btnNovo){
+		}
+		if(e.getSource() == btnNovo){
 			
 			camposDefault();
 			
-		}else if (e.getSource() == btnAlterar){
+		}
+		if (e.getSource() == btnAlterar){
 			if(validaCampo()){
 			control.atualizaVisitante(formVisitanteDados());
 			camposDefault();
 			atualizaTabela();
 			
-			}else if (e.getSource() == btnPesquisar){
-				
-				List<VisitanteEntity> list = control.pesquisar(txtCPF.getText().trim());
-				if(list.size()>0){
-					VisitanteEntity vst = list.get(0);
-					VisitanteToForm(vst);
-					
-				}
 			}
 			
 			
 			
+			
+		}
+		if (e.getSource() == btnPesquisar){
+			
+				
+			int tamanhoCPF =txtCPF.getText().replace(".","").replace("-", "").trim().length();
+			System.out.println(tamanhoCPF);
+			if(tamanhoCPF <= 0 ||  tamanhoCPF<11){
+				JOptionPane.showMessageDialog(null, "O Cpf deve ser informado com 11 digitos", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+				
+			}else{
+				VisitanteEntity vst =control.pesquisar(txtCPF.getText());
+				if(vst == null){
+					JOptionPane.showMessageDialog(null, "CPF não encontrado", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+					camposDefault();
+				}else{
+				VisitanteToForm(vst);
+				camposEditar();
+				}
+			}
+			
+				
+		
 		}
 		
 		
@@ -358,8 +375,9 @@ public VisitanteEntity formVisitanteDados(){
 
 
 	private boolean validaCampo() {
-		if(txtCPF.getText().replace(".","").replace("-", "").trim().length() <= 0){
-			JOptionPane.showMessageDialog(null, "O Cpf deve ser informado", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+		int tamanhoCPF =txtCPF.getText().replace(".","").replace("-", "").trim().length(); 
+		if(tamanhoCPF <= 0 &&  tamanhoCPF<11){
+			JOptionPane.showMessageDialog(null, "O Cpf deve ser informado com 11 digitos", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 			return false;			
 		}
 		else if(txtIdade.getText().trim().length()<=0){
@@ -406,10 +424,7 @@ public VisitanteEntity formVisitanteDados(){
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
 		
-		btnSalvar.setEnabled(false);
-		btnAlterar.setEnabled(true);
-		btnNovo.setEnabled(true);
-		btnPesquisar.setEnabled(false);
+		camposEditar();
 
 		int linha = tabelaVisitante.getSelectedRow();
 		VisitanteEntity vst = control.getLista().get(linha);
@@ -419,7 +434,13 @@ public VisitanteEntity formVisitanteDados(){
 				
 		
 	}
-
+public void camposEditar(){
+	
+	btnSalvar.setEnabled(false);
+	btnAlterar.setEnabled(true);
+	btnNovo.setEnabled(true);
+	
+}
 
 public void  camposDefault(){
 	
@@ -431,6 +452,7 @@ public void  camposDefault(){
 	cbTransporte.setSelectedIndex(0);
 	btnPesquisar.setEnabled(true);
 	btnSalvar.setEnabled(true);
+	btnAlterar.setEnabled(false);
 	
 	
 	
