@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.tipoObras;
-import persistence.ObrastipoObraDAO;
+import persistence.ObrastipoObrasDAO;
 
 public class comboBox {
 	
@@ -14,10 +14,10 @@ public class comboBox {
 	}
 	
 	public List<tipoObras> tipoObra (){
-		ObrastipoObraDAO oDao;
+		ObrastipoObrasDAO oDao;
 		List<tipoObras> tpObra= new ArrayList<tipoObras>();
 		try {
-			oDao = new ObrastipoObraDAO();
+			oDao = new ObrastipoObrasDAO();
 			tpObra = oDao.ConsultaTipoObra();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

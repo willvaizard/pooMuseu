@@ -2,16 +2,12 @@ package boundary;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
-import com.toedter.calendar.JDateChooser;
-
-import controller.comboBox;
-import entity.tipoObras;
-
 import java.awt.Font;
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -22,11 +18,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-//import javafx.scene.layout.Border;
-import javax.swing.ImageIcon;
+import com.toedter.calendar.JDateChooser;
 
-public class ObrasBondary {
-	private JPanel panelObras = new JPanel(new BorderLayout());
+import controller.CategoriaObrasController;
+import controller.LocalizacaoObrasController;
+import controller.tipoObrasController;
+import entity.CategoriaObras;
+import entity.LocalizacaoObras;
+import entity.Obras;
+import entity.tipoObras;
+
+public class ObrasBondary implements ActionListener{
+	private JPanel 	 panelObras = new JPanel(new BorderLayout());
 	private JButton btnPesquisarObra;
 	private JTextField txtNomeObra;
 	private JTextField txtNomeAutor;
@@ -39,6 +42,23 @@ public class ObrasBondary {
 	private JButton btnDeletar;
 	private JButton btnPesquisarAutor;
 	private JDialog ObraDialog = new JDialog();
+	private JComboBox<Object> cbLocalizacao;
+	private JTextField txtNovoTipoObra;
+	private JTextField txtNovaCategoria;
+	private JTextField txtNovaLocalizacao;
+	private JButton btnIncluirTipoObra;
+	private JButton btnIncluirCategoria;
+	private JButton btnIncluirLocalizacao;
+	private JLabel lblNovaCategoria;
+	private JLabel lblTpObra;
+	private JLabel lblLocalizao;
+	private JButton btnNovoTipoObra;
+	private JButton btnNovaCategoria;
+	private JButton btnNovaLocalizao;
+	private List<tipoObras> listaObras;
+	private List<CategoriaObras> listaCat;
+	private List<LocalizacaoObras> listaLocal;
+	
 	public ObrasBondary() {
 	//JFrame janela = new JFrame("Manter Obras");
 	
@@ -51,9 +71,10 @@ public class ObrasBondary {
 	ObraDialog.setLocationRelativeTo(null);
 	ObraDialog.setResizable(false);
 	ObraDialog.setContentPane(panelObras);
-	ObraDialog.setSize(720, 400);
+	ObraDialog.setSize(720, 492);
 	ObraDialog.setLocationRelativeTo(null);
 	ObraDialog.setVisible(true);
+	
 	//janela.setContentPane(panelObras);
 	//janela.setSize(720, 400);
 	//janela.setVisible(true);
@@ -109,52 +130,44 @@ public class ObrasBondary {
 		lblBiografia.setBounds(20, 123, 95, 14);
 		panelPrincipal.add(lblBiografia);
 		txtBiografia = new JTextArea(5,60);
-		txtBiografia.setBounds(125, 118, 558, 77);
+		txtBiografia.setLineWrap(true);
+		txtBiografia.setBounds(125, 118, 558, 64);
 		panelPrincipal.add(txtBiografia);
 		DataObra = new JDateChooser();
-		DataObra.setBounds(106, 242, 124, 20);
+		DataObra.setBounds(104, 343, 124, 20);
 		panelPrincipal.add(DataObra);
 		
 		JCheckBox disponibidadade = new JCheckBox("Disponivel para empréstimo");
-		disponibidadade.setBounds(263, 242, 327, 23);
+		disponibidadade.setBounds(261, 343, 327, 23);
 		panelPrincipal.add(disponibidadade);
 		JLabel lblTipoObra = new JLabel("Tipo de Obra:");
-		lblTipoObra.setBounds(20, 209, 76, 14);
+		lblTipoObra.setBounds(20, 202, 76, 14);
 		panelPrincipal.add(lblTipoObra);
 		cbTipoObra = new JComboBox<Object>();
-		cbTipoObra.setBounds(106, 206, 124, 20);
+		cbTipoObra.setBounds(104, 199, 136, 20);
 		panelPrincipal.add(cbTipoObra);
-		comboBox de = new comboBox();
-		List<tipoObras> listaObras = de.tipoObra();
 		
-		for(tipoObras obras: listaObras)
-		cbTipoObra.addItem(obras.toString());
+		
+		
 		
 		
 		JLabel lblCategoria = new JLabel("Categoria:");
-		lblCategoria.setBounds(263, 209, 76, 14);
+		lblCategoria.setBounds(20, 246, 76, 14);
 		panelPrincipal.add(lblCategoria);
 		cbCategoria = new JComboBox<Object>();
-		cbCategoria.setBounds(335, 206, 124, 20);
-			List<Object> listaCat= de.Categoria();
-		for(Object categoria: listaCat)
-			cbCategoria.addItem(categoria);
+		cbCategoria.setBounds(104, 243, 136, 20);
 		panelPrincipal.add(cbCategoria);
 		
 		JLabel lblLocalizacao = new JLabel("Localiza\u00E7\u00E3o:");
-		lblLocalizacao.setBounds(489, 209, 92, 14);
+		lblLocalizacao.setBounds(20, 290, 92, 14);
 		panelPrincipal.add(lblLocalizacao);
 		
-		JComboBox<Object> cbLocalizacao = new JComboBox<Object>();
-		cbLocalizacao.setBounds(575, 206, 108, 20);
-		List<Object> listaLocal = new ArrayList<Object>();
-		listaLocal = de.Localizacao();
-		for(Object local: listaLocal)
-			cbLocalizacao.addItem(local);
+		cbLocalizacao = new JComboBox<Object>();
+		cbLocalizacao.setBounds(104, 287, 136, 20);
 		panelPrincipal.add(cbLocalizacao);
 		
 		JLabel lblDtObra = new JLabel("Data da Obra:");
-		lblDtObra.setBounds(20, 246, 110, 14);
+		lblDtObra.setBounds(18, 347, 110, 14);
 		panelPrincipal.add(lblDtObra);
 		
 		btnPesquisarAutor = new JButton("");
@@ -162,9 +175,100 @@ public class ObrasBondary {
 		btnPesquisarAutor.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/lupa.png")));
 		panelPrincipal.add(btnPesquisarAutor);
 		
+		btnNovaCategoria = new JButton("");
+		btnNovaCategoria.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
+		btnNovaCategoria.setBounds(261, 237, 59, 33);
+		panelPrincipal.add(btnNovaCategoria);
+		
+		btnNovoTipoObra = new JButton("");
+		btnNovoTipoObra.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnNovoTipoObra.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
+		btnNovoTipoObra.setBounds(261, 193, 59, 33);
+		panelPrincipal.add(btnNovoTipoObra);
+		
+		btnNovaLocalizao = new JButton("");
+		btnNovaLocalizao.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
+		btnNovaLocalizao.setBounds(261, 281, 59, 33);
+		panelPrincipal.add(btnNovaLocalizao);
+		btnNovaCategoria.addActionListener(this);
+		btnNovaLocalizao.addActionListener(this);
+		btnNovoTipoObra.addActionListener(this);
+		
+		lblTpObra = new JLabel("Obra:");
+		lblTpObra.setBounds(335, 202, 69, 14);
+		panelPrincipal.add(lblTpObra);
+		
+		lblNovaCategoria = new JLabel("Categoria:");
+		lblNovaCategoria.setBounds(335, 246, 95, 14);
+		panelPrincipal.add(lblNovaCategoria);
+		
+		lblLocalizao = new JLabel("Localização:");
+		lblLocalizao.setBounds(336, 290, 116, 14);
+		panelPrincipal.add(lblLocalizao);
+		
+		txtNovoTipoObra = new JTextField();
+		txtNovoTipoObra.setBounds(414, 199, 188, 20);
+		panelPrincipal.add(txtNovoTipoObra);
+		txtNovoTipoObra.setColumns(10);
+		
+		txtNovaCategoria = new JTextField();
+		txtNovaCategoria.setBounds(414, 243, 188, 20);
+		panelPrincipal.add(txtNovaCategoria);
+		txtNovaCategoria.setColumns(10);
+		
+		txtNovaLocalizacao = new JTextField();
+		txtNovaLocalizacao.setBounds(414, 287, 189, 20);
+		panelPrincipal.add(txtNovaLocalizacao);
+		txtNovaLocalizacao.setColumns(10);
+		
+		btnIncluirTipoObra = new JButton("Incluir");
+		btnIncluirTipoObra.setBounds(615, 198, 89, 23);
+		panelPrincipal.add(btnIncluirTipoObra);
+		btnIncluirTipoObra.addActionListener(this);
+		
+		btnIncluirCategoria = new JButton("Incluir");
+		btnIncluirCategoria.setBounds(615, 242, 89, 23);
+		panelPrincipal.add(btnIncluirCategoria);
+		btnIncluirCategoria.addActionListener(this);
+		
+		btnIncluirLocalizacao = new JButton("Incluir");
+		btnIncluirLocalizacao.setBounds(615, 286, 89, 23);
+		panelPrincipal.add(btnIncluirLocalizacao);
+		btnIncluirLocalizacao.addActionListener(this);
+		ocultaBotoes();
+		CarregaCombox ();
 		
 		return panelPrincipal;
 		
+		
+	}
+	public void ocultaBotoes(){
+		
+		
+		lblTpObra.setVisible(false);
+		btnIncluirTipoObra.setVisible(false);
+		txtNovoTipoObra.setVisible(false);
+		
+		lblNovaCategoria.setVisible(false);
+		btnIncluirCategoria.setVisible(false);
+		txtNovaCategoria.setVisible(false);
+		
+		txtNovaLocalizacao.setVisible(false);
+		lblLocalizao.setVisible(false);
+		btnIncluirLocalizacao.setVisible(false);
+		
+		
+		
+		
+	}
+	
+	public void NovoTipoObra(){
+		lblTpObra.setVisible(true);
+		btnIncluirTipoObra.setVisible(true);
+		txtNovoTipoObra.setVisible(true);
 	}
 	
 	
@@ -186,7 +290,60 @@ public class ObrasBondary {
 		return panelBotoes;
 	}
 	
-	
-	
+	public void CarregaCombox (){
+		tipoObrasController to = new tipoObrasController();
+		CategoriaObrasController co = new CategoriaObrasController();
+		LocalizacaoObrasController lo = new LocalizacaoObrasController();
+		listaObras = to.tipoObra();
+		listaCat = co.Categoria();
+		listaLocal = lo.Localizacao();
+		
+		
+		if(cbCategoria == null || cbCategoria.getSelectedIndex()< 1){	
+			cbCategoria.removeAllItems();
+		cbCategoria.addItem("Selecione");	
+		for(CategoriaObras categoria: listaCat)
+			cbCategoria.addItem(categoria.getNomeCategoria());
+		}
+		
+		if(cbLocalizacao == null || cbLocalizacao.getSelectedIndex() < 1){
+			cbLocalizacao.removeAllItems();
+		cbLocalizacao.addItem("Selecione");
+		for(LocalizacaoObras local: listaLocal)
+			cbLocalizacao.addItem(local.getLocalizacaoObra());
+		}
+		
+		if(cbTipoObra == null || cbTipoObra.getSelectedIndex() < 1){
+			cbTipoObra.removeAllItems();
+		cbTipoObra.addItem("Selecione");
+		for(tipoObras obras: listaObras)
+		cbTipoObra.addItem(obras.getObra());
+		}
+		
+		
+		
+	}
 
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == btnNovoTipoObra){
+			
+			NovoTipoObra();
+			
+		}
+		if(e.getSource() == btnIncluirTipoObra){
+		tipoObrasController control = new tipoObrasController();
+		tipoObras to = new tipoObras();
+		to.setObra(txtNovoTipoObra.getText());
+		control.adicionaNovoTipoObra(to);
+		CarregaCombox();
+			
+		cbTipoObra.setSelectedIndex(listaObras.size());
+		ocultaBotoes();
+		
+		
+		
+		}
+	}
 }

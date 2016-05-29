@@ -9,10 +9,10 @@ import java.util.List;
 
 import entity.tipoObras;
 
-public class ObrastipoObraDAO {
+public class ObrasTipoObraDAO {
 	Connection con;
 	
-	public ObrastipoObraDAO() throws SQLException {
+	public ObrasTipoObraDAO() throws SQLException {
 		con = JDBCUtil.getConnection();
 	}
 	
@@ -28,10 +28,26 @@ public class ObrastipoObraDAO {
 			lista.add(to);
 			
 		}
-		
+		ps.close();
+		rs.close();
 		
 		
 		return lista;
 	}
+	
+	public void insere(tipoObras tpObra) throws SQLException{
+		
+		String sql = "INSERT INTO obra_tipo_obra  (nome) VALUES (?)";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, tpObra.getObra());
+		
+		ps.execute();
+		
+		ps.close();
+		
+		
+	}
+	
+	
 
 }
