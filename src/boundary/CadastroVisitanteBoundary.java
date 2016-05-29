@@ -385,6 +385,9 @@ public VisitanteEntity formVisitanteDados(){
 		
 		
 	}
+	
+	
+	
 	public void VisitanteToForm(VisitanteEntity vst){
 		txtCPF.setText(String.valueOf(vst.getCpf()));
 		txtIdade.setText(String.valueOf(vst.getIdade()));
@@ -393,8 +396,6 @@ public VisitanteEntity formVisitanteDados(){
 		cbTransporte.setSelectedItem(vst.getTransporte());
 		cbGrauInstrucao.setSelectedItem(vst.getInstrucao());
 				
-		
-		
 	}
 
 

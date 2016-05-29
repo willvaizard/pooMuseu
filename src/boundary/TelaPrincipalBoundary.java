@@ -19,6 +19,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controller.LocalController;
+
 
 
 
@@ -31,8 +33,10 @@ public class TelaPrincipalBoundary implements ActionListener{
 	private JButton btnVisitantes;
 	private JButton btnIngressos;
 	private JButton btnObras;
+	private JButton btnLocalEmprestimo;
 	private CadastroVisitanteBoundary cadvi;
 	private ObrasBondary obras;
+	private LocalBoundary local;
 
 	public TelaPrincipalBoundary() {
 		
@@ -88,10 +92,12 @@ public class TelaPrincipalBoundary implements ActionListener{
 				TelaPrincipalBoundary.class.getResource("/resources/ingressos.png")));
 		panelCentro.add(btnIngressos);
 		
-		
-		
-		
-		
+		btnLocalEmprestimo = new JButton("Empréstimo");
+		btnLocalEmprestimo.setFont( new Font("Tahoma", Font.BOLD, 16));
+		btnLocalEmprestimo.setIcon(new ImageIcon
+				(TelaPrincipalBoundary.class.getResource("/resources/local.png")));
+		panelCentro.add(btnLocalEmprestimo);
+		btnLocalEmprestimo.addActionListener(this);
 		
 		return panelCentro;
 	}
@@ -101,19 +107,24 @@ public class TelaPrincipalBoundary implements ActionListener{
 
 public static void main(String[] args) {
 	new TelaPrincipalBoundary();
+	
 }
 
 @Override
 public void actionPerformed(ActionEvent arg0) {
 	if(arg0.getSource() == btnVisitantes){
-		
 		cadvi = new CadastroVisitanteBoundary();
-		
-		
 	}
 	if(arg0.getSource() == btnObras){
 		obras = new ObrasBondary();
 	}
+	if(arg0.getSource() == btnLocalEmprestimo){
+		local = new LocalBoundary();
+	}
+	
 	
 }
+
+	
+
 }

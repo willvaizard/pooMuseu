@@ -1,7 +1,6 @@
 package boundary;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 
 import com.toedter.calendar.JDateChooser;
@@ -18,20 +17,16 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.toedter.calendar.JCalendar;
-
-
-import javafx.scene.layout.Border;
+//import javafx.scene.layout.Border;
 import javax.swing.ImageIcon;
 
 public class ObrasBondary {
-	private JPanel 	 panelObras = new JPanel(new BorderLayout());
+	private JPanel panelObras = new JPanel(new BorderLayout());
 	private JButton btnPesquisarObra;
 	private JTextField txtNomeObra;
 	private JTextField txtNomeAutor;
