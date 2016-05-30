@@ -3,40 +3,24 @@ package boundary;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.text.MaskFormatter;
-
-import com.toedter.calendar.JDateChooser;
 
 import controller.LocalController;
-import controller.VisitanteController;
-import controller.comboBox;
 import entity.LocalEntity;
-import entity.VisitanteEntity;
-import entity.tipoObras;
-import persistence.LocalDAO;
 
 public class LocalBoundary extends JFrame implements ActionListener {
 
