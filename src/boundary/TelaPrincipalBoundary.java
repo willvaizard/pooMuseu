@@ -2,15 +2,10 @@ package boundary;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.Icon;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,8 +13,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import controller.LocalController;
 
 
 
@@ -37,6 +30,7 @@ public class TelaPrincipalBoundary implements ActionListener{
 	private CadastroVisitanteBoundary cadvi;
 	private ObrasBondary obras;
 	private LocalBoundary local;
+	
 
 	public TelaPrincipalBoundary() {
 		

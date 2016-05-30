@@ -27,6 +27,7 @@ import entity.CategoriaObras;
 import entity.LocalizacaoObras;
 import entity.tipoObras;
 
+
 public class ObrasBondary implements ActionListener{
 	private JPanel 	 panelObras = new JPanel(new BorderLayout());
 	private JButton btnPesquisarObra;
@@ -58,6 +59,7 @@ public class ObrasBondary implements ActionListener{
 	private List<CategoriaObras> listaCat;
 	private List<LocalizacaoObras> listaLocalizacao;
 	private JLabel lblLocalizacao;
+	private TableObrasBoundary obras;
 	
 	public ObrasBondary() {
 	//JFrame janela = new JFrame("Manter Obras");
@@ -117,6 +119,7 @@ public class ObrasBondary implements ActionListener{
 		btnPesquisarObra.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/lupa.png")));
 		btnPesquisarObra.setBounds(635, 11, 40, 40);
 		panelPrincipal.add(btnPesquisarObra);
+		btnPesquisarObra.addActionListener(this);
 		
 		JLabel lblNomeAutor = new JLabel("Nome Autor:");
 		lblNomeAutor.setBounds(20, 80, 110, 14);
@@ -401,6 +404,10 @@ public class ObrasBondary implements ActionListener{
 		
 			
 			IncluirLocalizacao();
+		}
+		if(e.getSource() == btnPesquisarObra){
+			
+			obras = new TableObrasBoundary();
 		}
 			
 		

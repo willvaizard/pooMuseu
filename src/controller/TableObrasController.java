@@ -56,6 +56,7 @@ public class TableObrasController implements TableModel{
 		case 2: return String.class;
 		case 3: return String.class;
 		case 4: return String.class;
+		case 5: return String.class;
 			
 		}
 
@@ -65,12 +66,12 @@ public class TableObrasController implements TableModel{
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
-		return 5;
+		return 6;
 	}
 
 	@Override
 	public String getColumnName(int columnIndex) {
-		String nomeColuna[] = {"id","Data Cadastro", "Nome", "Autor, Disponibilidade"};
+		String nomeColuna[] = {"id","Data Cadastro", "Nome", "Autor", "Data Obra", "Disponibilidade"};
 		return nomeColuna[columnIndex];
 	}
 
@@ -88,7 +89,8 @@ public class TableObrasController implements TableModel{
 	case 1: return ob.getDataCadastro();
 	case 2: return ob.getNomeObra();
 	case 3: return ob.getNomeAutor();
-	case 4: return ob.getDisponiblidade();
+	case 4: return ob.getDataObra();
+	case 5: return ob.getDisponiblidade();
 		
 	}
 	
