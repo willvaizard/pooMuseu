@@ -4,12 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.CategoriaObras;
 import entity.LocalizacaoObras;
-import entity.tipoObras;
-import persistence.CategoriaObrasDAO;
-import persistence.LocalizacaoObraDAO;
-import persistence.ObrasTipoObraDAO;
+import persistence.LocalizacaoObrasDAO;
 
 public class LocalizacaoObrasController {
 	
@@ -24,7 +20,7 @@ public class LocalizacaoObrasController {
 		List<LocalizacaoObras> local = new ArrayList<LocalizacaoObras>();
 		
 		try {
-			LocalizacaoObraDAO lDao = new LocalizacaoObraDAO();
+			LocalizacaoObrasDAO lDao = new LocalizacaoObrasDAO();
 			local = lDao.ConsultaLocalizacao();
 			
 		} catch (SQLException e) {
@@ -37,6 +33,20 @@ public class LocalizacaoObrasController {
 		
 		return local;
 		
+		
+	}
+
+
+
+	public void adicionaNovaLocalizacao(LocalizacaoObras loc) {
+		
+		try {
+			LocalizacaoObrasDAO lDao = new LocalizacaoObrasDAO();
+			lDao.insere(loc);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

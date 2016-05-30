@@ -5,16 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.CategoriaObras;
-import entity.LocalizacaoObras;
-import entity.tipoObras;
 import persistence.CategoriaObrasDAO;
-import persistence.LocalizacaoObraDAO;
-import persistence.ObrasTipoObraDAO;
 
 public class CategoriaObrasController {
 	
 	public CategoriaObrasController() {
-		// TODO Auto-generated constructor stub
+
 	}
 	
 
@@ -37,6 +33,20 @@ public class CategoriaObrasController {
 		
 	}
 	
+	public void adicionarNovaCategoria(CategoriaObras cat){
+		
+		try {
+			CategoriaObrasDAO cDao = new CategoriaObrasDAO();
+			cDao.insere(cat);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+	}
 
 	
 	

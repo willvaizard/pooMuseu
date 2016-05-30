@@ -25,7 +25,6 @@ import controller.LocalizacaoObrasController;
 import controller.tipoObrasController;
 import entity.CategoriaObras;
 import entity.LocalizacaoObras;
-import entity.Obras;
 import entity.tipoObras;
 
 public class ObrasBondary implements ActionListener{
@@ -51,13 +50,14 @@ public class ObrasBondary implements ActionListener{
 	private JButton btnIncluirLocalizacao;
 	private JLabel lblNovaCategoria;
 	private JLabel lblTpObra;
-	private JLabel lblLocalizao;
+	private JLabel lblNovaLocalizacao;
 	private JButton btnNovoTipoObra;
 	private JButton btnNovaCategoria;
-	private JButton btnNovaLocalizao;
+	private JButton btnNovaLocalizacao;
 	private List<tipoObras> listaObras;
 	private List<CategoriaObras> listaCat;
-	private List<LocalizacaoObras> listaLocal;
+	private List<LocalizacaoObras> listaLocalizacao;
+	private JLabel lblLocalizacao;
 	
 	public ObrasBondary() {
 	//JFrame janela = new JFrame("Manter Obras");
@@ -92,7 +92,7 @@ public class ObrasBondary implements ActionListener{
 	public JComponent topo(){
 		JPanel panelTopo = new JPanel();
 		JLabel titulo = new JLabel("Cadastro de Obras");
-		titulo.setFont(new Font("Paladino", Font.BOLD, 18));
+		titulo.setFont(new Font("Tahoma", Font.BOLD, 18));
 		titulo.setHorizontalAlignment(JLabel.CENTER);
 		panelTopo.add(titulo);
 		
@@ -158,7 +158,7 @@ public class ObrasBondary implements ActionListener{
 		cbCategoria.setBounds(104, 243, 136, 20);
 		panelPrincipal.add(cbCategoria);
 		
-		JLabel lblLocalizacao = new JLabel("Localiza\u00E7\u00E3o:");
+		lblLocalizacao = new JLabel("Localização:");
 		lblLocalizacao.setBounds(20, 290, 92, 14);
 		panelPrincipal.add(lblLocalizacao);
 		
@@ -179,6 +179,7 @@ public class ObrasBondary implements ActionListener{
 		btnNovaCategoria.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
 		btnNovaCategoria.setBounds(261, 237, 59, 33);
 		panelPrincipal.add(btnNovaCategoria);
+		btnNovaCategoria.addActionListener(this);
 		
 		btnNovoTipoObra = new JButton("");
 		btnNovoTipoObra.addActionListener(new ActionListener() {
@@ -189,12 +190,13 @@ public class ObrasBondary implements ActionListener{
 		btnNovoTipoObra.setBounds(261, 193, 59, 33);
 		panelPrincipal.add(btnNovoTipoObra);
 		
-		btnNovaLocalizao = new JButton("");
-		btnNovaLocalizao.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
-		btnNovaLocalizao.setBounds(261, 281, 59, 33);
-		panelPrincipal.add(btnNovaLocalizao);
+		
+		btnNovaLocalizacao = new JButton("");
+		btnNovaLocalizacao.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
+		btnNovaLocalizacao.setBounds(261, 281, 59, 33);
+		panelPrincipal.add(btnNovaLocalizacao);
 		btnNovaCategoria.addActionListener(this);
-		btnNovaLocalizao.addActionListener(this);
+		btnNovaLocalizacao.addActionListener(this);
 		btnNovoTipoObra.addActionListener(this);
 		
 		lblTpObra = new JLabel("Obra:");
@@ -205,9 +207,9 @@ public class ObrasBondary implements ActionListener{
 		lblNovaCategoria.setBounds(335, 246, 95, 14);
 		panelPrincipal.add(lblNovaCategoria);
 		
-		lblLocalizao = new JLabel("Localização:");
-		lblLocalizao.setBounds(336, 290, 116, 14);
-		panelPrincipal.add(lblLocalizao);
+		lblNovaLocalizacao = new JLabel("Localização:");
+		lblNovaLocalizacao.setBounds(336, 290, 116, 14);
+		panelPrincipal.add(lblNovaLocalizacao);
 		
 		txtNovoTipoObra = new JTextField();
 		txtNovoTipoObra.setBounds(414, 199, 188, 20);
@@ -238,6 +240,8 @@ public class ObrasBondary implements ActionListener{
 		btnIncluirLocalizacao.setBounds(615, 286, 89, 23);
 		panelPrincipal.add(btnIncluirLocalizacao);
 		btnIncluirLocalizacao.addActionListener(this);
+		
+		
 		ocultaBotoes();
 		CarregaCombox ();
 		
@@ -257,7 +261,7 @@ public class ObrasBondary implements ActionListener{
 		txtNovaCategoria.setVisible(false);
 		
 		txtNovaLocalizacao.setVisible(false);
-		lblLocalizao.setVisible(false);
+		lblNovaLocalizacao.setVisible(false);
 		btnIncluirLocalizacao.setVisible(false);
 		
 		
@@ -271,6 +275,18 @@ public class ObrasBondary implements ActionListener{
 		txtNovoTipoObra.setVisible(true);
 	}
 	
+	public void NovaCategoria(){
+		lblNovaCategoria.setVisible(true);
+		btnIncluirCategoria.setVisible(true);
+		txtNovaCategoria.setVisible(true);
+	}
+	public void NovaLocalizacao(){
+		
+		lblNovaLocalizacao.setVisible(true);
+		btnIncluirLocalizacao.setVisible(true);
+		txtNovaLocalizacao.setVisible(true);
+		
+	}
 	
 
 	private JComponent botoes() {
@@ -294,23 +310,24 @@ public class ObrasBondary implements ActionListener{
 		tipoObrasController to = new tipoObrasController();
 		CategoriaObrasController co = new CategoriaObrasController();
 		LocalizacaoObrasController lo = new LocalizacaoObrasController();
+		
 		listaObras = to.tipoObra();
 		listaCat = co.Categoria();
-		listaLocal = lo.Localizacao();
+		listaLocalizacao = lo.Localizacao();
 		
 		
 		if(cbCategoria == null || cbCategoria.getSelectedIndex()< 1){	
 			cbCategoria.removeAllItems();
 		cbCategoria.addItem("Selecione");	
 		for(CategoriaObras categoria: listaCat)
-			cbCategoria.addItem(categoria.getNomeCategoria());
+			cbCategoria.addItem(categoria.getCategoria());
 		}
 		
 		if(cbLocalizacao == null || cbLocalizacao.getSelectedIndex() < 1){
 			cbLocalizacao.removeAllItems();
 		cbLocalizacao.addItem("Selecione");
-		for(LocalizacaoObras local: listaLocal)
-			cbLocalizacao.addItem(local.getLocalizacaoObra());
+		for(LocalizacaoObras local: listaLocalizacao)
+			cbLocalizacao.addItem(local.getLocalizacao());
 		}
 		
 		if(cbTipoObra == null || cbTipoObra.getSelectedIndex() < 1){
@@ -323,27 +340,73 @@ public class ObrasBondary implements ActionListener{
 		
 		
 	}
-
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btnNovoTipoObra){
-			
-			NovoTipoObra();
-			
-		}
-		if(e.getSource() == btnIncluirTipoObra){
+	public void IncluirTipoObra(){
 		tipoObrasController control = new tipoObrasController();
 		tipoObras to = new tipoObras();
 		to.setObra(txtNovoTipoObra.getText());
 		control.adicionaNovoTipoObra(to);
 		CarregaCombox();
-			
-		cbTipoObra.setSelectedIndex(listaObras.size());
+		cbTipoObra.setSelectedIndex(cbTipoObra.getItemCount()-1);
+		ocultaBotoes();
+		
+	}
+	public void IncluirCategoria(){
+		CategoriaObrasController control = new CategoriaObrasController();
+		CategoriaObras co = new CategoriaObras();
+		co.setCategoria(txtNovaCategoria.getText());
+		control.adicionarNovaCategoria(co);
+		CarregaCombox();
+		cbCategoria.setSelectedIndex(cbCategoria.getItemCount()-1);
+		ocultaBotoes();
+		
+	}
+	private void IncluirLocalizacao() {
+		LocalizacaoObrasController control = new LocalizacaoObrasController();
+		LocalizacaoObras loc = new LocalizacaoObras();
+		loc.setLocalizacao(txtNovaLocalizacao.getText());
+		control.adicionaNovaLocalizacao(loc);
+		listaLocalizacao.clear();
+		CarregaCombox();
+		cbLocalizacao.setSelectedIndex(cbLocalizacao.getItemCount()-1);
 		ocultaBotoes();
 		
 		
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == btnNovoTipoObra){
+			NovoTipoObra();
+		}
+		if(e.getSource() == btnIncluirTipoObra){
+			IncluirTipoObra();
 		
 		}
+		
+		if(e.getSource() == btnNovaCategoria){
+			NovaCategoria();
+		}
+		
+		
+		if(e.getSource() == btnIncluirCategoria){
+			
+			IncluirCategoria();
+		}
+		
+		if(e.getSource() == btnNovaLocalizacao){
+			NovaLocalizacao();
+		}
+		if(e.getSource() == btnIncluirLocalizacao){
+		
+			
+			IncluirLocalizacao();
+		}
+			
+		
+		
 	}
+
+
+	
 }

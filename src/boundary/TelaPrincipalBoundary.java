@@ -111,14 +111,14 @@ public static void main(String[] args) {
 }
 
 @Override
-public void actionPerformed(ActionEvent arg0) {
-	if(arg0.getSource() == btnVisitantes){
+public void actionPerformed(ActionEvent e) {
+	if(e.getSource() == btnVisitantes){
 		cadvi = new CadastroVisitanteBoundary();
 	}
-	if(arg0.getSource() == btnObras){
+	if(e.getSource() == btnObras){
 		obras = new ObrasBondary();
 	}
-	if(arg0.getSource() == btnLocalEmprestimo){
+	if(e.getSource() == btnLocalEmprestimo){
 		local = new LocalBoundary();
 	}
 	

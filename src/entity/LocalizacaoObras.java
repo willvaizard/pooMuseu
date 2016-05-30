@@ -2,20 +2,19 @@ package entity;
 
 public class LocalizacaoObras {
 	private int idLocalizacao;
-	private String localizacaoObra;
-	
+	private String localizacao;
 	public int getIdLocalizacao() {
 		return idLocalizacao;
 	}
 	public void setIdLocalizacao(int idLocalizacao) {
 		this.idLocalizacao = idLocalizacao;
 	}
-	public String getLocalizacaoObra() {
-		return localizacaoObra;
+	public String getLocalizacao() {
+		return localizacao;
 	}
-	public void setLocalizacaoObra(String localizacaoObra) {
-		this.localizacaoObra = localizacaoObra;
+	public void setLocalizacao(String localizacao) {
+		this.localizacao = localizacao;
 	}
-	
-
 }
+	
+	
