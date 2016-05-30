@@ -176,13 +176,8 @@ public class VisitanteController implements TableModel{
 				
 				}
 			
-		
-			
-			
-			
 		}
-		
-		
+				
 		return visitante;
 		
 		

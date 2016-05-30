@@ -1,5 +1,7 @@
 package entity;
 
+import javax.swing.JRadioButton;
+
 public class LocalEntity {
 	private int codigo;
 	private String nome;
@@ -13,6 +15,8 @@ public class LocalEntity {
 	private String bairro;
 	private String cidade;
 	private String uf;
+	private String Ativo;
+	private String Inativo;
 	
 	public int getCodigo() {
 		return codigo;
@@ -86,7 +90,19 @@ public class LocalEntity {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-	
+	public String getAtivo() {
+		return Ativo;
+	}
+	public void setAtivo(String ativo) {
+		Ativo = ativo;
+	}
+	public String getInativo() {
+		return Inativo;
+	}
+	public void setInativo(String inativo) {
+		Inativo = inativo;
+	}
+
 	
 	
 }

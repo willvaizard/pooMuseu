@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,12 +31,15 @@ import javax.swing.text.MaskFormatter;
 import com.toedter.calendar.JDateChooser;
 
 import controller.LocalController;
+import controller.VisitanteController;
 import controller.comboBox;
+import entity.LocalEntity;
 import entity.VisitanteEntity;
 import entity.tipoObras;
+import persistence.LocalDAO;
 
-public class LocalBoundary implements ActionListener {
-	
+public class LocalBoundary extends JFrame implements ActionListener {
+
 	private JPanel panelLocal = new JPanel(new BorderLayout());
 	private JTextField txtCodigo;
 	private JTextField txtNome;
@@ -57,6 +62,8 @@ public class LocalBoundary implements ActionListener {
 	private JRadioButton rdbtnAtivo;
 	private JRadioButton rdbtnInativo;
 
+	private LocalController control = new LocalController();
+
 	public LocalBoundary() {
 		panelLocal.add(topo(), BorderLayout.NORTH);
 		panelLocal.add(principal(), BorderLayout.CENTER);
@@ -69,12 +76,6 @@ public class LocalBoundary implements ActionListener {
 		LocalDialog.setSize(720, 400);
 		LocalDialog.setLocationRelativeTo(null);
 		LocalDialog.setVisible(true);
-
-//		LocalController localController = new LocalController(txtCodigo, txtNome, txtEmail, txtTelefone, txtResponsavel,
-//				txtCep, txtLogradouro, txtNumero, txtComplemento, txtBairro, txtCidade, cmbUf, rdbtnAtivo, rdbtnInativo,
-//				btnSalvar, btnAlterar, btnRemover, btnPesquisar);
-//		btnSalvar.addActionListener(localController);
-		btnSalvar.addActionListener(this);
 
 	}
 
@@ -98,7 +99,6 @@ public class LocalBoundary implements ActionListener {
 		panelPrincipal.add(lblCodigo);
 		txtCodigo = new JTextField(50);
 		txtCodigo.setBounds(570, 0, 54, 20);
-		txtCodigo.setEditable(false);
 		panelPrincipal.add(txtCodigo);
 
 		JLabel lblNome = new JLabel("Nome:");
@@ -179,9 +179,8 @@ public class LocalBoundary implements ActionListener {
 		JLabel lblUf = new JLabel("UF:");
 		lblUf.setBounds(528, 212, 110, 14);
 		panelPrincipal.add(lblUf);
-		cmbUf = new JComboBox<Object>(new Object[] {"", "AC", "AL", "AM", "AP", "BA", "CE", 
-				"DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ",
-				"RN", "RO", "RS", "SC", "SE", "SP", "TO"});
+		cmbUf = new JComboBox<Object>(new Object[] { "", "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA",
+				"MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RS", "SC", "SE", "SP", "TO" });
 		cmbUf.setBounds(558, 212, 63, 20);
 		panelPrincipal.add(cmbUf);
 
@@ -206,10 +205,13 @@ public class LocalBoundary implements ActionListener {
 		JPanel panelBotoes = new JPanel(new FlowLayout());
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/salvar.png")));
+		btnSalvar.addActionListener(this);
 		btnAlterar = new JButton("Alterar");
 		btnAlterar.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/edit.png")));
+		btnAlterar.addActionListener(this);
 		btnRemover = new JButton("Remover");
 		btnRemover.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/delete.png")));
+		// btnPesquisar.addActionListener(this);
 		btnPesquisar = new JButton("Pesquisar");
 		btnPesquisar.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/lupa.png")));
 
@@ -221,14 +223,158 @@ public class LocalBoundary implements ActionListener {
 		return panelBotoes;
 	}
 
+	public LocalEntity formLocalDados() {
+
+		LocalEntity lcl = new LocalEntity();
+		lcl.setCodigo(Integer.parseInt(txtCodigo.getText()));
+		lcl.setNome(txtNome.getText());
+		lcl.setEmail(txtEmail.getText());
+		lcl.setTelefone(Integer.parseInt(txtTelefone.getText()));
+		lcl.setResponsavel(txtResponsavel.getText());
+		lcl.setCep(Integer.parseInt(txtCep.getText()));
+		lcl.setLogradouro(txtLogradouro.getText());
+		lcl.setNumero(Integer.parseInt(txtNumero.getText()));
+		lcl.setComplemento(txtComplemento.getText());
+		lcl.setBairro(txtBairro.getText());
+		lcl.setCidade(txtCidade.getText());
+		lcl.setUf(cmbUf.getSelectedItem().toString());
+		lcl.setAtivo(rdbtnAtivo.getText());
+		lcl.setInativo(rdbtnInativo.getText());
+		return lcl;
+
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btnSalvar){
-			LocalController lController = new LocalController(txtCodigo, txtNome, txtEmail, txtTelefone, txtResponsavel, txtCep, txtLogradouro, txtNumero, txtComplemento, txtBairro, txtCidade, cmbUf, rdbtnAtivo, rdbtnInativo, btnSalvar, btnAlterar, btnRemover, btnPesquisar);
-			//lController = new CadastroVisitanteBoundary();
-			btnSalvar.addActionListener(lController);
+		if (e.getSource() == btnSalvar) {
+
+			if (validaCampo()) {
+				// proximoCodigo();
+				control.salvar(formLocalDados());
+				limpaCampos();
+
+			}
+
+		}
+
+		if (e.getSource() == btnPesquisar) {
+			if(txtCodigo.getText() != null){
+				control.pesquisar(txtCodigo.getText());
+			} else {
+				JOptionPane.showMessageDialog(null, "Informar código para pesquisa", "Alerta",
+				JOptionPane.INFORMATION_MESSAGE);
+			}
+//			int tamanhoCodigo = Integer.parseInt(txtCodigo.getText());
+//			System.out.println(tamanhoCodigo);
+//			if (tamanhoCodigo <= 0) {
+//				JOptionPane.showMessageDialog(null, "Informar código para pesquisa", "Alerta",
+//						JOptionPane.INFORMATION_MESSAGE);
+//			} else {
+//				LocalEntity lcl = control.pesquisar(txtCodigo.getText());
+//				;
+//				if (lcl == null) {
+//					JOptionPane.showMessageDialog(null, "Codigo não encontrado", "Alerta",
+//							JOptionPane.INFORMATION_MESSAGE);
+//					limpaCampos();
+//				} else {
+//					LocalToForm(lcl);
+//				}
+//			}
+
 		}
 		
+
+	}
+
+	public void LocalToForm(LocalEntity lcl) {
+		txtCodigo.setText(String.valueOf(lcl.getCodigo()));
+		txtNome.setText(lcl.getNome());
+		txtEmail.setText(lcl.getEmail());
+		txtTelefone.setText(String.valueOf(lcl.getTelefone()));
+		txtResponsavel.setText(lcl.getResponsavel());
+		txtCep.setText(String.valueOf(lcl.getCep()));
+		txtLogradouro.setText(lcl.getLogradouro());
+		txtNumero.setText(String.valueOf(lcl.getNumero()));
+		txtComplemento.setText(lcl.getComplemento());
+		txtBairro.setText(lcl.getBairro());
+		txtCidade.setText(lcl.getCidade());
+		cmbUf.setSelectedItem(lcl.getUf());
+		rdbtnAtivo.setText(lcl.getAtivo());
+		rdbtnInativo.setText(lcl.getInativo());
+	}
+
+	// public void proximoCodigo() {
+	// try {
+	// LocalDAO lDao = new LocalDAO();
+	// txtCodigo.setText(String.valueOf(lDao.proximoCodigo()));
+	// } catch (SQLException e) {
+	// JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",
+	// JOptionPane.ERROR_MESSAGE);
+	// // e.printStackTrace();
+	// }
+	//
+	// }
+
+	private void limpaCampos() {
+		txtCodigo.setText("");
+		txtNome.setText("");
+		txtEmail.setText("");
+		txtTelefone.setText("");
+		txtResponsavel.setText("");
+		txtCep.setText("");
+		txtLogradouro.setText("");
+		txtNumero.setText("");
+		txtComplemento.setText("");
+		txtBairro.setText("");
+		txtCidade.setText("");
+		cmbUf.setSelectedItem("");
+		rdbtnAtivo.setSelected(false);
+		rdbtnInativo.setSelected(false);
+	}
+
+	private boolean validaCampo() {
+		int tamanhoCodigo = txtCodigo.getText().replace(".", "").replace("-", "").trim().length();
+		if (tamanhoCodigo <= 0 && tamanhoCodigo < 11) {
+			JOptionPane.showMessageDialog(null, "O Código deve ser informado", "Alerta",
+					JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (txtNome.getText().trim().length() <= 0) {
+			JOptionPane.showMessageDialog(null, "Informar nome", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (txtEmail.getText().trim().length() <= 0) {
+			JOptionPane.showMessageDialog(null, "Informar e-mail", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (txtTelefone.getText().trim().length() <= 0) {
+			JOptionPane.showMessageDialog(null, "Informar telefone", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (txtResponsavel.getText().trim().length() <= 0) {
+			JOptionPane.showMessageDialog(null, "Informar responsável", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (txtCep.getText().trim().length() <= 0) {
+			JOptionPane.showMessageDialog(null, "Informar CEP", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (txtLogradouro.getText().trim().length() <= 0) {
+			JOptionPane.showMessageDialog(null, "Informar logradouro", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (txtNumero.getText().trim().length() <= 0) {
+			JOptionPane.showMessageDialog(null, "Informar número", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (txtBairro.getText().trim().length() <= 0) {
+			JOptionPane.showMessageDialog(null, "Informar bairro", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (txtCidade.getText().trim().length() <= 0) {
+			JOptionPane.showMessageDialog(null, "Informar cidade", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (cmbUf.getSelectedItem().toString() == "") {
+			JOptionPane.showMessageDialog(null, "Selecionar UF", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (!rdbtnAtivo.isSelected() && !rdbtnInativo.isSelected()) {
+			JOptionPane.showMessageDialog(null, "Selecione o status", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else {
+			return true;
+		}
+
 	}
 
 }
