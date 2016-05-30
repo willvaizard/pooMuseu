@@ -22,6 +22,7 @@ public class LocalDAO {
 				+ "`Bairro`, `Cidade`, `UF`)"
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = con.prepareStatement(sql);
+
 		
 		ps.setInt(1, local.getCodigo());
 		ps.setString(2, local.getNome());
@@ -45,7 +46,7 @@ public class LocalDAO {
 		
 		String sql ="SELECT Codigo, Nome, Email, Telefone, "
 				+ "Responsavel, CEP, Logradouro, Numero, Complemento, "
-				+ "Bairro, Cidade, UF FROM as dataVisita FROM local";
+				+ "Bairro, Cidade, UF FROM local";
 		
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
