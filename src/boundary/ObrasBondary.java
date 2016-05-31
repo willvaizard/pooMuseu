@@ -258,14 +258,20 @@ public class ObrasBondary implements ActionListener{
 		lblTpObra.setVisible(false);
 		btnIncluirTipoObra.setVisible(false);
 		txtNovoTipoObra.setVisible(false);
+		txtNomeAutor.setText("");
+		
 		
 		lblNovaCategoria.setVisible(false);
 		btnIncluirCategoria.setVisible(false);
 		txtNovaCategoria.setVisible(false);
+		txtNovaCategoria.setText("");
 		
-		txtNovaLocalizacao.setVisible(false);
+		
+		
 		lblNovaLocalizacao.setVisible(false);
 		btnIncluirLocalizacao.setVisible(false);
+		txtNovaLocalizacao.setVisible(false);
+		txtNovaLocalizacao.setText("");
 		
 		
 		
@@ -276,6 +282,7 @@ public class ObrasBondary implements ActionListener{
 		lblTpObra.setVisible(true);
 		btnIncluirTipoObra.setVisible(true);
 		txtNovoTipoObra.setVisible(true);
+		cbTipoObra.setEnabled(false);
 	}
 	
 	public void NovaCategoria(){
