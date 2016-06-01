@@ -22,18 +22,35 @@ public class TableObrasController implements TableModel{
 	}
 
 	public TableObrasController() {
-	populaTabela();
+	getObras();
+	}
+	
+	public void ConsultaPorObra(String nomeObra){
+		
+		ObrasDAO oDao = new ObrasDAO();
+		try {
+			List<Obras> obras= oDao.ConsultaByObras(nomeObra);
+			preencheTable(obras);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public void preencheTable (List<Obras> obras){
+		lista.clear();
+		for(Obras ob : obras){
+			lista.add(ob);
+		}
 	}
 
-	private void populaTabela() {
-		lista.clear(); 
+	private void getObras() {
+		
 		
 		ObrasDAO oDao = new ObrasDAO();
 		try {
 			List<Obras> obras= oDao.getLista();
-			for(Obras ob : obras){
-				lista.add(ob);
-			}
+			preencheTable(obras);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

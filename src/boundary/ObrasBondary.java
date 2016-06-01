@@ -5,6 +5,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -22,9 +25,11 @@ import com.toedter.calendar.JDateChooser;
 
 import controller.CategoriaObrasController;
 import controller.LocalizacaoObrasController;
+import controller.ObrasController;
 import controller.tipoObrasController;
 import entity.CategoriaObras;
 import entity.LocalizacaoObras;
+import entity.Obras;
 import entity.tipoObras;
 
 
@@ -34,13 +39,13 @@ public class ObrasBondary implements ActionListener{
 	private JTextField txtNomeObra;
 	private JTextField txtNomeAutor;
 	private JTextArea txtBiografia;
-	private JDateChooser DataObra;
+	private JDateChooser DataObraChooser;
+	private DateFormat dataObra;
 	private JComboBox<Object> cbTipoObra;
 	private JComboBox<Object> cbCategoria;
 	private JButton btnSalvar;
 	private JButton btnAlterar;
 	private JButton btnDeletar;
-	private JButton btnPesquisarAutor;
 	private JDialog ObraDialog = new JDialog();
 	private JComboBox<Object> cbLocalizacao;
 	private JTextField txtNovoTipoObra;
@@ -60,6 +65,7 @@ public class ObrasBondary implements ActionListener{
 	private List<LocalizacaoObras> listaLocalizacao;
 	private JLabel lblLocalizacao;
 	private TableObrasBoundary obras;
+	private JCheckBox chkDisponibilidade;
 	
 	public ObrasBondary() {
 	//JFrame janela = new JFrame("Manter Obras");
@@ -125,7 +131,7 @@ public class ObrasBondary implements ActionListener{
 		lblNomeAutor.setBounds(20, 80, 110, 14);
 		panelPrincipal.add(lblNomeAutor);
 		txtNomeAutor = new JTextField(60);
-		txtNomeAutor.setBounds(125, 77, 500, 20);
+		txtNomeAutor.setBounds(125, 77, 550, 20);
 		panelPrincipal.add(txtNomeAutor);
 		
 		
@@ -136,13 +142,13 @@ public class ObrasBondary implements ActionListener{
 		txtBiografia.setLineWrap(true);
 		txtBiografia.setBounds(125, 118, 558, 64);
 		panelPrincipal.add(txtBiografia);
-		DataObra = new JDateChooser();
-		DataObra.setBounds(104, 343, 124, 20);
-		panelPrincipal.add(DataObra);
+		DataObraChooser = new JDateChooser();
+		DataObraChooser.setBounds(104, 343, 124, 20);
+		panelPrincipal.add(DataObraChooser);
 		
-		JCheckBox disponibidadade = new JCheckBox("Disponivel para empréstimo");
-		disponibidadade.setBounds(261, 343, 327, 23);
-		panelPrincipal.add(disponibidadade);
+		chkDisponibilidade = new JCheckBox("Disponivel para empréstimo");
+		chkDisponibilidade.setBounds(261, 343, 327, 23);
+		panelPrincipal.add(chkDisponibilidade);
 		JLabel lblTipoObra = new JLabel("Tipo de Obra:");
 		lblTipoObra.setBounds(20, 202, 76, 14);
 		panelPrincipal.add(lblTipoObra);
@@ -172,11 +178,6 @@ public class ObrasBondary implements ActionListener{
 		JLabel lblDtObra = new JLabel("Data da Obra:");
 		lblDtObra.setBounds(18, 347, 110, 14);
 		panelPrincipal.add(lblDtObra);
-		
-		btnPesquisarAutor = new JButton("");
-		btnPesquisarAutor.setBounds(635, 66, 40, 40);
-		btnPesquisarAutor.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/lupa.png")));
-		panelPrincipal.add(btnPesquisarAutor);
 		
 		btnNovaCategoria = new JButton("");
 		btnNovaCategoria.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
@@ -307,7 +308,9 @@ public class ObrasBondary implements ActionListener{
 		btnAlterar.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/edit.png")));
 		btnDeletar = new JButton("Deletar");
 		btnDeletar.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/delete.png")));
-
+		btnSalvar.addActionListener(this);
+		btnAlterar.addActionListener(this);
+		btnDeletar.addActionListener(this);
 		panelBotoes.add(btnSalvar);
 		panelBotoes.add(btnAlterar);
 		panelBotoes.add(btnDeletar);
@@ -417,8 +420,34 @@ public class ObrasBondary implements ActionListener{
 			obras = new TableObrasBoundary();
 		}
 			
+		if(e.getSource() == btnSalvar){
+			ObrasController control = new ObrasController();
+			control.inserir(getDadosDigitados());
+			
+		}
+		
+	}
+	
+	public Obras getDadosDigitados(){
+		Obras ob = new Obras();
+		ob.setNomeObra(txtNomeObra.getText());
+		ob.setNomeAutor(txtNomeAutor.getText());
+		ob.setBiografia(txtBiografia.getText());
+		String data = DataObraChooser.getDate().toString();
+		ob.setDataObra(data);
+		ob.setIdTipoObra(cbTipoObra.getSelectedIndex());
+		ob.setIdCategoria(cbCategoria.getSelectedIndex());
+		ob.setIdLocalizacao(cbLocalizacao.getSelectedIndex());
+		if(chkDisponibilidade.isSelected()){
+			ob.setDisponiblidade("Disponível");
+		}else
+		{
+			ob.setDisponiblidade("Indisponível");
+		}
 		
 		
+		
+		return ob;
 	}
 
 
