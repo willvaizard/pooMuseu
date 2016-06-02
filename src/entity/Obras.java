@@ -1,7 +1,5 @@
 package entity;
 
-import java.util.Date;
-
 public class Obras {
 
 	private int idObras;

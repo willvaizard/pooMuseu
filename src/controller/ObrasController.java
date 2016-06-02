@@ -51,6 +51,23 @@ public class ObrasController implements iObrasController{
 		return null;
 	}
 
+	@Override
+	public Obras  getClienteByID(int idObra) {
+		Obras ob = new Obras();
+		ObrasDAO oDao = new ObrasDAO();
+		try {
+			ob = oDao.getObraPorId(idObra);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+		}
+		return ob;
+	}
+	
+	
+	
+
 
 	
 

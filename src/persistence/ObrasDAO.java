@@ -118,6 +118,38 @@ public class ObrasDAO implements iObrasDAO{
 		
 		ps.close();	
 	}
+
+	@Override
+	public Obras getObraPorId(int id) throws SQLException {
+		
+		String sql =  "SELECT obra_id,obra_sysdata, obra_nome, obra_autor, obra_data,	obra_biografia, "
+				+ "tip.nome as tipoObra, cat.nome as categoria, loc.nome as localizacao, obra_disponibilidade from obra  "
+				+ "inner join obra_tipo_obra tip  ON tip.id=obra.obra_id_tipo  "
+				+ "inner join obra_categoria cat  ON cat.id=obra.obra_id_categoria "
+				+ "inner join obra_localizacao loc  on loc.id=obra.obra_id_localizacao  "
+				+ "where obra_id = ?";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		Obras ob = new Obras();
+		if(rs.next()){
+			
+			ob.setIdCategoria(rs.getInt("obra_id"));
+			ob.setNomeObra(rs.getString("obra_nome"));
+			ob.setNomeAutor(rs.getString("obra_autor"));
+			ob.setDataObra(rs.getString("obra_data"));
+			ob.setBiografia(rs.getString("obra_biografia"));
+			ob.setTipoObra(rs.getString("tipoObra"));
+			ob.setCategoria(rs.getString("categoria"));
+			ob.setLocalizacao(rs.getString("localizacao"));
+			ob.setDisponiblidade(rs.getString("obra_disponibilidade"));
+		}
+		ps.close();
+		rs.close();
+
+		return ob;
+	}
 	
 	
 	

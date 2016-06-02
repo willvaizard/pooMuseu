@@ -5,9 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -17,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -39,8 +39,7 @@ public class ObrasBondary implements ActionListener{
 	private JTextField txtNomeObra;
 	private JTextField txtNomeAutor;
 	private JTextArea txtBiografia;
-	private JDateChooser DataObraChooser;
-	private DateFormat dataObra;
+	private JDateChooser dtObraChooser;
 	private JComboBox<Object> cbTipoObra;
 	private JComboBox<Object> cbCategoria;
 	private JButton btnSalvar;
@@ -140,11 +139,12 @@ public class ObrasBondary implements ActionListener{
 		panelPrincipal.add(lblBiografia);
 		txtBiografia = new JTextArea(5,60);
 		txtBiografia.setLineWrap(true);
+			
 		txtBiografia.setBounds(125, 118, 558, 64);
 		panelPrincipal.add(txtBiografia);
-		DataObraChooser = new JDateChooser();
-		DataObraChooser.setBounds(104, 343, 124, 20);
-		panelPrincipal.add(DataObraChooser);
+		dtObraChooser = new JDateChooser("dd/MM/yyyy", "##/##/#####", '-');
+		dtObraChooser.setBounds(104, 343, 124, 20);
+		panelPrincipal.add(dtObraChooser);
 		
 		chkDisponibilidade = new JCheckBox("Disponivel para empréstimo");
 		chkDisponibilidade.setBounds(261, 343, 327, 23);
@@ -186,10 +186,6 @@ public class ObrasBondary implements ActionListener{
 		btnNovaCategoria.addActionListener(this);
 		
 		btnNovoTipoObra = new JButton("");
-		btnNovoTipoObra.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
 		btnNovoTipoObra.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
 		btnNovoTipoObra.setBounds(261, 193, 59, 33);
 		panelPrincipal.add(btnNovoTipoObra);
@@ -259,7 +255,7 @@ public class ObrasBondary implements ActionListener{
 		lblTpObra.setVisible(false);
 		btnIncluirTipoObra.setVisible(false);
 		txtNovoTipoObra.setVisible(false);
-		txtNomeAutor.setText("");
+		txtNovoTipoObra.setText("");
 		
 		
 		lblNovaCategoria.setVisible(false);
@@ -283,19 +279,21 @@ public class ObrasBondary implements ActionListener{
 		lblTpObra.setVisible(true);
 		btnIncluirTipoObra.setVisible(true);
 		txtNovoTipoObra.setVisible(true);
-		cbTipoObra.setEnabled(false);
+		btnNovoTipoObra.setEnabled(false);
 	}
 	
 	public void NovaCategoria(){
 		lblNovaCategoria.setVisible(true);
 		btnIncluirCategoria.setVisible(true);
 		txtNovaCategoria.setVisible(true);
+		btnNovaCategoria.setEnabled(false);
 	}
 	public void NovaLocalizacao(){
 		
 		lblNovaLocalizacao.setVisible(true);
 		btnIncluirLocalizacao.setVisible(true);
 		txtNovaLocalizacao.setVisible(true);
+		btnNovaLocalizacao.setEnabled(false);
 		
 	}
 	
@@ -390,50 +388,92 @@ public class ObrasBondary implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnNovoTipoObra){
-			NovoTipoObra();
+			
+				NovoTipoObra();	
+			
+			
+			
 		}
 		if(e.getSource() == btnIncluirTipoObra){
+			if(txtNovoTipoObra.getText().length() <1){
+				JOptionPane.showMessageDialog(null, "O campo Tipo de Obra não pode ser vazio");
+			}else{
 			IncluirTipoObra();
+			}
 		
 		}
 		
 		if(e.getSource() == btnNovaCategoria){
+			
 			NovaCategoria();
+			
 		}
 		
 		
 		if(e.getSource() == btnIncluirCategoria){
-			
+			if(txtNovaCategoria.getText().length() <1){
+				JOptionPane.showMessageDialog(null, "O campo Categoria não pode ser vazio");
+			}else{
 			IncluirCategoria();
+			}
 		}
 		
 		if(e.getSource() == btnNovaLocalizacao){
 			NovaLocalizacao();
 		}
 		if(e.getSource() == btnIncluirLocalizacao){
-		
+			if(txtNovaLocalizacao.getText().length() <1){
+				JOptionPane.showMessageDialog(null, "O campo Localização não pode ser vazio");
+			}else{
 			
 			IncluirLocalizacao();
+			}
 		}
 		if(e.getSource() == btnPesquisarObra){
 			
 			obras = new TableObrasBoundary();
+			
+			populaDados(obras.getDadosObras());
+			
 		}
 			
 		if(e.getSource() == btnSalvar){
+			if(ValidacaoCampos()){
 			ObrasController control = new ObrasController();
 			control.inserir(getDadosDigitados());
+			limparCampos();
+			}
 			
 		}
+		if(e.getSource() == btnAlterar){
+			if(ValidacaoCampos()){
+				
+			}
+		}
+	}
+	
+	public void populaDados (Obras ob){
+		txtNomeObra.setText(ob.getNomeObra());
+		txtNomeAutor.setText(ob.getNomeAutor());
+		txtBiografia.setText(ob.getBiografia());
+		cbTipoObra.setSelectedItem(ob.getTipoObra());
+		cbCategoria.setSelectedItem(ob.getCategoria());
+		cbLocalizacao.setSelectedItem(ob.getLocalizacao());
+		if(ob.getDisponiblidade().contains("ind")){
+			chkDisponibilidade.setSelected(false);
+		}else{
+			chkDisponibilidade.setSelected(true);
+		}
+		
 		
 	}
 	
 	public Obras getDadosDigitados(){
+		String data = new SimpleDateFormat("dd/MM/yyyy").format(dtObraChooser.getDate());
 		Obras ob = new Obras();
 		ob.setNomeObra(txtNomeObra.getText());
 		ob.setNomeAutor(txtNomeAutor.getText());
 		ob.setBiografia(txtBiografia.getText());
-		String data = DataObraChooser.getDate().toString();
 		ob.setDataObra(data);
 		ob.setIdTipoObra(cbTipoObra.getSelectedIndex());
 		ob.setIdCategoria(cbCategoria.getSelectedIndex());
@@ -449,6 +489,56 @@ public class ObrasBondary implements ActionListener{
 		
 		return ob;
 	}
+	public void TesteCalendar(){
+		
+	}
+public boolean ValidacaoCampos(){
+	Calendar DataObra = dtObraChooser.getCalendar();
+	System.out.println(dtObraChooser.getCalendar());
+	Calendar hoje= Calendar.getInstance();
+	
+	if(txtNomeObra.getText().length()<1){
+		JOptionPane.showMessageDialog(null, "O Nome da Obra não pode ser vazio");
+		return false;
+	}else if (txtNomeAutor.getText().length()<1){
+		JOptionPane.showMessageDialog(null, "O Nome do Autor não pode ser vazio");
+		return false;
+	}else if (txtBiografia.getText().length()<1){
+		JOptionPane.showMessageDialog(null, "A biografia não pode ser vazia");
+		return false;
+	}else if(cbTipoObra.getSelectedIndex()<1){
+		JOptionPane.showMessageDialog(null, "Você deve escolher um tipo de Obra, caso não encontre, clique no botão verde para adicionar");
+		return false;
+	}
+	else if(cbCategoria.getSelectedIndex()<1){
+		JOptionPane.showMessageDialog(null, "Você deve escolher uma Categoria, caso não encontre, clique no botão verde para adicionar");
+		return false;
+	}else if(cbLocalizacao.getSelectedIndex()<1){
+		JOptionPane.showMessageDialog(null, "Você deve escolher uma Localização, caso não encontre, clique no botão verde para adicionar");
+		return false;
+	}else if(dtObraChooser.getDate() == null){
+		JOptionPane.showMessageDialog(null, "Você deve escolher uma data");
+		return false;
+	}else if(hoje.before(DataObra)){
+		JOptionPane.showMessageDialog(null, "Você deve escolher uma data anterior a de hoje");
+		return false;
+	}
+	
+	
+	return true;
+}
+
+public void limparCampos(){
+	txtNomeAutor.setText("");
+	txtNomeObra.setText("");
+	txtBiografia.setText("");
+	cbCategoria.setSelectedIndex(0);
+	cbTipoObra.setSelectedIndex(0);
+	cbLocalizacao.setSelectedIndex(0);
+	dtObraChooser.cleanup();
+	chkDisponibilidade.setSelected(false);
+	
+}
 
 
 	

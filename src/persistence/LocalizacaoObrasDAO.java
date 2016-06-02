@@ -18,7 +18,7 @@ public class LocalizacaoObrasDAO {
 	
 	public List<LocalizacaoObras> ConsultaLocalizacao () throws SQLException{
 		List<LocalizacaoObras> lista = new ArrayList<LocalizacaoObras>();
-		String sql = "SELECT id, concat(id, ' - ', nome) as nome from obra_localizacao ORDER BY id";
+		String sql = "SELECT id, nome from obra_localizacao ORDER BY id";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()){
