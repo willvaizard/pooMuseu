@@ -18,7 +18,7 @@ public class ObrasTipoObraDAO {
 	
 	public List<tipoObras> ConsultaTipoObra () throws SQLException{
 		List<tipoObras> lista = new ArrayList<tipoObras>();
-		String sql = "SELECT id, concat(id, ' - ', nome) as nome from obra_tipo_obra";
+		String sql = "SELECT id, nome from obra_tipo_obra ORDER BY ID";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()){

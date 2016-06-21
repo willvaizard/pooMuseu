@@ -10,7 +10,7 @@ import entity.CategoriaObras;
 import entity.LocalizacaoObras;
 import entity.tipoObras;
 import persistence.CategoriaObrasDAO;
-import persistence.LocalizacaoObraDAO;
+import persistence.LocalizacaoObrasDAO;
 import persistence.ObrasTipoObraDAO;
 
 public class tipoObrasController {

@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -14,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -22,11 +25,13 @@ import com.toedter.calendar.JDateChooser;
 
 import controller.CategoriaObrasController;
 import controller.LocalizacaoObrasController;
+import controller.ObrasController;
 import controller.tipoObrasController;
 import entity.CategoriaObras;
 import entity.LocalizacaoObras;
 import entity.Obras;
 import entity.tipoObras;
+
 
 public class ObrasBondary implements ActionListener{
 	private JPanel 	 panelObras = new JPanel(new BorderLayout());
@@ -34,13 +39,12 @@ public class ObrasBondary implements ActionListener{
 	private JTextField txtNomeObra;
 	private JTextField txtNomeAutor;
 	private JTextArea txtBiografia;
-	private JDateChooser DataObra;
+	private JDateChooser dtObraChooser;
 	private JComboBox<Object> cbTipoObra;
 	private JComboBox<Object> cbCategoria;
 	private JButton btnSalvar;
 	private JButton btnAlterar;
 	private JButton btnDeletar;
-	private JButton btnPesquisarAutor;
 	private JDialog ObraDialog = new JDialog();
 	private JComboBox<Object> cbLocalizacao;
 	private JTextField txtNovoTipoObra;
@@ -51,16 +55,20 @@ public class ObrasBondary implements ActionListener{
 	private JButton btnIncluirLocalizacao;
 	private JLabel lblNovaCategoria;
 	private JLabel lblTpObra;
-	private JLabel lblLocalizao;
+	private JLabel lblNovaLocalizacao;
 	private JButton btnNovoTipoObra;
 	private JButton btnNovaCategoria;
-	private JButton btnNovaLocalizao;
+	private JButton btnNovaLocalizacao;
 	private List<tipoObras> listaObras;
 	private List<CategoriaObras> listaCat;
-	private List<LocalizacaoObras> listaLocal;
+	private List<LocalizacaoObras> listaLocalizacao;
+	private JLabel lblLocalizacao;
+	private TableObrasBoundary obras;
+	private JCheckBox chkDisponibilidade;
+	private int idObra;
 	
 	public ObrasBondary() {
-	//JFrame janela = new JFrame("Manter Obras");
+
 	
 	
 	panelObras.add(topo(),BorderLayout.NORTH);
@@ -74,14 +82,7 @@ public class ObrasBondary implements ActionListener{
 	ObraDialog.setSize(720, 492);
 	ObraDialog.setLocationRelativeTo(null);
 	ObraDialog.setVisible(true);
-	
-	//janela.setContentPane(panelObras);
-	//janela.setSize(720, 400);
-	//janela.setVisible(true);
-	//
-	//janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	
-		
+
 		 
 		 
 		 
@@ -92,7 +93,7 @@ public class ObrasBondary implements ActionListener{
 	public JComponent topo(){
 		JPanel panelTopo = new JPanel();
 		JLabel titulo = new JLabel("Cadastro de Obras");
-		titulo.setFont(new Font("Paladino", Font.BOLD, 18));
+		titulo.setFont(new Font("Tahoma", Font.BOLD, 18));
 		titulo.setHorizontalAlignment(JLabel.CENTER);
 		panelTopo.add(titulo);
 		
@@ -117,12 +118,13 @@ public class ObrasBondary implements ActionListener{
 		btnPesquisarObra.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/lupa.png")));
 		btnPesquisarObra.setBounds(635, 11, 40, 40);
 		panelPrincipal.add(btnPesquisarObra);
+		btnPesquisarObra.addActionListener(this);
 		
 		JLabel lblNomeAutor = new JLabel("Nome Autor:");
 		lblNomeAutor.setBounds(20, 80, 110, 14);
 		panelPrincipal.add(lblNomeAutor);
 		txtNomeAutor = new JTextField(60);
-		txtNomeAutor.setBounds(125, 77, 500, 20);
+		txtNomeAutor.setBounds(125, 77, 550, 20);
 		panelPrincipal.add(txtNomeAutor);
 		
 		
@@ -131,15 +133,16 @@ public class ObrasBondary implements ActionListener{
 		panelPrincipal.add(lblBiografia);
 		txtBiografia = new JTextArea(5,60);
 		txtBiografia.setLineWrap(true);
+			
 		txtBiografia.setBounds(125, 118, 558, 64);
 		panelPrincipal.add(txtBiografia);
-		DataObra = new JDateChooser();
-		DataObra.setBounds(104, 343, 124, 20);
-		panelPrincipal.add(DataObra);
+		dtObraChooser = new JDateChooser("dd/MM/yyyy", "##/##/#####", '-');
+		dtObraChooser.setBounds(104, 343, 124, 20);
+		panelPrincipal.add(dtObraChooser);
 		
-		JCheckBox disponibidadade = new JCheckBox("Disponivel para empréstimo");
-		disponibidadade.setBounds(261, 343, 327, 23);
-		panelPrincipal.add(disponibidadade);
+		chkDisponibilidade = new JCheckBox("Disponivel para empréstimo");
+		chkDisponibilidade.setBounds(261, 343, 327, 23);
+		panelPrincipal.add(chkDisponibilidade);
 		JLabel lblTipoObra = new JLabel("Tipo de Obra:");
 		lblTipoObra.setBounds(20, 202, 76, 14);
 		panelPrincipal.add(lblTipoObra);
@@ -158,7 +161,7 @@ public class ObrasBondary implements ActionListener{
 		cbCategoria.setBounds(104, 243, 136, 20);
 		panelPrincipal.add(cbCategoria);
 		
-		JLabel lblLocalizacao = new JLabel("Localiza\u00E7\u00E3o:");
+		lblLocalizacao = new JLabel("Localização:");
 		lblLocalizacao.setBounds(20, 290, 92, 14);
 		panelPrincipal.add(lblLocalizacao);
 		
@@ -170,31 +173,24 @@ public class ObrasBondary implements ActionListener{
 		lblDtObra.setBounds(18, 347, 110, 14);
 		panelPrincipal.add(lblDtObra);
 		
-		btnPesquisarAutor = new JButton("");
-		btnPesquisarAutor.setBounds(635, 66, 40, 40);
-		btnPesquisarAutor.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/lupa.png")));
-		panelPrincipal.add(btnPesquisarAutor);
-		
 		btnNovaCategoria = new JButton("");
 		btnNovaCategoria.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
 		btnNovaCategoria.setBounds(261, 237, 59, 33);
 		panelPrincipal.add(btnNovaCategoria);
+		btnNovaCategoria.addActionListener(this);
 		
 		btnNovoTipoObra = new JButton("");
-		btnNovoTipoObra.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
 		btnNovoTipoObra.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
 		btnNovoTipoObra.setBounds(261, 193, 59, 33);
 		panelPrincipal.add(btnNovoTipoObra);
 		
-		btnNovaLocalizao = new JButton("");
-		btnNovaLocalizao.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
-		btnNovaLocalizao.setBounds(261, 281, 59, 33);
-		panelPrincipal.add(btnNovaLocalizao);
+		
+		btnNovaLocalizacao = new JButton("");
+		btnNovaLocalizacao.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/add.png")));
+		btnNovaLocalizacao.setBounds(261, 281, 59, 33);
+		panelPrincipal.add(btnNovaLocalizacao);
 		btnNovaCategoria.addActionListener(this);
-		btnNovaLocalizao.addActionListener(this);
+		btnNovaLocalizacao.addActionListener(this);
 		btnNovoTipoObra.addActionListener(this);
 		
 		lblTpObra = new JLabel("Obra:");
@@ -205,9 +201,9 @@ public class ObrasBondary implements ActionListener{
 		lblNovaCategoria.setBounds(335, 246, 95, 14);
 		panelPrincipal.add(lblNovaCategoria);
 		
-		lblLocalizao = new JLabel("Localização:");
-		lblLocalizao.setBounds(336, 290, 116, 14);
-		panelPrincipal.add(lblLocalizao);
+		lblNovaLocalizacao = new JLabel("Localização:");
+		lblNovaLocalizacao.setBounds(336, 290, 116, 14);
+		panelPrincipal.add(lblNovaLocalizacao);
 		
 		txtNovoTipoObra = new JTextField();
 		txtNovoTipoObra.setBounds(414, 199, 188, 20);
@@ -238,6 +234,8 @@ public class ObrasBondary implements ActionListener{
 		btnIncluirLocalizacao.setBounds(615, 286, 89, 23);
 		panelPrincipal.add(btnIncluirLocalizacao);
 		btnIncluirLocalizacao.addActionListener(this);
+		
+		
 		ocultaBotoes();
 		CarregaCombox ();
 		
@@ -251,14 +249,20 @@ public class ObrasBondary implements ActionListener{
 		lblTpObra.setVisible(false);
 		btnIncluirTipoObra.setVisible(false);
 		txtNovoTipoObra.setVisible(false);
+		txtNovoTipoObra.setText("");
+		
 		
 		lblNovaCategoria.setVisible(false);
 		btnIncluirCategoria.setVisible(false);
 		txtNovaCategoria.setVisible(false);
+		txtNovaCategoria.setText("");
 		
-		txtNovaLocalizacao.setVisible(false);
-		lblLocalizao.setVisible(false);
+		
+		
+		lblNovaLocalizacao.setVisible(false);
 		btnIncluirLocalizacao.setVisible(false);
+		txtNovaLocalizacao.setVisible(false);
+		txtNovaLocalizacao.setText("");
 		
 		
 		
@@ -269,8 +273,23 @@ public class ObrasBondary implements ActionListener{
 		lblTpObra.setVisible(true);
 		btnIncluirTipoObra.setVisible(true);
 		txtNovoTipoObra.setVisible(true);
+		btnNovoTipoObra.setEnabled(false);
 	}
 	
+	public void NovaCategoria(){
+		lblNovaCategoria.setVisible(true);
+		btnIncluirCategoria.setVisible(true);
+		txtNovaCategoria.setVisible(true);
+		btnNovaCategoria.setEnabled(false);
+	}
+	public void NovaLocalizacao(){
+		
+		lblNovaLocalizacao.setVisible(true);
+		btnIncluirLocalizacao.setVisible(true);
+		txtNovaLocalizacao.setVisible(true);
+		btnNovaLocalizacao.setEnabled(false);
+		
+	}
 	
 
 	private JComponent botoes() {
@@ -281,7 +300,9 @@ public class ObrasBondary implements ActionListener{
 		btnAlterar.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/edit.png")));
 		btnDeletar = new JButton("Deletar");
 		btnDeletar.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/delete.png")));
-
+		btnSalvar.addActionListener(this);
+		btnAlterar.addActionListener(this);
+		btnDeletar.addActionListener(this);
 		panelBotoes.add(btnSalvar);
 		panelBotoes.add(btnAlterar);
 		panelBotoes.add(btnDeletar);
@@ -294,23 +315,24 @@ public class ObrasBondary implements ActionListener{
 		tipoObrasController to = new tipoObrasController();
 		CategoriaObrasController co = new CategoriaObrasController();
 		LocalizacaoObrasController lo = new LocalizacaoObrasController();
+		
 		listaObras = to.tipoObra();
 		listaCat = co.Categoria();
-		listaLocal = lo.Localizacao();
+		listaLocalizacao = lo.Localizacao();
 		
 		
 		if(cbCategoria == null || cbCategoria.getSelectedIndex()< 1){	
 			cbCategoria.removeAllItems();
 		cbCategoria.addItem("Selecione");	
 		for(CategoriaObras categoria: listaCat)
-			cbCategoria.addItem(categoria.getNomeCategoria());
+			cbCategoria.addItem(categoria.getCategoria());
 		}
 		
 		if(cbLocalizacao == null || cbLocalizacao.getSelectedIndex() < 1){
 			cbLocalizacao.removeAllItems();
 		cbLocalizacao.addItem("Selecione");
-		for(LocalizacaoObras local: listaLocal)
-			cbLocalizacao.addItem(local.getLocalizacaoObra());
+		for(LocalizacaoObras local: listaLocalizacao)
+			cbLocalizacao.addItem(local.getLocalizacao());
 		}
 		
 		if(cbTipoObra == null || cbTipoObra.getSelectedIndex() < 1){
@@ -323,27 +345,196 @@ public class ObrasBondary implements ActionListener{
 		
 		
 	}
+	public void IncluirTipoObra(){
+		tipoObrasController control = new tipoObrasController();
+		tipoObras to = new tipoObras();
+		to.setObra(txtNovoTipoObra.getText());
+		control.adicionaNovoTipoObra(to);
+		CarregaCombox();
+		cbTipoObra.setSelectedIndex(cbTipoObra.getItemCount()-1);
+		ocultaBotoes();
+		
+	}
+	public void IncluirCategoria(){
+		CategoriaObrasController control = new CategoriaObrasController();
+		CategoriaObras co = new CategoriaObras();
+		co.setCategoria(txtNovaCategoria.getText());
+		control.adicionarNovaCategoria(co);
+		CarregaCombox();
+		cbCategoria.setSelectedIndex(cbCategoria.getItemCount()-1);
+		ocultaBotoes();
+		
+	}
+	private void IncluirLocalizacao() {
+		LocalizacaoObrasController control = new LocalizacaoObrasController();
+		LocalizacaoObras loc = new LocalizacaoObras();
+		loc.setLocalizacao(txtNovaLocalizacao.getText());
+		control.adicionaNovaLocalizacao(loc);
+		listaLocalizacao.clear();
+		CarregaCombox();
+		cbLocalizacao.setSelectedIndex(cbLocalizacao.getItemCount()-1);
+		ocultaBotoes();
+		
+		
+	}
 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnNovoTipoObra){
 			
-			NovoTipoObra();
+				NovoTipoObra();	
+			
+			
 			
 		}
 		if(e.getSource() == btnIncluirTipoObra){
-		tipoObrasController control = new tipoObrasController();
-		tipoObras to = new tipoObras();
-		to.setObra(txtNovoTipoObra.getText());
-		control.adicionaNovoTipoObra(to);
-		CarregaCombox();
-			
-		cbTipoObra.setSelectedIndex(listaObras.size());
-		ocultaBotoes();
-		
-		
+			if(txtNovoTipoObra.getText().length() <1){
+				JOptionPane.showMessageDialog(null, "O campo Tipo de Obra não pode ser vazio");
+			}else{
+			IncluirTipoObra();
+			}
 		
 		}
+		
+		if(e.getSource() == btnNovaCategoria){
+			
+			NovaCategoria();
+			
+		}
+		
+		
+		if(e.getSource() == btnIncluirCategoria){
+			if(txtNovaCategoria.getText().length() <1){
+				JOptionPane.showMessageDialog(null, "O campo Categoria não pode ser vazio");
+			}else{
+			IncluirCategoria();
+			}
+		}
+		
+		if(e.getSource() == btnNovaLocalizacao){
+			NovaLocalizacao();
+		}
+		if(e.getSource() == btnIncluirLocalizacao){
+			if(txtNovaLocalizacao.getText().length() <1){
+				JOptionPane.showMessageDialog(null, "O campo Localização não pode ser vazio");
+			}else{
+			
+			IncluirLocalizacao();
+			}
+		}
+		if(e.getSource() == btnPesquisarObra){
+			
+			obras = new TableObrasBoundary();
+			
+			populaDados(obras.getDadosObras());
+			
+		}
+			
+		if(e.getSource() == btnSalvar){
+			if(ValidacaoCampos()){
+			ObrasController control = new ObrasController();
+			control.inserir(getDadosDigitados());
+			limparCampos();
+			}
+			
+		}
+		if(e.getSource() == btnAlterar){
+			if(ValidacaoCampos()){
+				ObrasController control = new ObrasController();
+				control.alterar(getDadosDigitados());
+			}
+		}
 	}
+	
+	public void populaDados (Obras ob){
+		idObra =ob.getIdObras();
+		txtNomeObra.setText(ob.getNomeObra());
+		txtNomeAutor.setText(ob.getNomeAutor());
+		txtBiografia.setText(ob.getBiografia());
+		cbTipoObra.setSelectedItem(ob.getTipoObra());
+		cbCategoria.setSelectedItem(ob.getCategoria());
+		cbLocalizacao.setSelectedItem(ob.getLocalizacao());
+		if(ob.getDisponiblidade().contains("ind")){
+			chkDisponibilidade.setSelected(false);
+		}else{
+			chkDisponibilidade.setSelected(true);
+		}
+		dtObraChooser.setDate(ob.getDataObra());
+		
+	}
+	
+	public Obras getDadosDigitados(){
+		
+		Obras ob = new Obras();
+		ob.setIdObras(idObra);
+		ob.setNomeObra(txtNomeObra.getText());
+		ob.setNomeAutor(txtNomeAutor.getText());
+		ob.setBiografia(txtBiografia.getText());
+		ob.setDataObra(dtObraChooser.getDate());
+		ob.setIdTipoObra(cbTipoObra.getSelectedIndex());
+		ob.setIdCategoria(cbCategoria.getSelectedIndex());
+		ob.setIdLocalizacao(cbLocalizacao.getSelectedIndex());
+		if(chkDisponibilidade.isSelected()){
+			ob.setDisponiblidade("Disponível");
+		}else
+		{
+			ob.setDisponiblidade("Indisponível");
+		}
+		
+		
+		
+		return ob;
+	}
+
+public boolean ValidacaoCampos(){
+	Calendar DataObra = dtObraChooser.getCalendar();
+	System.out.println(dtObraChooser.getCalendar());
+	Calendar hoje= Calendar.getInstance();
+	
+	if(txtNomeObra.getText().length()<1){
+		JOptionPane.showMessageDialog(null, "O Nome da Obra não pode ser vazio");
+		return false;
+	}else if (txtNomeAutor.getText().length()<1){
+		JOptionPane.showMessageDialog(null, "O Nome do Autor não pode ser vazio");
+		return false;
+	}else if (txtBiografia.getText().length()<1){
+		JOptionPane.showMessageDialog(null, "A biografia não pode ser vazia");
+		return false;
+	}else if(cbTipoObra.getSelectedIndex()<1){
+		JOptionPane.showMessageDialog(null, "Você deve escolher um tipo de Obra, caso não encontre, clique no botão verde para adicionar");
+		return false;
+	}
+	else if(cbCategoria.getSelectedIndex()<1){
+		JOptionPane.showMessageDialog(null, "Você deve escolher uma Categoria, caso não encontre, clique no botão verde para adicionar");
+		return false;
+	}else if(cbLocalizacao.getSelectedIndex()<1){
+		JOptionPane.showMessageDialog(null, "Você deve escolher uma Localização, caso não encontre, clique no botão verde para adicionar");
+		return false;
+	}else if(dtObraChooser.getDate() == null){
+		JOptionPane.showMessageDialog(null, "Você deve escolher uma data");
+		return false;
+	}else if(hoje.before(DataObra)){
+		JOptionPane.showMessageDialog(null, "Você deve escolher uma data anterior a de hoje");
+		return false;
+	}
+	
+	
+	return true;
+}
+
+public void limparCampos(){
+	txtNomeAutor.setText("");
+	txtNomeObra.setText("");
+	txtBiografia.setText("");
+	cbCategoria.setSelectedIndex(0);
+	cbTipoObra.setSelectedIndex(0);
+	cbLocalizacao.setSelectedIndex(0);
+	dtObraChooser.cleanup();
+	chkDisponibilidade.setSelected(false);
+	
+}
+
+
+	
 }
