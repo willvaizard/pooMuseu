@@ -1,7 +1,9 @@
 package controller;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.event.TableModelListener;
@@ -72,7 +74,7 @@ public class TableObrasController implements TableModel{
 		case 1: return String.class;
 		case 2: return String.class;
 		case 3: return String.class;
-		case 4: return String.class;
+		case 4: return Date.class;
 		case 5: return String.class;
 			
 		}

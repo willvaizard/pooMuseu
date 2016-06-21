@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 
 import javax.swing.JOptionPane;
 
@@ -24,7 +25,9 @@ public class ObrasController implements iObrasController{
 		try {
 			iObrasDAO oDao = new ObrasDAO(); 
 					
-			oDao.Inserir(ob);
+		
+				oDao.Inserir(ob);
+		
 			JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -35,7 +38,15 @@ public class ObrasController implements iObrasController{
 
 	@Override
 	public void alterar(Obras ob) {
-		// TODO Auto-generated method stub
+
+		iObrasDAO aDao = new ObrasDAO();
+		try {
+			aDao.update(ob);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+		}
 		
 	}
 

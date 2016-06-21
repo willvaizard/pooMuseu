@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class ObrasDAO implements iObrasDAO{
 		}
 		
 	}
-	
+	@Override
 	public List<Obras> getLista() throws SQLException{
 		List<Obras> lista = new ArrayList<Obras>();
 		String sql = "Select obra_id,obra_sysdata, obra_nome, obra_autor, obra_data,	obra_biografia,"
@@ -44,7 +45,7 @@ public class ObrasDAO implements iObrasDAO{
 			ob.setDataCadastro(rs.getString("obra_sysdata"));
 			ob.setNomeObra(rs.getString("obra_nome"));
 			ob.setNomeAutor(rs.getString("obra_autor"));
-			ob.setDataObra(rs.getString("obra_data"));
+			ob.setDataObra(rs.getDate("obra_data"));
 			ob.setTipoObra(rs.getString("tipoObra"));
 			ob.setCategoria(rs.getString("categoria"));
 			ob.setLocalizacao(rs.getString("localizacao"));
@@ -59,7 +60,7 @@ public class ObrasDAO implements iObrasDAO{
 		
 				
 	}
-	
+	@Override
 	public List<Obras> ConsultaByObras (String nomeObra) throws SQLException{
 		
 		List<Obras> lista = new ArrayList<Obras>();
@@ -82,7 +83,8 @@ public class ObrasDAO implements iObrasDAO{
 			obras.setDataCadastro(rs.getString("obra_sysdata"));
 			obras.setNomeObra(rs.getString("obra_nome"));
 			obras.setNomeAutor(rs.getString("obra_autor"));
-			obras.setDataObra(rs.getString("obra_data"));
+			
+			obras.setDataObra(rs.getDate("obra_data"));
 			obras.setTipoObra(rs.getString("tipoObra"));
 			obras.setCategoria(rs.getString("categoria"));
 			obras.setLocalizacao(rs.getString("localizacao"));
@@ -102,13 +104,17 @@ public class ObrasDAO implements iObrasDAO{
 
 	@Override
 	public void Inserir(Obras ob) throws SQLException {
-		ob.toString();
+		
 		String SQL = "INSERT INTO obra (obra_nome, obra_autor, obra_data, obra_biografia,"
 				+ "obra_id_tipo, obra_id_categoria,obra_id_localizacao,obra_disponibilidade) values (?,?,?,?,?,?,?,?)";
 		PreparedStatement ps = con.prepareStatement(SQL);
 		ps.setString(1, ob.getNomeObra());
 		ps.setString(2, ob.getNomeAutor());
-		ps.setString(3, ob.getDataObra());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
+		
+		java.sql.Date d = new java.sql.Date( ob.getDataObra().getTime());
+
+		ps.setDate(3,   d);
 		ps.setString(4,ob.getBiografia());
 		ps.setInt(5, ob.getIdTipoObra());
 		ps.setInt(6, ob.getIdCategoria());
@@ -134,11 +140,11 @@ public class ObrasDAO implements iObrasDAO{
 		ResultSet rs = ps.executeQuery();
 		Obras ob = new Obras();
 		if(rs.next()){
-			
-			ob.setIdCategoria(rs.getInt("obra_id"));
+			ob.setIdObras(rs.getInt("obra_id"));
+			ob.setNomeAutor(rs.getString("categoria"));
 			ob.setNomeObra(rs.getString("obra_nome"));
 			ob.setNomeAutor(rs.getString("obra_autor"));
-			ob.setDataObra(rs.getString("obra_data"));
+			ob.setDataObra(rs.getDate("obra_data"));
 			ob.setBiografia(rs.getString("obra_biografia"));
 			ob.setTipoObra(rs.getString("tipoObra"));
 			ob.setCategoria(rs.getString("categoria"));
@@ -151,6 +157,31 @@ public class ObrasDAO implements iObrasDAO{
 		return ob;
 	}
 	
+	@Override
+	public void update (Obras ob) throws SQLException{
+		String sql = "UPDATE obra SET  obra_nome = ? , obra_autor  = ? , obra_data  = ? , obra_biografia  = ? ,"
+				+ "obra_id_tipo  = ? , obra_id_categoria = ? ,obra_id_localizacao = ? ,obra_disponibilidade = ? where obra_id = ? ";
+		PreparedStatement ps = con.prepareStatement(sql);
+		
+		ps.setString(1, ob.getNomeObra());
+		ps.setString(2, ob.getNomeAutor());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
+		java.sql.Date d = new java.sql.Date( ob.getDataObra().getTime());
+		ps.setDate(3,   d);
+		ps.setString(4,ob.getBiografia());
+		ps.setInt(5, ob.getIdTipoObra());
+		
+		ps.setInt(6, ob.getIdCategoria());
+		ps.setInt(7, ob.getIdLocalizacao());
+		ps.setString(8, ob.getDisponiblidade());
+		ps.setInt(9,ob.getIdObras());
+		ps.executeUpdate();
+		
+		ps.close();	
+		
+		
+		
+	}
 	
 	
 	

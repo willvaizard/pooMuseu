@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Date;
+
 public class Obras {
 
 	private int idObras;
@@ -13,7 +15,7 @@ public class Obras {
 	private int idCategoria;
 	private String localizacao;
 	private int idLocalizacao;
-	private String dataObra;
+	private Date dataObra;
 	private String disponiblidade;
 	public int getIdObras() {
 		return idObras;
@@ -81,17 +83,19 @@ public class Obras {
 	public void setIdLocalizacao(int idLocalizacao) {
 		this.idLocalizacao = idLocalizacao;
 	}
-	public String getDataObra() {
-		return dataObra;
-	}
-	public void setDataObra(String dataObra) {
-		this.dataObra = dataObra;
-	}
+	
+
 	public String getDisponiblidade() {
 		return disponiblidade;
 	}
 	public void setDisponiblidade(String disponiblidade) {
 		this.disponiblidade = disponiblidade;
+	}
+	public Date getDataObra() {
+		return dataObra;
+	}
+	public void setDataObra(Date dataObra) {
+		this.dataObra = dataObra;
 	}
 	
 	

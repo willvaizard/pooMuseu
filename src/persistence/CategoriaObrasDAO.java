@@ -19,7 +19,7 @@ public class CategoriaObrasDAO {
 	
 	public List<CategoriaObras> ConsultaCategoria () throws SQLException{
 		List<CategoriaObras> lista = new ArrayList<CategoriaObras>();
-		String sql = "SELECT id, nome from obra_categoria ORDER BY ID";
+		String sql = "SELECT id, nome from obra_categoria ORDER BY id";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()){

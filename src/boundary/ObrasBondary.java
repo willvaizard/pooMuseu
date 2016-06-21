@@ -65,9 +65,10 @@ public class ObrasBondary implements ActionListener{
 	private JLabel lblLocalizacao;
 	private TableObrasBoundary obras;
 	private JCheckBox chkDisponibilidade;
+	private int idObra;
 	
 	public ObrasBondary() {
-	//JFrame janela = new JFrame("Manter Obras");
+
 	
 	
 	panelObras.add(topo(),BorderLayout.NORTH);
@@ -81,14 +82,7 @@ public class ObrasBondary implements ActionListener{
 	ObraDialog.setSize(720, 492);
 	ObraDialog.setLocationRelativeTo(null);
 	ObraDialog.setVisible(true);
-	
-	//janela.setContentPane(panelObras);
-	//janela.setSize(720, 400);
-	//janela.setVisible(true);
-	//
-	//janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	
-		
+
 		 
 		 
 		 
@@ -447,12 +441,14 @@ public class ObrasBondary implements ActionListener{
 		}
 		if(e.getSource() == btnAlterar){
 			if(ValidacaoCampos()){
-				
+				ObrasController control = new ObrasController();
+				control.alterar(getDadosDigitados());
 			}
 		}
 	}
 	
 	public void populaDados (Obras ob){
+		idObra =ob.getIdObras();
 		txtNomeObra.setText(ob.getNomeObra());
 		txtNomeAutor.setText(ob.getNomeAutor());
 		txtBiografia.setText(ob.getBiografia());
@@ -464,17 +460,18 @@ public class ObrasBondary implements ActionListener{
 		}else{
 			chkDisponibilidade.setSelected(true);
 		}
-		
+		dtObraChooser.setDate(ob.getDataObra());
 		
 	}
 	
 	public Obras getDadosDigitados(){
-		String data = new SimpleDateFormat("dd/MM/yyyy").format(dtObraChooser.getDate());
+		
 		Obras ob = new Obras();
+		ob.setIdObras(idObra);
 		ob.setNomeObra(txtNomeObra.getText());
 		ob.setNomeAutor(txtNomeAutor.getText());
 		ob.setBiografia(txtBiografia.getText());
-		ob.setDataObra(data);
+		ob.setDataObra(dtObraChooser.getDate());
 		ob.setIdTipoObra(cbTipoObra.getSelectedIndex());
 		ob.setIdCategoria(cbCategoria.getSelectedIndex());
 		ob.setIdLocalizacao(cbLocalizacao.getSelectedIndex());
@@ -489,9 +486,7 @@ public class ObrasBondary implements ActionListener{
 		
 		return ob;
 	}
-	public void TesteCalendar(){
-		
-	}
+
 public boolean ValidacaoCampos(){
 	Calendar DataObra = dtObraChooser.getCalendar();
 	System.out.println(dtObraChooser.getCalendar());
