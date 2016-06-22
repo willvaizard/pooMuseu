@@ -15,7 +15,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -66,7 +65,7 @@ public class TableObrasBoundary implements ActionListener, ListSelectionListener
 		txtpesquisar = new JTextField(30);
 		panelRodape.add(txtpesquisar);
 		txtpesquisar.addActionListener(this);
-		btnPesquisar = new JButton("Pesquisiar");
+		btnPesquisar = new JButton("Pesquisar");
 		panelRodape.add(btnPesquisar);
 		btnPesquisar.addActionListener(this);
 		

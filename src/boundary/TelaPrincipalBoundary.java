@@ -30,7 +30,8 @@ public class TelaPrincipalBoundary implements ActionListener{
 	private CadastroVisitanteBoundary cadvi;
 	private ObrasBondary obras;
 	private LocalBoundary local;
-	
+	private JButton btnExposicoes;
+	private CadastroExposicaoBoundary cadExpo;
 
 	public TelaPrincipalBoundary() {
 		
@@ -93,6 +94,12 @@ public class TelaPrincipalBoundary implements ActionListener{
 		panelCentro.add(btnLocalEmprestimo);
 		btnLocalEmprestimo.addActionListener(this);
 		
+		btnExposicoes = new JButton("Exposições");
+		btnExposicoes.setFont( new Font("Tahoma", Font.BOLD, 16));
+		btnExposicoes.setIcon(new ImageIcon(TelaPrincipalBoundary.class.getResource("/resources/exposicao.jpg")));
+		panelCentro.add(btnExposicoes);
+		btnExposicoes.addActionListener(this);
+		
 		return panelCentro;
 	}
 	
@@ -114,6 +121,9 @@ public void actionPerformed(ActionEvent e) {
 	}
 	if(e.getSource() == btnLocalEmprestimo){
 		local = new LocalBoundary();
+	}
+	if(e.getSource() == btnExposicoes){
+		cadExpo = new CadastroExposicaoBoundary();
 	}
 	
 	
