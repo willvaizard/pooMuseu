@@ -110,7 +110,7 @@ public class ObrasDAO implements iObrasDAO{
 		PreparedStatement ps = con.prepareStatement(SQL);
 		ps.setString(1, ob.getNomeObra());
 		ps.setString(2, ob.getNomeAutor());
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		java.sql.Date d = new java.sql.Date( ob.getDataObra().getTime());
 
