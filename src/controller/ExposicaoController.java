@@ -30,8 +30,12 @@ public class ExposicaoController implements TableModel{
 		// TODO Auto-generated method stub
 		
 	}
-	public void preencheTable (){
-		
+
+	public void preencheTable(List<Exposicao> expo) {
+		lista.clear();
+		for (Exposicao ex : expo) {
+			lista.add(ex);
+		}
 	}
 
 	@Override
