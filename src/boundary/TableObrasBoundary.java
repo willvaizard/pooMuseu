@@ -36,11 +36,11 @@ public class TableObrasBoundary implements ActionListener, ListSelectionListener
 	private JTextField txtpesquisar;
 	private JButton btnPesquisar;
 	private int idObra;
+	private JComboBox<Object> cbTipoPesquisa;
 	public TableObrasBoundary() {
 		panelObras = new JPanel(new BorderLayout());
 		DialogTabelaObras = new JDialog();
-	panelObras.setBackground(Color.WHITE);
-		
+		panelObras.setBackground(Color.WHITE);
 		panelObras.add(topo(), BorderLayout.NORTH);
 		panelObras.add(principal(),BorderLayout.CENTER);
 		panelObras.add(rodape(), BorderLayout.SOUTH);
@@ -59,10 +59,10 @@ public class TableObrasBoundary implements ActionListener, ListSelectionListener
 	private Component rodape() {
 		JPanel panelRodape = new JPanel(new FlowLayout());
 		panelRodape.setBackground(Color.LIGHT_GRAY);
-		JComboBox<Object> tipoPesquisa = new JComboBox<Object>();
-		tipoPesquisa.addItem("Obra");
-		tipoPesquisa.addItem("Autor");
-		panelRodape.add(tipoPesquisa);
+		cbTipoPesquisa = new JComboBox<Object>();
+		cbTipoPesquisa.addItem("Obra");
+		cbTipoPesquisa.addItem("Autor");
+		panelRodape.add(cbTipoPesquisa);
 		txtpesquisar = new JTextField(30);
 		panelRodape.add(txtpesquisar);
 		txtpesquisar.addActionListener(this);
@@ -108,14 +108,24 @@ public class TableObrasBoundary implements ActionListener, ListSelectionListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == txtpesquisar || e.getSource() == btnPesquisar){
-			if(validaCampoVazio()){
-				Obras ob = new Obras();
-				String nomeObra = txtpesquisar.getText().trim();
+			
+			if(cbTipoPesquisa.getSelectedIndex() == 0){
+				String nomeObra = txtpesquisar.getText();
 				control.ConsultaPorObra(nomeObra);
-			}else
-			{
-				JOptionPane.showMessageDialog(null, "O campo de pesquisar não pode ser vazio");
+				tabelaObras.invalidate();
+				tabelaObras.revalidate();
+			}else if(cbTipoPesquisa.getSelectedIndex() == 1){
+				String nomeAutor = txtpesquisar.getText();
+				control.ConsultaPorNomeAutor(nomeAutor);
+				tabelaObras.invalidate();
+				tabelaObras.revalidate();
+				
+				
 			}
+				
+				
+				
+			
 			
 		}
 		

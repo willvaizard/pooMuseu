@@ -28,7 +28,7 @@ public class ObrasDAO implements iObrasDAO{
 	public List<Obras> getLista() throws SQLException{
 		List<Obras> lista = new ArrayList<Obras>();
 		String sql = "Select obra_id,obra_sysdata, obra_nome, obra_autor, obra_data,	obra_biografia,"
-				 +"tip.nome as tipoObra, cat.nome as categoria, loc.nome as localizacao from obra "
+				 +"tip.nome as tipoObra, cat.nome as categoria, loc.nome as localizacao, obra_disponibilidade from obra "
 				 +"inner join obra_tipo_obra tip "
 				 +"ON tip.id=obra.obra_id_tipo "
 				 +"inner join obra_categoria cat "
@@ -49,7 +49,7 @@ public class ObrasDAO implements iObrasDAO{
 			ob.setTipoObra(rs.getString("tipoObra"));
 			ob.setCategoria(rs.getString("categoria"));
 			ob.setLocalizacao(rs.getString("localizacao"));
-			ob.setDisponiblidade("Disponivel");
+			ob.setDisponiblidade(rs.getString("obra_disponibilidade"));
 			lista.add(ob);
 		}
 		ps.close();
@@ -65,7 +65,7 @@ public class ObrasDAO implements iObrasDAO{
 		
 		List<Obras> lista = new ArrayList<Obras>();
 		String sql = "SELECT obra_id,obra_sysdata, obra_nome, obra_autor, obra_data,	obra_biografia, "
-				+ "tip.nome as tipoObra, cat.nome as categoria, loc.nome as localizacao from obra  "
+				+ "tip.nome as tipoObra, cat.nome as categoria, loc.nome as localizacao, obra_disponibilidade from obra  "
 				+ "inner join obra_tipo_obra tip  ON tip.id=obra.obra_id_tipo  "
 				+ "inner join obra_categoria cat  ON cat.id=obra.obra_id_categoria "
 				+ "inner join obra_localizacao loc  on loc.id=obra.obra_id_localizacao  "
@@ -74,7 +74,7 @@ public class ObrasDAO implements iObrasDAO{
 		PreparedStatement ps = con.prepareStatement(sql);
 		
 		
-		ps.setString(1,nomeObra);
+		ps.setString(1,"%"+nomeObra+"%");
 		ResultSet rs = ps.executeQuery();
 		
 		while(rs.next()){
@@ -88,7 +88,7 @@ public class ObrasDAO implements iObrasDAO{
 			obras.setTipoObra(rs.getString("tipoObra"));
 			obras.setCategoria(rs.getString("categoria"));
 			obras.setLocalizacao(rs.getString("localizacao"));
-			obras.setDisponiblidade(rs.getString("disponibilidade"));
+			obras.setDisponiblidade(rs.getString("obra_disponibilidade"));
 			lista.add(obras);
 			
 		}
@@ -129,6 +129,7 @@ public class ObrasDAO implements iObrasDAO{
 	public Obras getObraPorId(int id) throws SQLException {
 		
 		String sql =  "SELECT obra_id,obra_sysdata, obra_nome, obra_autor, obra_data,	obra_biografia, "
+				+ "obra_id_tipo, obra_id_categoria, obra_id_localizacao,"
 				+ "tip.nome as tipoObra, cat.nome as categoria, loc.nome as localizacao, obra_disponibilidade from obra  "
 				+ "inner join obra_tipo_obra tip  ON tip.id=obra.obra_id_tipo  "
 				+ "inner join obra_categoria cat  ON cat.id=obra.obra_id_categoria "
@@ -146,8 +147,11 @@ public class ObrasDAO implements iObrasDAO{
 			ob.setNomeAutor(rs.getString("obra_autor"));
 			ob.setDataObra(rs.getDate("obra_data"));
 			ob.setBiografia(rs.getString("obra_biografia"));
+			ob.setIdTipoObra(rs.getInt("obra_id_tipo"));
 			ob.setTipoObra(rs.getString("tipoObra"));
+			ob.setIdCategoria(rs.getInt("obra_id_categoria"));
 			ob.setCategoria(rs.getString("categoria"));
+			ob.setIdLocalizacao(rs.getInt("obra_id_localizacao"));
 			ob.setLocalizacao(rs.getString("localizacao"));
 			ob.setDisponiblidade(rs.getString("obra_disponibilidade"));
 		}
@@ -182,7 +186,57 @@ public class ObrasDAO implements iObrasDAO{
 		
 		
 	}
+	@Override
+	public void delete(int idObra) throws SQLException {
+		
+		String sql = "DELETE FROM obra where obra_id = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1,idObra);
+		ps.execute();
+		ps.close();
+		
+		
+	}
+	@Override
+	public List<Obras> ConsultaByAutor(String nomeAutor) throws SQLException {
+		List<Obras> lista = new ArrayList<Obras>();
+		String sql = "SELECT obra_id,obra_sysdata, obra_nome, obra_autor, obra_data,	obra_biografia, "
+				+ "tip.nome as tipoObra, cat.nome as categoria, loc.nome as localizacao, obra_disponibilidade from obra  "
+				+ "inner join obra_tipo_obra tip  ON tip.id=obra.obra_id_tipo  "
+				+ "inner join obra_categoria cat  ON cat.id=obra.obra_id_categoria "
+				+ "inner join obra_localizacao loc  on loc.id=obra.obra_id_localizacao  "
+				+ "where obra_autor like ?";
 	
+		PreparedStatement ps = con.prepareStatement(sql);
+		
+		
+		ps.setString(1,"%"+nomeAutor+"%");
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()){
+			Obras obras = new Obras();			
+			obras.setIdObras(rs.getInt("obra_id"));
+			obras.setDataCadastro(rs.getString("obra_sysdata"));
+			obras.setNomeObra(rs.getString("obra_nome"));
+			obras.setNomeAutor(rs.getString("obra_autor"));
+			
+			obras.setDataObra(rs.getDate("obra_data"));
+			obras.setTipoObra(rs.getString("tipoObra"));
+			obras.setCategoria(rs.getString("categoria"));
+			obras.setLocalizacao(rs.getString("localizacao"));
+			obras.setDisponiblidade(rs.getString("obra_disponibilidade"));
+			lista.add(obras);
+			
+		}
+		ps.close();
+		rs.close();
+		
+		
+		return lista;
+		
+		
+		
+	}
 	
 	
 	

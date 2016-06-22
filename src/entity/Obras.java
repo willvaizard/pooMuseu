@@ -97,6 +97,14 @@ public class Obras {
 	public void setDataObra(Date dataObra) {
 		this.dataObra = dataObra;
 	}
+	@Override
+	public String toString() {
+		return "Obras [idObras=" + idObras + ", nomeObra=" + nomeObra + ", dataCadastro=" + dataCadastro
+				+ ", nomeAutor=" + nomeAutor + ", biografia=" + biografia + ", tipoObra=" + tipoObra + ", idTipoObra="
+				+ idTipoObra + ", categoria=" + categoria + ", idCategoria=" + idCategoria + ", localizacao="
+				+ localizacao + ", idLocalizacao=" + idLocalizacao + ", dataObra=" + dataObra + ", disponiblidade="
+				+ disponiblidade + "]";
+	}
 	
 	
 	

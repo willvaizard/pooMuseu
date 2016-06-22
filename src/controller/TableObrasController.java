@@ -39,11 +39,27 @@ public class TableObrasController implements TableModel{
 		}
 		
 	}
+	
+	public void ConsultaPorNomeAutor(String nomeAutor){
+		
+		ObrasDAO oDao = new ObrasDAO();
+		try {
+			List<Obras> obras= oDao.ConsultaByAutor(nomeAutor);
+			preencheTable(obras);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	public void preencheTable (List<Obras> obras){
 		lista.clear();
+		
 		for(Obras ob : obras){
+			
 			lista.add(ob);
 		}
+		
 	}
 
 	private void getObras() {
