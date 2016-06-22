@@ -9,20 +9,25 @@ import java.util.List;
 
 import entity.LocalEntity;
 
-public class LocalDAO {
+public class LocalDAO implements ILocalDAO{
 	Connection con;
 	
-	public LocalDAO() throws SQLException {
-		con = JDBCUtil.getConnection();
+	public LocalDAO() {
+		try {
+			con = JDBCUtil.getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public void InsereLocal (LocalEntity local) throws SQLException{
+	public void InsereLocal (LocalEntity local) {
 		String sql = "INSERT INTO `local` (`Codigo`,`Nome`, `Email`, `Telefone`, "
 				+ "`Responsavel`, `CEP`, `Logradouro`, `Numero`, `Complemento`, "
 				+ "`Bairro`, `Cidade`, `UF`)"
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		try{
 		PreparedStatement ps = con.prepareStatement(sql);
-
 		
 		ps.setInt(1, local.getCodigo());
 		ps.setString(2, local.getNome());
@@ -38,17 +43,17 @@ public class LocalDAO {
 		ps.setString(12, local.getUf());
 		ps.execute();
 		ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public List<LocalEntity> ConsultaLocal() throws SQLException {
-		
+	public List<LocalEntity> ConsultaLocal(String nome) {
 		List<LocalEntity> list = new ArrayList<LocalEntity>();
-		
-		String sql ="SELECT Codigo, Nome, Email, Telefone, "
-				+ "Responsavel, CEP, Logradouro, Numero, Complemento, "
-				+ "Bairro, Cidade, UF FROM local";
-		
+		String sql ="SELECT * FROM local WHERE nome LIKE ?";
+		try{
 		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, "%" +nome +"%");
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()){
 			LocalEntity local = new LocalEntity();
@@ -66,17 +71,21 @@ public class LocalDAO {
 			local.setCidade(rs.getString("Cidade"));
 			local.setUf(rs.getString("UF"));
 			list.add(local);
-		}
+		} 	
 		ps.execute();
 		ps.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return list;
 	}
 	
-	public void AtualizaLocal (LocalEntity local)  throws SQLException{
+	public void AtualizaLocal (LocalEntity local){
 		
 		String sql = "UPDATE local set Nome = ?, Email = ?, Telefone = ?, "
 				+ "Responsavel = ?, CEP = ?, Logradouro = ?, Numero = ?,"
 				+ "Complemento = ?, Bairro = ?, Cidade = ?, UF = ? where Codigo = ?";
+		try{
 		PreparedStatement ps = con.prepareStatement(sql);
 			
 		ps.setString(1, local.getNome());
@@ -93,18 +102,21 @@ public class LocalDAO {
 		ps.setInt(12, local.getCodigo());
 		ps.execute();
 		ps.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
-	public int proximoCodigo() throws SQLException{
-		String sql = "SELECT MAX(codigo) + 1 AS proximo_codigo FROM local";
-		PreparedStatement ps = con.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		if (rs.next()){
-			return rs.getInt("proximo_codigo");
-		} else {
-			return 1;
-		}
-	}
+//	public int proximoCodigo() throws SQLException{
+//		String sql = "SELECT MAX(codigo) + 1 AS proximo_codigo FROM local";
+//		PreparedStatement ps = con.prepareStatement(sql);
+//		ResultSet rs = ps.executeQuery();
+//		if (rs.next()){
+//			return rs.getInt("proximo_codigo");
+//		} else {
+//			return 1;
+//		}
+//	}
 
 }

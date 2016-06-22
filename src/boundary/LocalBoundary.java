@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -198,6 +199,7 @@ public class LocalBoundary extends JFrame implements ActionListener {
 		// btnPesquisar.addActionListener(this);
 		btnPesquisar = new JButton("Pesquisar");
 		btnPesquisar.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/lupa.png")));
+		btnPesquisar.addActionListener(this);
 
 		panelBotoes.add(btnSalvar);
 		panelBotoes.add(btnAlterar);
@@ -208,7 +210,6 @@ public class LocalBoundary extends JFrame implements ActionListener {
 	}
 
 	public LocalEntity formLocalDados() {
-
 		LocalEntity lcl = new LocalEntity();
 		lcl.setCodigo(Integer.parseInt(txtCodigo.getText()));
 		lcl.setNome(txtNome.getText());
@@ -225,51 +226,8 @@ public class LocalBoundary extends JFrame implements ActionListener {
 		lcl.setAtivo(rdbtnAtivo.getText());
 		lcl.setInativo(rdbtnInativo.getText());
 		return lcl;
-
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnSalvar) {
-
-			if (validaCampo()) {
-				// proximoCodigo();
-				control.salvar(formLocalDados());
-				limpaCampos();
-
-			}
-
-		}
-
-		if (e.getSource() == btnPesquisar) {
-			if(txtCodigo.getText() != null){
-				control.pesquisar(txtCodigo.getText());
-			} else {
-				JOptionPane.showMessageDialog(null, "Informar código para pesquisa", "Alerta",
-				JOptionPane.INFORMATION_MESSAGE);
-			}
-//			int tamanhoCodigo = Integer.parseInt(txtCodigo.getText());
-//			System.out.println(tamanhoCodigo);
-//			if (tamanhoCodigo <= 0) {
-//				JOptionPane.showMessageDialog(null, "Informar código para pesquisa", "Alerta",
-//						JOptionPane.INFORMATION_MESSAGE);
-//			} else {
-//				LocalEntity lcl = control.pesquisar(txtCodigo.getText());
-//				;
-//				if (lcl == null) {
-//					JOptionPane.showMessageDialog(null, "Codigo não encontrado", "Alerta",
-//							JOptionPane.INFORMATION_MESSAGE);
-//					limpaCampos();
-//				} else {
-//					LocalToForm(lcl);
-//				}
-//			}
-
-		}
-		
-
-	}
-
+	
 	public void LocalToForm(LocalEntity lcl) {
 		txtCodigo.setText(String.valueOf(lcl.getCodigo()));
 		txtNome.setText(lcl.getNome());
@@ -287,17 +245,32 @@ public class LocalBoundary extends JFrame implements ActionListener {
 		rdbtnInativo.setText(lcl.getInativo());
 	}
 
-	// public void proximoCodigo() {
-	// try {
-	// LocalDAO lDao = new LocalDAO();
-	// txtCodigo.setText(String.valueOf(lDao.proximoCodigo()));
-	// } catch (SQLException e) {
-	// JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",
-	// JOptionPane.ERROR_MESSAGE);
-	// // e.printStackTrace();
-	// }
-	//
-	// }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String cmd = e.getActionCommand();
+		if ("Salvar".equals(cmd)) {
+
+			if (validaCampo()) {
+				// proximoCodigo();
+				control.salvar(formLocalDados());
+				limpaCampos();
+			}
+
+		}
+
+		else if ("Pesquisar".equals(cmd)) {
+			if(txtNome.getText() != null){
+				List<LocalEntity> lista = control.pesquisar(txtNome.getText());
+				if (lista.size()>0){
+					LocalToForm(lista.get(0));
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Informar um nome para pesquisa", "Alerta",
+				JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+	}
+
 
 	private void limpaCampos() {
 		txtCodigo.setText("");
