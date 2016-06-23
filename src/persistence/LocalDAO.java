@@ -102,21 +102,23 @@ public class LocalDAO implements ILocalDAO{
 		ps.setInt(12, local.getCodigo());
 		ps.execute();
 		ps.close();
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
-	
-//	public int proximoCodigo() throws SQLException{
-//		String sql = "SELECT MAX(codigo) + 1 AS proximo_codigo FROM local";
-//		PreparedStatement ps = con.prepareStatement(sql);
-//		ResultSet rs = ps.executeQuery();
-//		if (rs.next()){
-//			return rs.getInt("proximo_codigo");
-//		} else {
-//			return 1;
-//		}
-//	}
+
+	@Override
+	public void ExcluiLocal(int codigo) {
+		String sql = "DELETE FROM local WHERE codigo LIKE ?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, codigo);
+			ps.execute();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 }
