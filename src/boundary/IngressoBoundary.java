@@ -1,6 +1,7 @@
 package boundary;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -11,22 +12,20 @@ import java.awt.event.MouseListener;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import controller.ExposicaoController;
 import controller.IngressoController;
-
 import entity.IngressoEntity;
 
 public class IngressoBoundary extends JFrame implements ActionListener, ListSelectionListener,MouseListener {
@@ -40,7 +39,6 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 	private JLabel txtValor;
 	private JLabel txtDesconto;
 	private JLabel txtTotal;
-	private JButton btnAjustar;
 	private JButton btnNovo;
 	private JButton btnFinalizar;
 	private JDialog IngressoDialog = new JDialog();
@@ -51,7 +49,12 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 	private Long idExposicao;
 	private Double valorIngresso=0.0;
 	private Double valorDesconto=0.0;
-	private double valorTotalAPagar=0.0;
+	private Double valorTotalAPagar=0.0;
+	private ButtonGroup btnGroup;
+	private String exposicao;
+	private JLabel nomeExposicao;
+	private JButton btnVisualizarVendas;
+	private JButton btnFecharCaixa;
 
 	public IngressoBoundary() {
 		panelIngresso.add(topo(), BorderLayout.NORTH);
@@ -69,11 +72,19 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 	}
 
 	public JComponent topo() {
-		JPanel panelTopo = new JPanel();
+		JPanel panelTopo = new JPanel(new GridLayout(2, 1));
 		JLabel titulo = new JLabel("Venda de Ingressos");
-		titulo.setFont(new Font("Paladino", Font.BOLD, 18));
+		titulo.setFont(new Font("Tahoma", Font.BOLD, 35));
 		titulo.setHorizontalAlignment(JLabel.CENTER);
+		
+		nomeExposicao = new JLabel("");
+		nomeExposicao.setFont(new Font("Tahoma", Font.BOLD, 25));
+		nomeExposicao.setForeground(Color.BLUE);
+		
+		nomeExposicao.setHorizontalAlignment(JLabel.CENTER);
+		
 		panelTopo.add(titulo);
+		panelTopo.add(nomeExposicao);
 
 		return panelTopo;
 	}
@@ -155,14 +166,14 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		txtDesconto.setBounds(225, 175, 150, 20);
 		panelCampos.add(txtDesconto);
 
-		JLabel lblTotal = new JLabel("Total a Pagar:");
+		JLabel lblTotal = new JLabel("Total a Pagar:    R$");
 		lblTotal.setBounds(20, 200, 200, 14);
 		panelCampos.add(lblTotal);
 		txtTotal = new JLabel("0.00");
 		txtTotal.setBounds(225, 200, 150, 20);
 		panelCampos.add(txtTotal);
 		
-		ButtonGroup bg = new ButtonGroup();
+		btnGroup = new ButtonGroup();
 		rdbtnIdade5.addActionListener(this);
 		rdbtnIdade60.addActionListener(this);
 		rdbtnEstud.addActionListener(this);
@@ -170,75 +181,74 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		rdbtnOutros.addActionListener(this);
 		
 		
-		bg.add(rdbtnIdade5);
-		bg.add(rdbtnIdade60);
-		bg.add(rdbtnEstud);
-		bg.add(rdbtnProf);
-		bg.add(rdbtnOutros);
-		System.out.println(tabelaExposicaoIngresso.getSelectedRow());
+		btnGroup.add(rdbtnIdade5);
+		btnGroup.add(rdbtnIdade60);
+		btnGroup.add(rdbtnEstud);
+		btnGroup.add(rdbtnProf);
+		btnGroup.add(rdbtnOutros);
 		
 		return panelCampos;
 	}
 	
 	public JComponent botoes (){
-		JPanel panelBotoes = new JPanel( new GridLayout(3,1));
+		JPanel panelBotoes = new JPanel( new GridLayout(4,1));
 		
-		btnAjustar = new JButton("Ajustar Descontos");
-		btnAjustar.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/edit.png")));
-		btnAjustar.addActionListener(this);
+		
 		btnNovo = new JButton("Nova Venda");
 		btnNovo.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/new.png")));
 		btnNovo.addActionListener(this);
 		btnFinalizar = new JButton("Finalizar Venda");
 		btnFinalizar.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/salvar.png")));
 		btnFinalizar.addActionListener(this);
-
-		panelBotoes.add(btnAjustar);
+		btnVisualizarVendas = new JButton("Visualizar Vendas");
+		btnVisualizarVendas.addActionListener(this);
+		btnFecharCaixa = new JButton ("Fechar Caixa");
+		btnFecharCaixa.addActionListener(this);
+		
+		panelBotoes.add(btnFecharCaixa);
+		panelBotoes.add(btnVisualizarVendas);
 		panelBotoes.add(btnNovo);
 		panelBotoes.add(btnFinalizar);
+		
 		return panelBotoes;		
 	}
 	
-	public IngressoEntity formVenda() {
-		IngressoEntity ing = new IngressoEntity();
-		ing.setIdade5(rdbtnIdade5.getText());
-		ing.setIdade60(rdbtnIdade60.getText());
-		ing.setEstudante(rdbtnEstud.getText());
-		ing.setProfessor(rdbtnProf.getText());
-		ing.setOutros(rdbtnOutros.getText());
-		ing.setValor(txtValor.getText());
-		ing.setDesconto(txtDesconto.getText());
-		ing.setTotal(txtTotal.getText());
-		return ing;
-	}
-
-	public void IngressoToForm(IngressoEntity ing) {
-		rdbtnIdade5.setText(ing.getIdade5());
-		rdbtnIdade60.setText(ing.getIdade60());
-		rdbtnEstud.setText(ing.getEstudante());
-		rdbtnProf.setText(ing.getProfessor());
-		rdbtnOutros.setText(ing.getOutros());
-		txtValor.setText(ing.getValor());
-		txtDesconto.setText(String.valueOf(ing.getDesconto()));
-		txtTotal.setText(ing.getTotal());
-	}
+		public IngressoEntity formVenda() {
+			IngressoEntity ing = new IngressoEntity();
+			ing.setObrasexp(exposicao);
+			ing.setIdade5(rdbtnIdade5.isSelected());
+			ing.setIdade60(rdbtnIdade60.isSelected());
+			ing.setEstudante(rdbtnEstud.isSelected());
+			ing.setProfessor(rdbtnProf.isSelected());
+			ing.setOutros(rdbtnOutros.isSelected());
+			ing.setValor(Double.parseDouble(txtValor.getText()));
+			ing.setDesconto(Double.parseDouble(txtDesconto.getText()));
+			ing.setTotal(Double.parseDouble(txtTotal.getText()));
+			return ing;
+		}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
 		if ("Finalizar Venda".equals(cmd)) {
-			ingcontrol.salvar(formVenda());
-			limpaCampos();
-			habilitaMeiaEntrada();
+			if(validaSelecao()){
+				ingcontrol.salvar(formVenda());
+				JOptionPane.showMessageDialog(null, "Venda efetuada com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+				limpaCampos();		
+			}else{
+				JOptionPane.showMessageDialog(null, "Selecione um ingresso para venda", "ERRO", JOptionPane.WARNING_MESSAGE);
+			}
+		
+
 		}
 		else if ("Nova Venda".equals(cmd)){
 			limpaCampos();
-			habilitaMeiaEntrada();
+
 		}
 		
 		if("Menor que 5 anos".equals(cmd) || ("Maior que 60 anos".equals(cmd)))
 		{
-			desabilitaMeiaEntrada();
+
 			CalculaTotalPagar();
 		}
 			
@@ -246,14 +256,24 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 			
 		if(("Outros".equals(cmd)) || ("Estudante".equals(cmd) || ("Professor".equals(cmd)))){
 						
-		
+			
 				CalculaTotalPagar();
+		}
+		if("Fechar Caixa".equals(cmd)){
+			
+			IngressoDialog.dispose();
 		}
 		
 		
 		
 	}
 	
+	private boolean validaSelecao() {
+		if(tabelaExposicaoIngresso.getSelectedRow() != -1)
+		return true;
+		return false;
+	}
+
 	public void CalculaTotalPagar(){
 		if(rdbtnIdade5.isSelected()|| rdbtnIdade60.isSelected()){
 			valorDesconto = valorIngresso;	
@@ -272,17 +292,19 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 
 
 	private void limpaCampos() {
-		rdbtnIdade5.setSelected(false);
-		rdbtnIdade60.setSelected(false);
-		rdbtnEstud.setSelected(false);
-		rdbtnProf.setSelected(false);
-		rdbtnOutros.setSelected(false);
-		txtDesconto.setText("0.00");
-		txtTotal.setText("0.00");
+		
+		
+		
+		btnGroup.clearSelection();
+		
 		valorTotalAPagar = 0.00;
 		valorDesconto=0.00;
 		valorIngresso=0.00;
+		txtDesconto.setText(valorDesconto.toString());
+		txtValor.setText(valorIngresso.toString());
+		txtTotal.setText(valorTotalAPagar.toString());		
 		CalculaTotalPagar();
+		
 		tabelaExposicaoIngresso.clearSelection();
 		
 	}
@@ -293,6 +315,8 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		int linha = tabelaExposicaoIngresso.getSelectedRow();
 		if(linha != -1){
 		idExposicao = (Long) tabelaExposicaoIngresso.getValueAt(linha, 0);
+		exposicao = (String) tabelaExposicaoIngresso.getValueAt(linha, 1);
+		nomeExposicao.setText(exposicao);
 		valorIngresso = (Double) tabelaExposicaoIngresso.getValueAt(linha, 4); 
 		txtValor.setText(""+ valorIngresso);
 		}
@@ -307,19 +331,7 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		
 		
 	}
-	public void desabilitaMeiaEntrada(){
-	rdbtnEstud.setEnabled(false);
-	rdbtnProf.setEnabled(false);
-	rdbtnOutros.setEnabled(false);
-	
-		
-	}
-	public void habilitaMeiaEntrada(){
-		rdbtnEstud.setEnabled(true);
-		rdbtnProf.setEnabled(true);
-		rdbtnOutros.setEnabled(true);	
-		
-	}
+
 	
 	
 
