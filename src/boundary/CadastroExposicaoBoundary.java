@@ -46,7 +46,7 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 	private JButton btnSalvar;
 	private JFormattedTextField txtValor;
 	private JTextField txtNomeExposicao;
-	private int idExposicao;
+	private Long idExposicao;
 	public CadastroExposicaoBoundary() {
 	
 		panelExposicao = new JPanel(new BorderLayout());
@@ -217,7 +217,7 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
 		int linha = tabelaExposicao.getSelectedRow();
-		idExposicao = (int) tabelaExposicao.getValueAt(linha, 0);
+		idExposicao = (Long) tabelaExposicao.getValueAt(linha, 0);
 	}
 
 }
