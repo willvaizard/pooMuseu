@@ -1,13 +1,13 @@
 package controller;
 
-import entity.IngressoEntity;
+import entity.Ingresso;
 import persistence.IIngressoDAO;
 import persistence.IngressoDAO;
 
 public class IngressoController {
 	private IIngressoDAO ingDao = new IngressoDAO(); 
 
-	public void salvar(IngressoEntity ingressoEntity) {
+	public void salvar(Ingresso ingressoEntity) {
 		ingDao.InsereVenda(ingressoEntity);
 	}
 }

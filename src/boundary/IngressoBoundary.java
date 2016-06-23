@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -26,7 +28,7 @@ import javax.swing.event.ListSelectionListener;
 
 import controller.ExposicaoController;
 import controller.IngressoController;
-import entity.IngressoEntity;
+import entity.Ingresso;
 
 public class IngressoBoundary extends JFrame implements ActionListener, ListSelectionListener,MouseListener {
 
@@ -60,7 +62,7 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		panelIngresso.add(topo(), BorderLayout.NORTH);
 		panelIngresso.add(centro(), BorderLayout.CENTER);
 		panelIngresso.add(sul(), BorderLayout.SOUTH);
-
+		
 		IngressoDialog.setModal(true);
 		IngressoDialog.setLocationRelativeTo(null);
 		IngressoDialog.setResizable(false);
@@ -68,6 +70,7 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		IngressoDialog.setSize(720, 700);
 		IngressoDialog.setLocationRelativeTo(null);
 		IngressoDialog.setVisible(true);
+		
 
 	}
 
@@ -205,6 +208,8 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		btnFecharCaixa = new JButton ("Fechar Caixa");
 		btnFecharCaixa.addActionListener(this);
 		
+		
+		
 		panelBotoes.add(btnFecharCaixa);
 		panelBotoes.add(btnVisualizarVendas);
 		panelBotoes.add(btnNovo);
@@ -213,8 +218,8 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		return panelBotoes;		
 	}
 	
-		public IngressoEntity formVenda() {
-			IngressoEntity ing = new IngressoEntity();
+		public Ingresso formVenda() {
+			Ingresso ing = new Ingresso();
 			ing.setObrasexp(exposicao);
 			ing.setIdade5(rdbtnIdade5.isSelected());
 			ing.setIdade60(rdbtnIdade60.isSelected());
@@ -364,5 +369,6 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

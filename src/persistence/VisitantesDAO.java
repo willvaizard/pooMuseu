@@ -6,7 +6,7 @@ import java.util.List;
 import java.sql.SQLException;
 import java.sql.*;
 
-import entity.VisitanteEntity;
+import entity.Visitante;
 
 public class VisitantesDAO implements iGenericDao{
 	Connection  con;
@@ -15,7 +15,7 @@ public class VisitantesDAO implements iGenericDao{
 	}
 	
 	@Override
-	public void InsereVisitante(VisitanteEntity vst) throws SQLException {
+	public void InsereVisitante(Visitante vst) throws SQLException {
 		String sql = "INSERT INTO `visitantes` (`CPF`,`Nacionalidade`, `Idade`, `Sexo`, `GrauInstrucao`, `MeioTransporte`)"
 				+ "VALUES (? , ? , ? , ? , ? , ?)";
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -33,9 +33,9 @@ public class VisitantesDAO implements iGenericDao{
 
 
 	@Override
-	public List<VisitanteEntity> ConsultaVisitantes() throws SQLException {
+	public List<Visitante> ConsultaVisitantes() throws SQLException {
 	
-		List<VisitanteEntity> list = new ArrayList<VisitanteEntity>();
+		List<Visitante> list = new ArrayList<Visitante>();
 		
 		String sql ="SELECT CPF, Nacionalidade, Idade, Sexo, GrauInstrucao, MeioTransporte,"
 				+ " DATE_FORMAT(dataVisita, '%d/%m/%Y') as dataVisita FROM visitantes";
@@ -43,7 +43,7 @@ public class VisitantesDAO implements iGenericDao{
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()){
-			VisitanteEntity visitante = new VisitanteEntity();
+			Visitante visitante = new Visitante();
 			visitante.setCpf(rs.getString("CPF"));
 			visitante.setIdade(rs.getInt("Idade"));
 			visitante.setInstrucao(rs.getString("GrauInstrucao"));
@@ -61,7 +61,7 @@ public class VisitantesDAO implements iGenericDao{
 		return list;
 	}
 
-public void AtualizaCliente (VisitanteEntity vst)  throws SQLException{
+public void AtualizaCliente (Visitante vst)  throws SQLException{
 	
 	String sql = "UPDATE visitantes set Nacionalidade = ?, Idade = ?, Sexo = ?, GrauInstrucao = ?, MeioTransporte = ? where CPF = ?";
 	PreparedStatement ps = con.prepareStatement(sql);

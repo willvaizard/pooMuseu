@@ -1,6 +1,6 @@
 
 package controller;
-import entity.VisitanteEntity;
+import entity.Visitante;
 import persistence.VisitantesDAO;
 
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ import javax.swing.table.TableModel;
 
 
 public class VisitanteController implements TableModel{
-	List<VisitanteEntity> lista = new ArrayList<VisitanteEntity>();
+	List<Visitante> lista = new ArrayList<Visitante>();
 	public VisitanteController() {
 		populaTabela();
 	}
@@ -52,7 +52,7 @@ public class VisitanteController implements TableModel{
 
 
 
-	public void setLista(List<VisitanteEntity> lista) {
+	public void setLista(List<Visitante> lista) {
 		this.lista = lista;
 	}
 
@@ -80,7 +80,7 @@ public class VisitanteController implements TableModel{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		VisitanteEntity v = lista.get(rowIndex);
+		Visitante v = lista.get(rowIndex);
 		switch (columnIndex) {
 		case 0: return v.getCpf();
 		case 1: return v.getNacionalidade();
@@ -115,7 +115,7 @@ public class VisitanteController implements TableModel{
 		
 	}
 	
-	public List<VisitanteEntity> getLista(){
+	public List<Visitante> getLista(){
 		
 
 		
@@ -124,7 +124,7 @@ public class VisitanteController implements TableModel{
 		
 	}
 
-	public void incluiVisitante (VisitanteEntity vst){
+	public void incluiVisitante (Visitante vst){
 		try {
 			VisitantesDAO vDao = new VisitantesDAO();
 			vDao.InsereVisitante(vst);
@@ -143,7 +143,7 @@ public class VisitanteController implements TableModel{
 		
 	}
 	
-	public void atualizaVisitante (VisitanteEntity vst ){
+	public void atualizaVisitante (Visitante vst ){
 		
 		try {
 			VisitantesDAO vDao = new VisitantesDAO();
@@ -163,11 +163,11 @@ public class VisitanteController implements TableModel{
 		
 		
 	}
-	public VisitanteEntity pesquisar (String cpf){
+	public Visitante pesquisar (String cpf){
 		
-		VisitanteEntity visitante= null;
+		Visitante visitante= null;
 		
-		for(VisitanteEntity vst: lista){
+		for(Visitante vst: lista){
 			
 			
 			if(vst.getCpf().contains(cpf)){
@@ -184,7 +184,7 @@ public class VisitanteController implements TableModel{
 		
 	}
 	
-	public void AdicionaNaLista(VisitanteEntity vst){
+	public void AdicionaNaLista(Visitante vst){
 		
 		lista.add(vst);
 		
@@ -195,9 +195,9 @@ public class VisitanteController implements TableModel{
 		VisitantesDAO vDao;
 		try {
 			vDao = new VisitantesDAO();
-			 List<VisitanteEntity> list = vDao.ConsultaVisitantes();
+			 List<Visitante> list = vDao.ConsultaVisitantes();
 			 
-			for (VisitanteEntity V : list){
+			for (Visitante V : list){
 				lista.add(V);
 			}
 		} catch (SQLException e) {

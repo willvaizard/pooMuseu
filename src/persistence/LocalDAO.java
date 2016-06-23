@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.LocalEntity;
+import entity.Local;
 
 public class LocalDAO implements ILocalDAO{
 	Connection con;
@@ -21,7 +21,7 @@ public class LocalDAO implements ILocalDAO{
 		}
 	}
 	
-	public void InsereLocal (LocalEntity local) {
+	public void InsereLocal (Local local) {
 		String sql = "INSERT INTO `local` (`Codigo`,`Nome`, `Email`, `Telefone`, "
 				+ "`Responsavel`, `CEP`, `Logradouro`, `Numero`, `Complemento`, "
 				+ "`Bairro`, `Cidade`, `UF`)"
@@ -48,15 +48,15 @@ public class LocalDAO implements ILocalDAO{
 		}
 	}
 
-	public List<LocalEntity> ConsultaLocal(String nome) {
-		List<LocalEntity> list = new ArrayList<LocalEntity>();
+	public List<Local> ConsultaLocal(String nome) {
+		List<Local> list = new ArrayList<Local>();
 		String sql ="SELECT * FROM local WHERE nome LIKE ?";
 		try{
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, "%" +nome +"%");
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()){
-			LocalEntity local = new LocalEntity();
+			Local local = new Local();
 			
 			local.setCodigo(rs.getInt("Codigo"));
 			local.setNome(rs.getString("Nome"));
@@ -80,7 +80,7 @@ public class LocalDAO implements ILocalDAO{
 		return list;
 	}
 	
-	public void AtualizaLocal (LocalEntity local){
+	public void AtualizaLocal (Local local){
 		
 		String sql = "UPDATE local set Nome = ?, Email = ?, Telefone = ?, "
 				+ "Responsavel = ?, CEP = ?, Logradouro = ?, Numero = ?,"

@@ -31,7 +31,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.text.MaskFormatter;
 
 import controller.VisitanteController;
-import entity.VisitanteEntity;
+import entity.Visitante;
 
 public class CadastroVisitanteBoundary extends JFrame implements ActionListener, ListSelectionListener{
 	
@@ -272,9 +272,9 @@ panelSul.add(botoes(), BorderLayout.PAGE_END);
 		
 		
 	}
-public VisitanteEntity formVisitanteDados(){
+public Visitante formVisitanteDados(){
 	
-	VisitanteEntity vst = new VisitanteEntity();
+	Visitante vst = new Visitante();
 	vst.setCpf(txtCPF.getText());
 	vst.setIdade(Integer.parseInt(txtIdade.getText()));
 	vst.setNacionalidade(cbNacionalidade.getSelectedItem().toString());
@@ -330,7 +330,7 @@ public VisitanteEntity formVisitanteDados(){
 				JOptionPane.showMessageDialog(null, "O Cpf deve ser informado com 11 digitos", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 				
 			}else{
-				VisitanteEntity vst =control.pesquisar(txtCPF.getText());
+				Visitante vst =control.pesquisar(txtCPF.getText());
 				if(vst == null){
 					JOptionPane.showMessageDialog(null, "CPF não encontrado", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 					camposDefault();
@@ -388,7 +388,7 @@ public VisitanteEntity formVisitanteDados(){
 	
 	
 	
-	public void VisitanteToForm(VisitanteEntity vst){
+	public void VisitanteToForm(Visitante vst){
 		txtCPF.setText(String.valueOf(vst.getCpf()));
 		txtIdade.setText(String.valueOf(vst.getIdade()));
 		cbSexo.setSelectedItem(vst.getSexo());
@@ -410,7 +410,7 @@ public VisitanteEntity formVisitanteDados(){
 		camposEditar();
 
 		int linha = tabelaVisitante.getSelectedRow();
-		VisitanteEntity vst = control.getLista().get(linha);
+		Visitante vst = control.getLista().get(linha);
 		VisitanteToForm(vst);
 		
 

@@ -13,8 +13,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import boundary.LocalBoundary;
-import entity.LocalEntity;
-import entity.VisitanteEntity;
+import entity.Local;
+import entity.Visitante;
 import persistence.ILocalDAO;
 import persistence.LocalDAO;
 import persistence.VisitantesDAO;
@@ -42,17 +42,17 @@ public class LocalController {
 //		}
 //	}
 
-	public void salvar(LocalEntity local) {
+	public void salvar(Local local) {
 		lDao.InsereLocal(local);
 		JOptionPane.showMessageDialog(null, "Cadastrado com successo", "Cadastro concluido",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	public List<LocalEntity> pesquisar(String nome) {
+	public List<Local> pesquisar(String nome) {
 			return lDao.ConsultaLocal(nome);
 	}
 	
-	public void alterar(LocalEntity local) {
+	public void alterar(Local local) {
 		lDao.AtualizaLocal(local);
 		JOptionPane.showMessageDialog(null, "Cadastro atualizado com successo", "Sucesso",
 				JOptionPane.INFORMATION_MESSAGE);

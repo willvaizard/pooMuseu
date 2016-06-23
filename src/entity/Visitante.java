@@ -1,6 +1,6 @@
 package entity;
 
-public class VisitanteEntity {
+public class Visitante {
 	private String cpf;
 	private String nacionalidade;
 	private int idade;

@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import entity.IngressoEntity;
+import entity.Ingresso;
 
 public class IngressoDAO implements IIngressoDAO {
 
@@ -20,7 +20,7 @@ Connection con;
 	}
 	
 	@Override
-	public void InsereVenda(IngressoEntity venda) {
+	public void InsereVenda(Ingresso venda) {
 		String sql = "INSERT INTO `venda` (id ,Exposicao , IdadeMenor5 , IdadeMaior60, Estudante, Professor, Outros, ValorInt, Desconto, Total)"
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try{
@@ -43,4 +43,11 @@ Connection con;
 			e.printStackTrace();
 		}		
 	}
+	
+	public void ListaIngressoVendidos (Ingresso vendas){
+		
+	}
+	
+	
+	
 }

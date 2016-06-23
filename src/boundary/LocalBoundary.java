@@ -21,7 +21,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import controller.LocalController;
-import entity.LocalEntity;
+import entity.Local;
 
 public class LocalBoundary extends JFrame implements ActionListener {
 
@@ -214,8 +214,8 @@ public class LocalBoundary extends JFrame implements ActionListener {
 		return panelBotoes;
 	}
 
-	public LocalEntity formLocalDados() {
-		LocalEntity lcl = new LocalEntity();
+	public Local formLocalDados() {
+		Local lcl = new Local();
 		lcl.setCodigo(Integer.parseInt(txtCodigo.getText()));
 		lcl.setNome(txtNome.getText());
 		lcl.setEmail(txtEmail.getText());
@@ -233,7 +233,7 @@ public class LocalBoundary extends JFrame implements ActionListener {
 		return lcl;
 	}
 	
-	public void LocalToForm(LocalEntity lcl) {
+	public void LocalToForm(Local lcl) {
 		txtCodigo.setText(String.valueOf(lcl.getCodigo()));
 		txtNome.setText(lcl.getNome());
 		txtEmail.setText(lcl.getEmail());
@@ -261,7 +261,7 @@ public class LocalBoundary extends JFrame implements ActionListener {
 
 		else if ("Pesquisar".equals(cmd)) {
 			if(txtNome.getText() != null){
-				List<LocalEntity> lista = control.pesquisar(txtNome.getText());
+				List<Local> lista = control.pesquisar(txtNome.getText());
 				if (lista.size()>0){
 					LocalToForm(lista.get(0));
 				}

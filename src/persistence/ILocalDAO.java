@@ -3,12 +3,12 @@ package persistence;
 import java.sql.SQLException;
 import java.util.List;
 
-import entity.LocalEntity;
+import entity.Local;
 
 public interface ILocalDAO {
-	public void InsereLocal (LocalEntity local);
-	public List<LocalEntity> ConsultaLocal(String nome);
-	public void AtualizaLocal (LocalEntity local);
+	public void InsereLocal (Local local);
+	public List<Local> ConsultaLocal(String nome);
+	public void AtualizaLocal (Local local);
 	public void ExcluiLocal (int codigo);
 	
 

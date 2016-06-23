@@ -2,7 +2,7 @@ package entity;
 
 import javax.swing.JRadioButton;
 
-public class LocalEntity {
+public class Local {
 	private int codigo;
 	private String nome;
 	private String email;

@@ -3,11 +3,11 @@ package persistence;
 import java.sql.SQLException;
 import java.util.List;
 
-import entity.VisitanteEntity;
+import entity.Visitante;
 
 public interface iGenericDao {
-	public void InsereVisitante (VisitanteEntity vst) throws SQLException;
-	public List<VisitanteEntity> ConsultaVisitantes() throws SQLException;
+	public void InsereVisitante (Visitante vst) throws SQLException;
+	public List<Visitante> ConsultaVisitantes() throws SQLException;
 	
 
 }

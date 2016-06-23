@@ -1,6 +1,6 @@
 package entity;
 
-public class IngressoEntity {
+public class Ingresso {
 
 	private int id;
 	private String obrasexp;
