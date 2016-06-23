@@ -5,11 +5,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import entity.Exposicao;
 import persistence.ExposicaoDAO;
+import persistence.iExposicaoDAO;
 
 public class ExposicaoController implements TableModel{
 	private List<Exposicao> lista = new ArrayList<Exposicao>();
@@ -26,6 +28,17 @@ public class ExposicaoController implements TableModel{
 	public ExposicaoController() {
 
 		getExposicao();
+	}
+	
+	public void insereNovaExposicao(Exposicao exp){
+		try {
+			iExposicaoDAO eDao = new ExposicaoDAO();
+			eDao.insert(exp);
+			JOptionPane.showMessageDialog(null, "Nova exposição Cadastrada com sucesso");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	public void getExposicao() {

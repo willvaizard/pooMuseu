@@ -42,6 +42,7 @@ public class LocalBoundary extends JFrame implements ActionListener {
 	private JButton btnAlterar;
 	private JButton btnRemover;
 	private JButton btnPesquisar;
+	private JButton btnNovo;
 	private JDialog LocalDialog = new JDialog();
 
 	private JRadioButton rdbtnAtivo;
@@ -196,15 +197,19 @@ public class LocalBoundary extends JFrame implements ActionListener {
 		btnAlterar.addActionListener(this);
 		btnRemover = new JButton("Remover");
 		btnRemover.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/delete.png")));
-		// btnPesquisar.addActionListener(this);
+		btnRemover.addActionListener(this);
 		btnPesquisar = new JButton("Pesquisar");
 		btnPesquisar.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/lupa.png")));
 		btnPesquisar.addActionListener(this);
+		btnNovo = new JButton("Novo");
+		btnNovo.setIcon(new ImageIcon(ObrasBondary.class.getResource("/resources/new.png")));
+		btnNovo.addActionListener(this);
 
 		panelBotoes.add(btnSalvar);
 		panelBotoes.add(btnAlterar);
 		panelBotoes.add(btnRemover);
 		panelBotoes.add(btnPesquisar);
+		panelBotoes.add(btnNovo);
 
 		return panelBotoes;
 	}
@@ -241,21 +246,17 @@ public class LocalBoundary extends JFrame implements ActionListener {
 		txtBairro.setText(lcl.getBairro());
 		txtCidade.setText(lcl.getCidade());
 		cmbUf.setSelectedItem(lcl.getUf());
-		rdbtnAtivo.setText(lcl.getAtivo());
-		rdbtnInativo.setText(lcl.getInativo());
+		rdbtnAtivo.setSelected(lcl.equals(rdbtnAtivo));
+		rdbtnInativo.setSelected(lcl.equals(rdbtnInativo));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
 		if ("Salvar".equals(cmd)) {
-
 			if (validaCampo()) {
-				// proximoCodigo();
 				control.salvar(formLocalDados());
-				limpaCampos();
 			}
-
 		}
 
 		else if ("Pesquisar".equals(cmd)) {
@@ -268,6 +269,21 @@ public class LocalBoundary extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Informar um nome para pesquisa", "Alerta",
 				JOptionPane.INFORMATION_MESSAGE);
 			}
+		} else if ("Alterar".equals(cmd)) {
+
+			if (validaCampo()) {
+				control.alterar(formLocalDados());
+			}
+
+		} else if ("Remover".equals(cmd)) {
+
+			if (validaCampo()) {
+				control.excluir(Integer.parseInt(txtCodigo.getText()));
+				control.pesquisar("");
+				limpaCampos();
+			}
+		} else if ("Novo".equals(cmd)){
+			limpaCampos();
 		}
 	}
 

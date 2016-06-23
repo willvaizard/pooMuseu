@@ -44,33 +44,28 @@ public class LocalController {
 
 	public void salvar(LocalEntity local) {
 		lDao.InsereLocal(local);
+		JOptionPane.showMessageDialog(null, "Cadastrado com successo", "Cadastro concluido",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public List<LocalEntity> pesquisar(String nome) {
 			return lDao.ConsultaLocal(nome);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	public void remover(LocalEntity local) {
-
-
-	}
-
 	public void alterar(LocalEntity local) {
-			lDao.AtualizaLocal(local);
-			JOptionPane.showMessageDialog(null, "Cadastro atualizado com successo", "Sucesso",
-					JOptionPane.INFORMATION_MESSAGE);
+		lDao.AtualizaLocal(local);
+		JOptionPane.showMessageDialog(null, "Cadastro atualizado com successo", "Sucesso",
+				JOptionPane.INFORMATION_MESSAGE);
 
 	}
+	
+	public void excluir(int codigo) {
+		lDao.ExcluiLocal(codigo);	
+		JOptionPane.showMessageDialog(null, "Cadastro excluído", "Confirmação",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+
+
 
 
 

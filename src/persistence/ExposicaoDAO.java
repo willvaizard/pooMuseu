@@ -27,8 +27,11 @@ public class ExposicaoDAO implements iExposicaoDAO{
 		java.sql.Date d2 = new java.sql.Date(exp.getDataFim().getTime());
 		ps.setDate(3, d2);
 		ps.setDouble(4, exp.getValor());
+		ps.executeUpdate();
 		ps.close();
 
+		
+		
 		
 	}
 
