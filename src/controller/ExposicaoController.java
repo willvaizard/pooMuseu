@@ -31,8 +31,7 @@ public class ExposicaoController implements TableModel{
 	public void getExposicao() {
 		try {
 			ExposicaoDAO eDao = new ExposicaoDAO();
-			
-			preencheTable(expo);
+			preencheTable(eDao.getTodasExposicoes());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
