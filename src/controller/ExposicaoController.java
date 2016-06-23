@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import entity.Exposicao;
+import persistence.ExposicaoDAO;
 
 public class ExposicaoController implements TableModel{
 	private List<Exposicao> lista = new ArrayList<Exposicao>();
@@ -27,7 +29,14 @@ public class ExposicaoController implements TableModel{
 	}
 
 	public void getExposicao() {
-		// TODO Auto-generated method stub
+		try {
+			ExposicaoDAO eDao = new ExposicaoDAO();
+			
+			preencheTable(expo);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
