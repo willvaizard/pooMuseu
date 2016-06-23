@@ -65,7 +65,7 @@ public class ObrasController implements iObrasController {
 	}
 
 	@Override
-	public Obras getClienteByID(int idObra) {
+	public Obras getObrasByID(int idObra) {
 		Obras ob = new Obras();
 		ObrasDAO oDao = new ObrasDAO();
 		try {

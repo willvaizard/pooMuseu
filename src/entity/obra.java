@@ -2,13 +2,20 @@ package entity;
 
 import java.util.Date;
 
-public class Exposicao {
+public class obra {
 	private long exposicao_id;
 	private String exposicao_nome;
 	private double valor;
 	private Date dataInicio;
 	private Date dataFim;
+	private int idObra;
 	
+	public int getIdObra() {
+		return idObra;
+	}
+	public void setIdObra(int idObra) {
+		this.idObra = idObra;
+	}
 	public long getExposicao_id() {
 		return exposicao_id;
 	}

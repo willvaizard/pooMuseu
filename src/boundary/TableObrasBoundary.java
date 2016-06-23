@@ -135,7 +135,7 @@ public class TableObrasBoundary implements ActionListener, ListSelectionListener
 		
 		ObrasController control = new ObrasController();
 		Obras ob = new Obras();
-		ob = control.getClienteByID(idObra);
+		ob = control.getObrasByID(idObra);
 				
 		return ob;	
 	}

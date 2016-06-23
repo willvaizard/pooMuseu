@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.Exposicao;
+import entity.obra;
 
 public class ExposicaoDAO implements iExposicaoDAO{
 	private Connection con;
@@ -16,7 +16,7 @@ public class ExposicaoDAO implements iExposicaoDAO{
 	con = JDBCUtil.getConnection();
 	}
 	@Override
-	public void insert (Exposicao exp) throws SQLException{
+	public void insert (obra exp) throws SQLException{
 		
 		String sql = "INSERT INTO exposicao (exposicao_nome, data_inicio, data_fim, valor) values (?,?,?,?)";
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -36,13 +36,13 @@ public class ExposicaoDAO implements iExposicaoDAO{
 	}
 
 	@Override
-	public List<Exposicao> getTodasExposicoes() throws SQLException {
-		List<Exposicao> listaExp = new ArrayList<Exposicao>();
+	public List<obra> getTodasExposicoes() throws SQLException {
+		List<obra> listaExp = new ArrayList<obra>();
 		String sql = "SELECT * FROM exposicao";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()){
-			Exposicao exp = new Exposicao();
+			obra exp = new obra();
 			exp.setExposicao_id(rs.getInt("exposicao_id"));
 			exp.setExposicao_nome(rs.getString("exposicao_nome"));
 			exp.setDataInicio(rs.getDate("data_inicio"));

@@ -31,7 +31,7 @@ import javax.swing.text.NumberFormatter;
 import com.toedter.calendar.JDateChooser;
 
 import controller.ExposicaoController;
-import entity.Exposicao;
+import entity.obra;
 
 public class CadastroExposicaoBoundary implements ActionListener, MouseListener, ListSelectionListener{
 	private JPanel panelExposicao;
@@ -175,8 +175,8 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
         return new DefaultFormatterFactory ( formatter ) ;
 	}
 
-	private Exposicao getDadosDigitados() {
-		Exposicao exp = new Exposicao();
+	private obra getDadosDigitados() {
+		obra exp = new obra();
 		exp.setExposicao_nome(txtNomeExposicao.getText());
 		exp.setDataInicio(dtExposicaoChooserInicio.getDate());
 		exp.setDataFim(dtExposicaoChooserFinal.getDate());
