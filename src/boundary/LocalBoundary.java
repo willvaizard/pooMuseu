@@ -62,7 +62,6 @@ public class LocalBoundary extends JFrame implements ActionListener {
 		LocalDialog.setSize(720, 400);
 		LocalDialog.setLocationRelativeTo(null);
 		LocalDialog.setVisible(true);
-		System.out.println("Teste");
 
 	}
 
