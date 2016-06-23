@@ -32,6 +32,7 @@ public class TelaPrincipalBoundary implements ActionListener{
 	private LocalBoundary local;
 	private JButton btnExposicoes;
 	private CadastroExposicaoBoundary cadExpo;
+	private IngressoBoundary ingresso;
 
 	public TelaPrincipalBoundary() {
 		
@@ -86,6 +87,7 @@ public class TelaPrincipalBoundary implements ActionListener{
 		btnIngressos.setIcon(new ImageIcon(
 				TelaPrincipalBoundary.class.getResource("/resources/ingressos.png")));
 		panelCentro.add(btnIngressos);
+		btnIngressos.addActionListener(this);
 		
 		btnLocalEmprestimo = new JButton("Empréstimo");
 		btnLocalEmprestimo.setFont( new Font("Tahoma", Font.BOLD, 16));
@@ -118,6 +120,9 @@ public void actionPerformed(ActionEvent e) {
 	}
 	if(e.getSource() == btnObras){
 		obras = new ObrasBondary();
+	}
+	if(e.getSource() == btnIngressos){
+		ingresso = new IngressoBoundary();
 	}
 	if(e.getSource() == btnLocalEmprestimo){
 		local = new LocalBoundary();

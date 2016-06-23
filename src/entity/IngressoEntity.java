@@ -2,6 +2,7 @@ package entity;
 
 public class IngressoEntity {
 
+	private int id;
 	private String obrasexp;
 	private String idade5;
 	private String idade60;
@@ -12,7 +13,12 @@ public class IngressoEntity {
 	private String desconto;
 	private String total;
 	
-	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getObrasexp() {
 		return obrasexp;
 	}
