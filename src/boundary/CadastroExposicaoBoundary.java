@@ -18,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -45,6 +46,7 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 	private JButton btnSalvar;
 	private JFormattedTextField txtValor;
 	private JTextField txtNomeExposicao;
+	private int idExposicao;
 	public CadastroExposicaoBoundary() {
 	
 		panelExposicao = new JPanel(new BorderLayout());
@@ -134,17 +136,39 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 		
 		return botoes;
 	}
+	public boolean validaDados(){
+	if(txtNomeExposicao.getText().length()<1)
+	return false;
+	else if(txtValor.getText().length()<1)
+		return false;
+	else if(dtExposicaoChooserFinal == null)
+		return false;
+	else if(dtExposicaoChooserInicio == null)
+		return false;
+	else 
+		return true;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(btnSalvar == e.getSource()){
+			if(validaDados()){
+				
 			control.insereNovaExposicao(getDadosDigitados());
+			tabelaExposicao.invalidate();
+			tabelaExposicao.revalidate();
+			}else{
+				JOptionPane.showMessageDialog(null, "Deve ser preenchidos todos os campos");
+			}
+			
 		}
 		
 	}
 	
+	
+	
 	public DefaultFormatterFactory mascara(){
-		DecimalFormat dFormat = new DecimalFormat("#,###,###.00") ;
+		DecimalFormat dFormat = new DecimalFormat("#####.00") ;
         NumberFormatter formatter = new NumberFormatter(dFormat) ;
         formatter.setFormat(dFormat) ;
         formatter.setAllowsInvalid(false) ; 
@@ -156,7 +180,7 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 		exp.setExposicao_nome(txtNomeExposicao.getText());
 		exp.setDataInicio(dtExposicaoChooserInicio.getDate());
 		exp.setDataFim(dtExposicaoChooserFinal.getDate());
-		exp.setValor(Double.parseDouble(txtValor.getText()));
+		exp.setValor(Double.parseDouble(txtValor.getText().replace(",",".")));
 		return exp;
 	}
 
@@ -192,8 +216,8 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		int linha = tabelaExposicao.getSelectedRow();
+		idExposicao = (int) tabelaExposicao.getValueAt(linha, 0);
 	}
 
 }
