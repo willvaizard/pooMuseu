@@ -57,6 +57,8 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 	private JLabel nomeExposicao;
 	private JButton btnVisualizarVendas;
 	private JButton btnFecharCaixa;
+	private TableIngressosVendidosBoundary ingVendidos;
+	private FechamentoCaixaBoundary fechaCaixa;
 
 	public IngressoBoundary() {
 		panelIngresso.add(topo(), BorderLayout.NORTH);
@@ -67,7 +69,7 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		IngressoDialog.setLocationRelativeTo(null);
 		IngressoDialog.setResizable(false);
 		IngressoDialog.setContentPane(panelIngresso);
-		IngressoDialog.setSize(720, 700);
+		IngressoDialog.setSize(670, 700);
 		IngressoDialog.setLocationRelativeTo(null);
 		IngressoDialog.setVisible(true);
 		
@@ -120,7 +122,7 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 	public JComponent Campos(){
 		JPanel panelCampos = new JPanel(new GridLayout(8,1));
 					
-		JLabel lblIdade5 = new JLabel("Idade:");
+		JLabel lblIdade5 = new JLabel("Idade: (Gratuito)");
 		lblIdade5.setBounds(20, 75, 110, 14);
 		panelCampos.add(lblIdade5);
 		rdbtnIdade5 = new JRadioButton("Menor que 5 anos");
@@ -134,7 +136,7 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		rdbtnIdade60.setBounds(375, 75, 150, 14);
 		panelCampos.add(rdbtnIdade60);
 
-		JLabel lblTipoVisit = new JLabel("Tipo de Visitante:");
+		JLabel lblTipoVisit = new JLabel("Tipo Visitante: (Meia Entrada)");
 		lblTipoVisit.setBounds(20, 100, 110, 14);
 		panelCampos.add(lblTipoVisit);
 		rdbtnEstud = new JRadioButton("Estudante");
@@ -268,6 +270,14 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 			
 			IngressoDialog.dispose();
 		}
+		if("Visualizar Vendas".equals(cmd)){
+			ingVendidos = new TableIngressosVendidosBoundary();
+		}
+		if("Fechar Caixa".equals(cmd)){
+			
+			fechaCaixa = new FechamentoCaixaBoundary();
+		}
+		
 		
 		
 		

@@ -147,7 +147,7 @@ public class VisitanteController implements TableModel{
 		
 		try {
 			VisitantesDAO vDao = new VisitantesDAO();
-			vDao.AtualizaCliente(vst);
+			vDao.AtualizaVisitante(vst);
 			lista.remove(vst);
 			new VisitanteController();
 			

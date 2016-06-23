@@ -9,7 +9,7 @@ import java.util.List;
 
 import entity.Ingresso;
 
-public class IngressoDAO implements IIngressoDAO {
+public class IngressoDAO implements iIngressoDAO {
 
 Connection con;
 	
@@ -64,6 +64,30 @@ Connection con;
 		
 		return listaVendidos;
 		
+	}
+	
+	public Ingresso getValoresTotal(){
+		Ingresso ing = new Ingresso();
+		String sql = "select sum(desconto) as TotalDesconto,sum(total)ValorTotalVendidos,count(total) as TotalVendidos from venda";
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				ing.setTotalVendidos(rs.getInt("TotalVendidos"));
+				ing.setValorTotalDesconto(rs.getDouble("TotalDesconto"));
+				ing.setValorTotalIngressosVendidos(rs.getDouble("ValorTotalVendidos"));
+				
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return ing;
 	}
 	
 	

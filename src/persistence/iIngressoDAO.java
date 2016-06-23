@@ -6,7 +6,7 @@ import java.util.List;
 import entity.Ingresso;
 
 
-public interface IIngressoDAO {
+public interface iIngressoDAO {
 	public void InsereVenda (Ingresso venda);
 	
 

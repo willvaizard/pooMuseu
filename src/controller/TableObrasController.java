@@ -14,13 +14,7 @@ import persistence.ObrasDAO;
 public class TableObrasController implements TableModel{
 	private List<Obras> lista = new ArrayList<Obras>();
 	
-	public List<Obras> getLista() {
-		return lista;
-	}
-
-	public void setLista(List<Obras> lista) {
-		this.lista = lista;
-	}
+	
 
 	public TableObrasController() {
 	getObras();

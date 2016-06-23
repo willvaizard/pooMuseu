@@ -12,7 +12,29 @@ public class Ingresso {
 	private Double valor;
 	private Double desconto;
 	private Double total;
+	private int TotalVendidos;
+	private Double ValorTotalDesconto;
+	private Double ValorTotalIngressosVendidos;
 	
+	
+	public int getTotalVendidos() {
+		return TotalVendidos;
+	}
+	public void setTotalVendidos(int totalVendidos) {
+		TotalVendidos = totalVendidos;
+	}
+	public Double getValorTotalDesconto() {
+		return ValorTotalDesconto;
+	}
+	public void setValorTotalDesconto(Double valorTotalDesconto) {
+		ValorTotalDesconto = valorTotalDesconto;
+	}
+	public Double getValorTotalIngressosVendidos() {
+		return ValorTotalIngressosVendidos;
+	}
+	public void setValorTotalIngressosVendidos(Double valorTotalIngressosVendidos) {
+		ValorTotalIngressosVendidos = valorTotalIngressosVendidos;
+	}
 	public int getId() {
 		return id;
 	}

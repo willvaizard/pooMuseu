@@ -61,7 +61,7 @@ public class VisitantesDAO implements iGenericDao{
 		return list;
 	}
 
-public void AtualizaCliente (Visitante vst)  throws SQLException{
+public void AtualizaVisitante (Visitante vst)  throws SQLException{
 	
 	String sql = "UPDATE visitantes set Nacionalidade = ?, Idade = ?, Sexo = ?, GrauInstrucao = ?, MeioTransporte = ? where CPF = ?";
 	PreparedStatement ps = con.prepareStatement(sql);
