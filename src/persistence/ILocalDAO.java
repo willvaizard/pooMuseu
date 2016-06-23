@@ -9,6 +9,7 @@ public interface ILocalDAO {
 	public void InsereLocal (LocalEntity local);
 	public List<LocalEntity> ConsultaLocal(String nome);
 	public void AtualizaLocal (LocalEntity local);
+	public void ExcluiLocal (int codigo);
 	
 
 }

@@ -93,8 +93,8 @@ public class LocalEntity {
 	public String getAtivo() {
 		return Ativo;
 	}
-	public void setAtivo(String ativo) {
-		Ativo = ativo;
+	public void setAtivo(String b) {
+		Ativo = b;
 	}
 	public String getInativo() {
 		return Inativo;
