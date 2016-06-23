@@ -273,7 +273,6 @@ public class LocalBoundary extends JFrame implements ActionListener {
 
 			if (validaCampo()) {
 				control.alterar(formLocalDados());
-				//limpaCampos();
 			}
 
 		} else if ("Remover".equals(cmd)) {
