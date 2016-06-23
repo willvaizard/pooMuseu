@@ -243,7 +243,7 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 				JOptionPane.showMessageDialog(null, "Venda efetuada com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 				limpaCampos();		
 			}else{
-				JOptionPane.showMessageDialog(null, "Selecione um ingresso para venda", "ERRO", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Selecione uma exposição para venda", "ERRO", JOptionPane.WARNING_MESSAGE);
 			}
 		
 
