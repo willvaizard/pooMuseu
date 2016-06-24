@@ -184,11 +184,7 @@ public class VisitanteController implements TableModel{
 		
 	}
 	
-	public void AdicionaNaLista(Visitante vst){
-		
-		lista.add(vst);
-		
-	}
+	
 	
 	public void populaTabela(){
 		lista.clear();

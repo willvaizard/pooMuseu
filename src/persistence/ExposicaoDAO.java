@@ -67,6 +67,35 @@ public class ExposicaoDAO implements iExposicaoDAO{
 		
 	}
 	
+	public int deleteObras (Obras ob) throws SQLException{
+		String sql = "DELETE FROM exposicao_obra WHERE exposicao_id = ? and obra_id = ?";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setLong(1, ob.getExposicao_id());
+		ps.setLong(2, ob.getIdObras());
+		int affects = ps.executeUpdate();
+		
+		
+		return affects;
+	}
+	
+	public long ultimoID(){
+		long idMax=0;
+		String sql = "SELECT MAX(exposicao_id) as idMax from exposicao";
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()){
+				idMax = rs.getInt("idMax");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return idMax;
+	}
 	
 
 }

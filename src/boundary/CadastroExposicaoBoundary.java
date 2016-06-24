@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 
 import javax.swing.JButton;
@@ -47,6 +48,7 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 	private JFormattedTextField txtValor;
 	private JTextField txtNomeExposicao;
 	private Long idExposicao;
+	private String nomeExposicao;
 	public CadastroExposicaoBoundary() {
 	
 		panelExposicao = new JPanel(new BorderLayout());
@@ -136,6 +138,14 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 		
 		return botoes;
 	}
+	
+	public void limpaCampo(){
+		txtNomeExposicao.setText("");
+		txtValor.setText("");
+		dtExposicaoChooserInicio.setDate(null);
+		dtExposicaoChooserFinal.setDate(null);
+		
+	}
 	public boolean validaDados(){
 	if(txtNomeExposicao.getText().length()<1)
 	return false;
@@ -145,7 +155,11 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 		return false;
 	else if(dtExposicaoChooserInicio == null)
 		return false;
-	else 
+	else if(dtExposicaoChooserFinal.getDate().getTime() <= dtExposicaoChooserInicio.getDate().getTime()){
+		JOptionPane.showMessageDialog(null, "A data final não pode ser menor que a data inicial");
+		return false;
+	}
+		
 		return true;
 	}
 
@@ -155,8 +169,21 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 			if(validaDados()){
 				
 			control.insereNovaExposicao(getDadosDigitados());
+			
+			
+			try {
+				idExposicao=control.getUltimoID();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			tabelaExposicao.invalidate();
 			tabelaExposicao.revalidate();
+			
+			nomeExposicao = txtNomeExposicao.getText();
+			
+			String[] exposicao = {idExposicao.toString(),nomeExposicao };
+			ExposicaoAdicionaObraBoundary expAdd = new ExposicaoAdicionaObraBoundary(exposicao);
 			}else{
 				JOptionPane.showMessageDialog(null, "Deve ser preenchidos todos os campos");
 			}
@@ -187,7 +214,8 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getClickCount() == 2){
-			ExposicaoAdicionaObraBoundary expAdd = new ExposicaoAdicionaObraBoundary(idExposicao);
+			String[] exposicao = {idExposicao.toString(),nomeExposicao };
+			ExposicaoAdicionaObraBoundary expAdd = new ExposicaoAdicionaObraBoundary(exposicao);
 		}
 		
 	}
@@ -220,6 +248,8 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 	public void valueChanged(ListSelectionEvent arg0) {
 		int linha = tabelaExposicao.getSelectedRow();
 		idExposicao = (Long) tabelaExposicao.getValueAt(linha, 0);
+		nomeExposicao = (String) tabelaExposicao.getValueAt(linha, 1);
+		
 	}
 
 }

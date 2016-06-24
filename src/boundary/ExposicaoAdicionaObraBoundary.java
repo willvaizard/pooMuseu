@@ -15,12 +15,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import controller.ExposicaoAdicionaObraController;
 import controller.ExposicaoController;
 import entity.Obras;
 
-public class ExposicaoAdicionaObraBoundary  implements ActionListener{
+public class ExposicaoAdicionaObraBoundary  implements ActionListener, ListSelectionListener{
 	private JDialog addObraDialog;
 	private JPanel panelAddObra;
 	private JTable tabelaObrasExposicao;
@@ -28,13 +31,21 @@ public class ExposicaoAdicionaObraBoundary  implements ActionListener{
 	private JScrollPane scrollObExp;
 	private TableObrasBoundary obrasView;
 	private long idExposicao;
-	public ExposicaoAdicionaObraBoundary(long idExposicao){
-		this.idExposicao=idExposicao;
+	private String nomeExposicao;
+	private JButton btnPesquisarObras;
+	private JButton btnRemoverObra;
+	private int idObras;
+	private ExposicaoController control;
+	
+	public ExposicaoAdicionaObraBoundary(String[] exposicao){
+		this.idExposicao=Integer.parseInt(exposicao[0]);
+		this.nomeExposicao =exposicao[1];
+		
 		expControl = new ExposicaoAdicionaObraController(idExposicao);
 		panelAddObra = new JPanel(new BorderLayout());
 		addObraDialog = new JDialog();
 		
-		panelAddObra.add(Norte(), BorderLayout.CENTER);
+		panelAddObra.add(Norte(), BorderLayout.NORTH);
 		panelAddObra.add(TabelaObrasDaExposicao(), BorderLayout.CENTER);
 		panelAddObra.add(Sul(), BorderLayout.SOUTH);
 		addObraDialog.setModal(true);
@@ -45,26 +56,39 @@ public class ExposicaoAdicionaObraBoundary  implements ActionListener{
 		addObraDialog.setLocationRelativeTo(null);
 		addObraDialog.setVisible(true);
 	}
-	private Component Norte() {
+	private JComponent Norte() {
 		JPanel panelNorte = new JPanel();
-		JLabel titulo = new JLabel("Exposição: Inclusão de Obras");
-		titulo.setFont(new Font("Tahoma", Font.BOLD, 35));
+		JLabel titulo = new JLabel("Exposição "+nomeExposicao+": Inclusão de Obras");
+		titulo.setFont(new Font("Tahoma", Font.BOLD, 18));
+		panelNorte.add(titulo);
 		return panelNorte;
 	}
-	private Component Sul() {
+	private JComponent Sul() {
 		JPanel panelSul = new JPanel();
-		JButton btnPesquisarObras = new JButton("Pesquisar Obra");
+		btnPesquisarObras = new JButton("Pesquisar Obra");
 		btnPesquisarObras.setIcon(new ImageIcon(ObrasBondary.class.getResource(""
 				+ "/resources/lupa.png")));
 		btnPesquisarObras.addActionListener(this);
-		panelSul.add(btnPesquisarObras);
 		
+		btnRemoverObra = new JButton("Remover Obra");
+		btnRemoverObra.setToolTipText("Remove Obras da exposicao");
+		btnRemoverObra.setIcon(new ImageIcon(ObrasBondary.class.getResource(""
+				+ "/resources/delete.png")));
+		btnRemoverObra.addActionListener(this);
+		btnRemoverObra.setEnabled(false);
+		
+		
+		
+		panelSul.add(btnPesquisarObras);
+		panelSul.add(btnRemoverObra);
 		
 		return panelSul;
 	}
 	private JComponent TabelaObrasDaExposicao() {
 		JPanel panelTable = new JPanel(new GridLayout(1,1));
 		tabelaObrasExposicao = new JTable(expControl);
+		tabelaObrasExposicao.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tabelaObrasExposicao.getSelectionModel().addListSelectionListener(this);
 		scrollObExp = new JScrollPane();
 		scrollObExp.getViewport().add(tabelaObrasExposicao);
 		panelTable.add(scrollObExp);
@@ -73,16 +97,44 @@ public class ExposicaoAdicionaObraBoundary  implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == btnPesquisarObras ){
 		obrasView = new TableObrasBoundary();
 		Obras ob = obrasView.getDadosObras();
 		ob.setExposicao_id(idExposicao);
-		ExposicaoController control = new ExposicaoController();
+		control = new ExposicaoController();
 		control.insereNovaObraEmExposicao(ob);
-		tabelaObrasExposicao.invalidate();
-		tabelaObrasExposicao.revalidate();
+		AtualizaTabela();
+		
+		}
+		if(e.getSource() == btnRemoverObra){
+			Obras obras = new Obras();
+			obras.setIdObras(idObras);
+			obras.setExposicao_id(idExposicao);
+			
+			ExposicaoController crtExp =new ExposicaoController();
+			crtExp.removeObraDaExposicao(obras);
+			AtualizaTabela();
+		}
 		
 		
 	}
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		int linha = tabelaObrasExposicao.getSelectedRow();
+		 idObras = (int) (tabelaObrasExposicao.getValueAt(linha, 0));
+		 btnRemoverObra.setEnabled(true);
+		
+	}
+	
+	public void AtualizaTabela(){
+		expControl.getListaObraExposicao();
+		tabelaObrasExposicao.invalidate();
+		tabelaObrasExposicao.revalidate();
+	}
+	
+	
+	
+	
 	
 	
 

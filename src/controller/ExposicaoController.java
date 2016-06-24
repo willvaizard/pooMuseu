@@ -35,11 +35,29 @@ public class ExposicaoController implements TableModel{
 			ExposicaoDAO eDao = new ExposicaoDAO();
 			eDao.incluiObraExposicao(ob);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}
+	public void removeObraDaExposicao(Obras ob){
+		try {
+			ExposicaoDAO eDao = new ExposicaoDAO();
+			int affects = eDao.deleteObras(ob);
+			JOptionPane.showMessageDialog(null, "Exclusão concluída, linhas afetadas"+affects);
+			
+		} catch (SQLException e) {
+        
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+	public long getUltimoID() throws SQLException{
+		ExposicaoDAO eDao = new ExposicaoDAO();
+		
+		return eDao.ultimoID();
+	}
+	
 	public void insereNovaExposicao(obraExposicao exp){
 		try {
 			iExposicaoDAO eDao = new ExposicaoDAO();
@@ -56,8 +74,8 @@ public class ExposicaoController implements TableModel{
 			ExposicaoDAO eDao = new ExposicaoDAO();
 			preencheTable(eDao.getTodasExposicoes());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}

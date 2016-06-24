@@ -17,7 +17,7 @@ public class ExposicaoAdicionaObraController implements TableModel{
 	this.idExposicao=idExposicao;
 	getListaObraExposicao();
 	}
-	private void getListaObraExposicao() {
+	public void getListaObraExposicao() {
 		
 		ObrasDAO oDao = new ObrasDAO();
 		try {
