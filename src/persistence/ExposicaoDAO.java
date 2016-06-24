@@ -8,7 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.obra;
+import entity.Obras;
+import entity.obraExposicao;
 
 public class ExposicaoDAO implements iExposicaoDAO{
 	private Connection con;
@@ -16,7 +17,7 @@ public class ExposicaoDAO implements iExposicaoDAO{
 	con = JDBCUtil.getConnection();
 	}
 	@Override
-	public void insert (obra exp) throws SQLException{
+	public void insert (obraExposicao exp) throws SQLException{
 		
 		String sql = "INSERT INTO exposicao (exposicao_nome, data_inicio, data_fim, valor) values (?,?,?,?)";
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -36,13 +37,13 @@ public class ExposicaoDAO implements iExposicaoDAO{
 	}
 
 	@Override
-	public List<obra> getTodasExposicoes() throws SQLException {
-		List<obra> listaExp = new ArrayList<obra>();
+	public List<obraExposicao> getTodasExposicoes() throws SQLException {
+		List<obraExposicao> listaExp = new ArrayList<obraExposicao>();
 		String sql = "SELECT * FROM exposicao";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()){
-			obra exp = new obra();
+			obraExposicao exp = new obraExposicao();
 			exp.setExposicao_id(rs.getInt("exposicao_id"));
 			exp.setExposicao_nome(rs.getString("exposicao_nome"));
 			exp.setDataInicio(rs.getDate("data_inicio"));
@@ -50,7 +51,22 @@ public class ExposicaoDAO implements iExposicaoDAO{
 			exp.setValor(rs.getDouble("valor"));
 			listaExp.add(exp);
 		}
+		ps.close();
+		rs.close();
 		return listaExp;
 	}
+	
+	public void incluiObraExposicao (Obras ob) throws SQLException{
+		String sql = "INSERT INTO exposicao_obra values(?,?)";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setLong(1, ob.getExposicao_id());
+		ps.setLong(2, ob.getIdObras());
+		ps.executeUpdate();
+		
+		ps.close();
+		
+	}
+	
+	
 
 }

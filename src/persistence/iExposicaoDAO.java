@@ -3,9 +3,9 @@ package persistence;
 import java.sql.SQLException;
 import java.util.List;
 
-import entity.obra;
+import entity.obraExposicao;
 
 public interface iExposicaoDAO {
-	void insert (obra exp) throws SQLException;
-	List<obra> getTodasExposicoes() throws SQLException;
+	void insert (obraExposicao exp) throws SQLException;
+	List<obraExposicao> getTodasExposicoes() throws SQLException;
 }

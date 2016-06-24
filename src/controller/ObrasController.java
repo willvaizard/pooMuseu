@@ -69,7 +69,7 @@ public class ObrasController implements iObrasController {
 		Obras ob = new Obras();
 		ObrasDAO oDao = new ObrasDAO();
 		try {
-			ob = oDao.getObraPorId(idObra);
+			ob = oDao.ConsultaObraById(idObra);
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

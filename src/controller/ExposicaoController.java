@@ -9,19 +9,20 @@ import javax.swing.JOptionPane;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import entity.obra;
+import entity.Obras;
+import entity.obraExposicao;
 import persistence.ExposicaoDAO;
 import persistence.iExposicaoDAO;
 
 public class ExposicaoController implements TableModel{
-	private List<obra> lista = new ArrayList<obra>();
+	private List<obraExposicao> lista = new ArrayList<obraExposicao>();
 	
 	
-	public List<obra> getLista() {
+	public List<obraExposicao> getLista() {
 		return lista;
 	}
 
-	public void setLista(List<obra> lista) {
+	public void setLista(List<obraExposicao> lista) {
 		this.lista = lista;
 	}
 
@@ -29,8 +30,17 @@ public class ExposicaoController implements TableModel{
 
 		getExposicao();
 	}
-	
-	public void insereNovaExposicao(obra exp){
+	public void insereNovaObraEmExposicao(Obras ob){
+		try {
+			ExposicaoDAO eDao = new ExposicaoDAO();
+			eDao.incluiObraExposicao(ob);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public void insereNovaExposicao(obraExposicao exp){
 		try {
 			iExposicaoDAO eDao = new ExposicaoDAO();
 			eDao.insert(exp);
@@ -52,9 +62,9 @@ public class ExposicaoController implements TableModel{
 		
 	}
 
-	public void preencheTable(List<obra> expo) {
+	public void preencheTable(List<obraExposicao> expo) {
 		lista.clear();
-		for (obra ex : expo) {
+		for (obraExposicao ex : expo) {
 			lista.add(ex);
 		}
 	}
@@ -99,7 +109,7 @@ public class ExposicaoController implements TableModel{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		obra ex = lista.get(rowIndex);
+		obraExposicao ex = lista.get(rowIndex);
 		switch (columnIndex) {
 		case 0: return ex.getExposicao_id();
 		case 1: return ex.getExposicao_nome();

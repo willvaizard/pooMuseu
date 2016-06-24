@@ -17,6 +17,14 @@ public class Obras {
 	private int idLocalizacao;
 	private Date dataObra;
 	private String disponiblidade;
+	private long exposicao_id;
+	
+	public long getExposicao_id() {
+		return exposicao_id;
+	}
+	public void setExposicao_id(long exposicao_id) {
+		this.exposicao_id = exposicao_id;
+	}
 	public int getIdObras() {
 		return idObras;
 	}

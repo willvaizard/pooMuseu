@@ -59,6 +59,7 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 	private JButton btnFecharCaixa;
 	private TableIngressosVendidosBoundary ingVendidos;
 	private FechamentoCaixaBoundary fechaCaixa;
+	
 
 	public IngressoBoundary() {
 		panelIngresso.add(topo(), BorderLayout.NORTH);
@@ -77,8 +78,12 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 	}
 
 	public JComponent topo() {
-		JPanel panelTopo = new JPanel(new GridLayout(2, 1));
+		JPanel panelTopo = new JPanel(new GridLayout(3, 1));
 		JLabel titulo = new JLabel("Venda de Ingressos");
+		JLabel info = new JLabel("Dê dois Clicks para visualizar as obras da Exposição") ;
+		info.setForeground(Color.RED);
+		info.setFont(new Font("Tahoma", Font.BOLD, 16));
+		info.setHorizontalAlignment(JLabel.CENTER);
 		titulo.setFont(new Font("Tahoma", Font.BOLD, 35));
 		titulo.setHorizontalAlignment(JLabel.CENTER);
 		
@@ -89,7 +94,9 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 		nomeExposicao.setHorizontalAlignment(JLabel.CENTER);
 		
 		panelTopo.add(titulo);
+		
 		panelTopo.add(nomeExposicao);
+		panelTopo.add(info);
 
 		return panelTopo;
 	}
@@ -352,7 +359,10 @@ public class IngressoBoundary extends JFrame implements ActionListener, ListSele
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getClickCount() == 2){
+			
+			ObrasExposicaoBoundary oe = new ObrasExposicaoBoundary(idExposicao);
+		}
 		
 	}
 

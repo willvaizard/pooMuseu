@@ -126,7 +126,7 @@ public class ObrasDAO implements iObrasDAO{
 	}
 
 	@Override
-	public Obras getObraPorId(int id) throws SQLException {
+	public Obras ConsultaObraById(int id) throws SQLException {
 		
 		String sql =  "SELECT obra_id,obra_sysdata, obra_nome, obra_autor, obra_data,	obra_biografia, "
 				+ "obra_id_tipo, obra_id_categoria, obra_id_localizacao,"
@@ -160,6 +160,35 @@ public class ObrasDAO implements iObrasDAO{
 
 		return ob;
 	}
+	
+	@Override
+	public List<Obras> ConsultaObrasDaExposicao(long idExposicao) throws SQLException {
+		List<Obras> list = new ArrayList<Obras>();
+		String sql =  "SELECT ob.obra_id, ob.obra_nome, ob.obra_autor, loc.nome as localizacao from exposicao_obra "+
+				" inner join obra ob"+ 
+                " on ob.obra_id = exposicao_obra.obra_id"+
+				" inner join obra_localizacao loc"+  
+                " on loc.id=ob.obra_id_localizacao"+ 
+				" where exposicao_id = ?";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setLong(1, idExposicao);
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()){
+			Obras ob = new Obras();
+			ob.setIdObras(rs.getInt("obra_id"));
+			ob.setNomeObra(rs.getString("obra_nome"));
+			ob.setNomeAutor(rs.getString("obra_autor"));
+			ob.setLocalizacao(rs.getString("localizacao"));
+			list.add(ob);
+		}
+		ps.close();
+		rs.close();
+
+		return list;
+	}
+
 	
 	@Override
 	public void update (Obras ob) throws SQLException{
