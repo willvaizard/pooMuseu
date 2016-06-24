@@ -63,10 +63,24 @@ public class ExposicaoController implements TableModel{
 			iExposicaoDAO eDao = new ExposicaoDAO();
 			eDao.insert(exp);
 			JOptionPane.showMessageDialog(null, "Nova exposição Cadastrada com sucesso");
+			getExposicao();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	public void AtualizaNovaExposicao(Exposicao exp){
+		try {
+			iExposicaoDAO eDao = new ExposicaoDAO();
+			eDao.updateExposicao(exp);
+			JOptionPane.showMessageDialog(null, "Exposição atualizada com sucesso");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+		}
+		getExposicao();
 	}
 
 	public void getExposicao() {

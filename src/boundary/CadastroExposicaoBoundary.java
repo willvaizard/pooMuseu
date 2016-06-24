@@ -2,7 +2,6 @@ package boundary;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -13,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -42,8 +42,7 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 	private JScrollPane panTableExposicao;
 	private JDateChooser dtExposicaoChooserInicio;
 	private JDateChooser dtExposicaoChooserFinal;
-	private JButton btnCancelar;
-	private JButton btnAlterar;
+		private JButton btnAlterar;
 	private JButton btnSalvar;
 	private JFormattedTextField txtValor;
 	private JTextField txtNomeExposicao;
@@ -121,14 +120,15 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 		txtValor.setPreferredSize(dtExposicaoChooserInicio.getPreferredSize());
 		linha2.add(txtValor);
 		
-		btnCancelar = new JButton("Cancelar");
+		
 		btnAlterar = new JButton("Alterar");
 		btnSalvar = new JButton("Salvar");
-		btnCancelar.addActionListener(this);
+		
 		btnAlterar.addActionListener(this);
 		btnSalvar.addActionListener(this);
+		btnAlterar.setEnabled(false);
 		
-		linha2.add(btnCancelar);
+		
 		linha2.add(btnAlterar);
 		linha2.add(btnSalvar);
 		
@@ -141,9 +141,13 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 	
 	public void limpaCampo(){
 		txtNomeExposicao.setText("");
-		txtValor.setText("");
+		txtValor.setValue(null);;
 		dtExposicaoChooserInicio.setDate(null);
 		dtExposicaoChooserFinal.setDate(null);
+		btnAlterar.setEnabled(false);
+		idExposicao=null;
+		
+		
 		
 	}
 	public boolean validaDados(){
@@ -177,8 +181,8 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			tabelaExposicao.invalidate();
-			tabelaExposicao.revalidate();
+			atualizaTabela();
+			limpaCampo();
 			
 			nomeExposicao = txtNomeExposicao.getText();
 			
@@ -188,6 +192,13 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 				JOptionPane.showMessageDialog(null, "Deve ser preenchidos todos os campos");
 			}
 			
+		}
+		if(e.getSource() == btnAlterar){
+			if(validaDados()){
+				control.AtualizaNovaExposicao(getDadosDigitados());
+				atualizaTabela();
+				limpaCampo();
+			}
 		}
 		
 	}
@@ -204,11 +215,21 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 
 	private Exposicao getDadosDigitados() {
 		Exposicao exp = new Exposicao();
+		
+		if(idExposicao != null){
+		exp.setExposicao_id(idExposicao);
+		}
 		exp.setExposicao_nome(txtNomeExposicao.getText());
 		exp.setDataInicio(dtExposicaoChooserInicio.getDate());
 		exp.setDataFim(dtExposicaoChooserFinal.getDate());
 		exp.setValor(Double.parseDouble(txtValor.getText().replace(",",".")));
 		return exp;
+	}
+	public void atualizaTabela(){
+		
+		tabelaExposicao.invalidate();
+		tabelaExposicao.revalidate();
+		
 	}
 
 	@Override
@@ -217,6 +238,7 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 			String[] exposicao = {idExposicao.toString(),nomeExposicao };
 			ExposicaoAdicionaObraBoundary expAdd = new ExposicaoAdicionaObraBoundary(exposicao);
 		}
+		btnAlterar.setEnabled(true);
 		
 	}
 
@@ -249,6 +271,10 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
 		int linha = tabelaExposicao.getSelectedRow();
 		idExposicao = (Long) tabelaExposicao.getValueAt(linha, 0);
 		nomeExposicao = (String) tabelaExposicao.getValueAt(linha, 1);
+		txtNomeExposicao.setText(nomeExposicao);
+		dtExposicaoChooserInicio.setDate((Date) tabelaExposicao.getValueAt(linha, 2));
+		dtExposicaoChooserFinal.setDate((Date) tabelaExposicao.getValueAt(linha, 3));
+		txtValor.setText(tabelaExposicao.getValueAt(linha, 4).toString());
 		
 	}
 

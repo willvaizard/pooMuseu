@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import entity.Obras;
 import entity.Exposicao;
 
@@ -23,7 +25,7 @@ public class ExposicaoDAO implements iExposicaoDAO{
 		String sql = "INSERT INTO exposicao (exposicao_nome, data_inicio, data_fim, valor) values (?,?,?,?)";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, exp.getExposicao_nome());
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
 		java.sql.Date d = new java.sql.Date( exp.getDataInicio().getTime());
 		ps.setDate(2,   d);
 		java.sql.Date d2 = new java.sql.Date(exp.getDataFim().getTime());
@@ -56,7 +58,7 @@ public class ExposicaoDAO implements iExposicaoDAO{
 		rs.close();
 		return listaExp;
 	}
-	
+	@Override
 	public void incluiObraExposicao (Obras ob) throws SQLException{
 		String sql = "INSERT INTO exposicao_obra values(?,?)";
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -67,7 +69,7 @@ public class ExposicaoDAO implements iExposicaoDAO{
 		ps.close();
 		
 	}
-	
+	@Override
 	public int deleteObras (Obras ob) throws SQLException{
 		String sql = "DELETE FROM exposicao_obra WHERE exposicao_id = ? and obra_id = ?";
 		
@@ -78,6 +80,27 @@ public class ExposicaoDAO implements iExposicaoDAO{
 		
 		
 		return affects;
+	}
+	@Override
+	public void updateExposicao (Exposicao exp)throws SQLException{
+		
+		String sql ="UPDATE exposicao SET exposicao_nome = ? , data_inicio = ? , "
+				+ "data_fim = ?, valor = ? where exposicao_id = ? ";
+		
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1,exp.getExposicao_nome());
+			java.sql.Date d = new java.sql.Date( exp.getDataInicio().getTime());
+			ps.setDate(2,   d);
+			java.sql.Date d2 = new java.sql.Date(exp.getDataFim().getTime());
+			ps.setDate(3, d2);
+			ps.setDouble(4, exp.getValor());
+			ps.setLong(5, exp.getExposicao_id());
+			
+			ps.executeUpdate();
+
+				
+		
+		
 	}
 	
 	public long ultimoID(){
