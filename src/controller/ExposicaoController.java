@@ -10,19 +10,19 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import entity.Obras;
-import entity.obraExposicao;
+import entity.Exposicao;
 import persistence.ExposicaoDAO;
 import persistence.iExposicaoDAO;
 
 public class ExposicaoController implements TableModel{
-	private List<obraExposicao> lista = new ArrayList<obraExposicao>();
+	private List<Exposicao> lista = new ArrayList<Exposicao>();
 	
 	
-	public List<obraExposicao> getLista() {
+	public List<Exposicao> getLista() {
 		return lista;
 	}
 
-	public void setLista(List<obraExposicao> lista) {
+	public void setLista(List<Exposicao> lista) {
 		this.lista = lista;
 	}
 
@@ -58,7 +58,7 @@ public class ExposicaoController implements TableModel{
 		return eDao.ultimoID();
 	}
 	
-	public void insereNovaExposicao(obraExposicao exp){
+	public void insereNovaExposicao(Exposicao exp){
 		try {
 			iExposicaoDAO eDao = new ExposicaoDAO();
 			eDao.insert(exp);
@@ -80,9 +80,9 @@ public class ExposicaoController implements TableModel{
 		
 	}
 
-	public void preencheTable(List<obraExposicao> expo) {
+	public void preencheTable(List<Exposicao> expo) {
 		lista.clear();
-		for (obraExposicao ex : expo) {
+		for (Exposicao ex : expo) {
 			lista.add(ex);
 		}
 	}
@@ -127,7 +127,7 @@ public class ExposicaoController implements TableModel{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		obraExposicao ex = lista.get(rowIndex);
+		Exposicao ex = lista.get(rowIndex);
 		switch (columnIndex) {
 		case 0: return ex.getExposicao_id();
 		case 1: return ex.getExposicao_nome();

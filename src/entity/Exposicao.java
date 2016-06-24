@@ -2,7 +2,7 @@ package entity;
 
 import java.util.Date;
 
-public class obraExposicao {
+public class Exposicao {
 	private long exposicao_id;
 	private String exposicao_nome;
 	private double valor;

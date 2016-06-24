@@ -32,7 +32,7 @@ import javax.swing.text.NumberFormatter;
 import com.toedter.calendar.JDateChooser;
 
 import controller.ExposicaoController;
-import entity.obraExposicao;
+import entity.Exposicao;
 
 public class CadastroExposicaoBoundary implements ActionListener, MouseListener, ListSelectionListener{
 	private JPanel panelExposicao;
@@ -202,8 +202,8 @@ public class CadastroExposicaoBoundary implements ActionListener, MouseListener,
         return new DefaultFormatterFactory ( formatter ) ;
 	}
 
-	private obraExposicao getDadosDigitados() {
-		obraExposicao exp = new obraExposicao();
+	private Exposicao getDadosDigitados() {
+		Exposicao exp = new Exposicao();
 		exp.setExposicao_nome(txtNomeExposicao.getText());
 		exp.setDataInicio(dtExposicaoChooserInicio.getDate());
 		exp.setDataFim(dtExposicaoChooserFinal.getDate());
