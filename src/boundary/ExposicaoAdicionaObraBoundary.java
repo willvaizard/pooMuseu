@@ -57,10 +57,15 @@ public class ExposicaoAdicionaObraBoundary  implements ActionListener, ListSelec
 		addObraDialog.setVisible(true);
 	}
 	private JComponent Norte() {
-		JPanel panelNorte = new JPanel();
-		JLabel titulo = new JLabel("Exposição "+nomeExposicao+": Inclusão de Obras");
-		titulo.setFont(new Font("Tahoma", Font.BOLD, 18));
+		JPanel panelNorte = new JPanel(new GridLayout(2, 1));
+		JLabel titulo = new JLabel("Inclusão de Obras");
+		titulo.setHorizontalAlignment(JLabel.CENTER);
+		JLabel txtNomeObra = new JLabel("Exposição: "+nomeExposicao);
+		txtNomeObra.setFont(new Font("Tahoma", Font.BOLD, 15));
+		txtNomeObra.setHorizontalAlignment(JLabel.CENTER);
+		titulo.setFont(new Font("Tahoma", Font.BOLD, 20));
 		panelNorte.add(titulo);
+		panelNorte.add(txtNomeObra);
 		return panelNorte;
 	}
 	private JComponent Sul() {

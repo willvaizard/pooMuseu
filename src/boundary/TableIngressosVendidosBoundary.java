@@ -1,10 +1,13 @@
 package boundary;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,6 +25,7 @@ public class TableIngressosVendidosBoundary {
 	public TableIngressosVendidosBoundary() {
 		panelIngressosVendidos = new JPanel (new BorderLayout());
 		IngressoVendidosDialog = new JDialog();
+		
 		panelIngressosVendidos.add(TabelaIngressos(), BorderLayout.CENTER);
 		IngressoVendidosDialog.setModal(true);
 		IngressoVendidosDialog.setLocationRelativeTo(null);
@@ -33,6 +37,8 @@ public class TableIngressosVendidosBoundary {
 		
 	}
 	
+	
+
 	public JComponent TabelaIngressos (){
 		JPanel paneTabela = new JPanel(new GridLayout(1,1));
 		paneTableIngressosVendidos = new JScrollPane();
