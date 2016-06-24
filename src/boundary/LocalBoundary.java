@@ -85,6 +85,7 @@ public class LocalBoundary extends JFrame implements ActionListener {
 		panelPrincipal.add(lblCodigo);
 		txtCodigo = new JTextField(50);
 		txtCodigo.setBounds(570, 0, 54, 20);
+		txtCodigo.setEnabled(false);
 		panelPrincipal.add(txtCodigo);
 
 		JLabel lblNome = new JLabel("Nome:");
@@ -307,11 +308,11 @@ public class LocalBoundary extends JFrame implements ActionListener {
 
 	private boolean validaCampo() {
 		int tamanhoCodigo = txtCodigo.getText().replace(".", "").replace("-", "").trim().length();
-		if (tamanhoCodigo <= 0 && tamanhoCodigo < 11) {
-			JOptionPane.showMessageDialog(null, "O Código deve ser informado", "Alerta",
-					JOptionPane.INFORMATION_MESSAGE);
-			return false;
-		} else if (txtNome.getText().trim().length() <= 0) {
+//		if (tamanhoCodigo <= 0 && tamanhoCodigo < 11) {
+//			JOptionPane.showMessageDialog(null, "O Código deve ser informado", "Alerta",
+//					JOptionPane.INFORMATION_MESSAGE);
+//			return false;
+		if (txtNome.getText().trim().length() <= 0) {
 			JOptionPane.showMessageDialog(null, "Informar nome", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		} else if (txtEmail.getText().trim().length() <= 0) {
