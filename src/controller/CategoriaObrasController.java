@@ -6,6 +6,7 @@ import java.util.List;
 
 import entity.CategoriaObras;
 import persistence.CategoriaObrasDAO;
+import persistence.ICategoriaObrasDAO;
 
 public class CategoriaObrasController {
 	
@@ -13,42 +14,25 @@ public class CategoriaObrasController {
 
 	}
 	
-
-	
-	public List<CategoriaObras> Categoria() {
-		
-		List<CategoriaObras> listaCategoria = new ArrayList<CategoriaObras>();
-		
-		
+	public List<CategoriaObras> Categoria() {		
+		List<CategoriaObras> listaCategoria = new ArrayList<CategoriaObras>();			
 		try {
-			CategoriaObrasDAO cDao = new CategoriaObrasDAO();
+			ICategoriaObrasDAO cDao = new CategoriaObrasDAO();
 			listaCategoria = cDao.ConsultaCategoria();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-			
-		return listaCategoria;
-		
-		
+		}			
+		return listaCategoria;		
 	}
 	
-	public void adicionarNovaCategoria(CategoriaObras cat){
-		
+	public void adicionarNovaCategoria(CategoriaObras cat){		
 		try {
-			CategoriaObrasDAO cDao = new CategoriaObrasDAO();
+			ICategoriaObrasDAO cDao = new CategoriaObrasDAO();
 			cDao.insere(cat);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
-		
-		
+		}	
+				
 	}
-
-	
-	
 	
 }

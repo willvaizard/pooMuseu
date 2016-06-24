@@ -15,33 +15,25 @@ import entity.Exposicao;
 
 
 public class ExposicaoDAO implements iExposicaoDAO{
-	private Connection con;
-	public ExposicaoDAO() throws SQLException {
-	con = JDBCUtil.getConnection();
-	}
 	@Override
 	public void insert (Exposicao exp) throws SQLException{
-		
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql = "INSERT INTO exposicao (exposicao_nome, data_inicio, data_fim, valor) values (?,?,?,?)";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, exp.getExposicao_nome());
-		
+		ps.setString(1, exp.getExposicao_nome());		
 		java.sql.Date d = new java.sql.Date( exp.getDataInicio().getTime());
 		ps.setDate(2,   d);
 		java.sql.Date d2 = new java.sql.Date(exp.getDataFim().getTime());
 		ps.setDate(3, d2);
 		ps.setDouble(4, exp.getValor());
 		ps.executeUpdate();
-		ps.close();
-
-		
-		
-		
+		JDBCUtil.getInstancia().closeConnection();	
 	}
 
 	@Override
 	public List<Exposicao> getTodasExposicoes() throws SQLException {
 		List<Exposicao> listaExp = new ArrayList<Exposicao>();
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql = "SELECT * FROM exposicao";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
@@ -54,36 +46,37 @@ public class ExposicaoDAO implements iExposicaoDAO{
 			exp.setValor(rs.getDouble("valor"));
 			listaExp.add(exp);
 		}
-		ps.close();
 		rs.close();
+		JDBCUtil.getInstancia().closeConnection();
 		return listaExp;
 	}
+	
 	@Override
 	public void incluiObraExposicao (Obras ob) throws SQLException{
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql = "INSERT INTO exposicao_obra values(?,?)";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setLong(1, ob.getExposicao_id());
 		ps.setLong(2, ob.getIdObras());
 		ps.executeUpdate();
-		
-		ps.close();
+		JDBCUtil.getInstancia().closeConnection();
 		
 	}
 	@Override
 	public int deleteObras (Obras ob) throws SQLException{
-		String sql = "DELETE FROM exposicao_obra WHERE exposicao_id = ? and obra_id = ?";
-		
+		Connection con = JDBCUtil.getInstancia().getConnection();
+		String sql = "DELETE FROM exposicao_obra WHERE exposicao_id = ? and obra_id = ?";		
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setLong(1, ob.getExposicao_id());
 		ps.setLong(2, ob.getIdObras());
-		int affects = ps.executeUpdate();
-		
-		
+		int affects = ps.executeUpdate();		
+		JDBCUtil.getInstancia().closeConnection();
 		return affects;
 	}
+	
 	@Override
 	public void updateExposicao (Exposicao exp)throws SQLException{
-		
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql ="UPDATE exposicao SET exposicao_nome = ? , data_inicio = ? , "
 				+ "data_fim = ?, valor = ? where exposicao_id = ? ";
 		
@@ -94,16 +87,13 @@ public class ExposicaoDAO implements iExposicaoDAO{
 			java.sql.Date d2 = new java.sql.Date(exp.getDataFim().getTime());
 			ps.setDate(3, d2);
 			ps.setDouble(4, exp.getValor());
-			ps.setLong(5, exp.getExposicao_id());
-			
+			ps.setLong(5, exp.getExposicao_id());			
 			ps.executeUpdate();
-
-				
-		
-		
+			JDBCUtil.getInstancia().closeConnection();			
 	}
 	
 	public long ultimoID(){
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		long idMax=0;
 		String sql = "SELECT MAX(exposicao_id) as idMax from exposicao";
 		try {
@@ -114,10 +104,9 @@ public class ExposicaoDAO implements iExposicaoDAO{
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		JDBCUtil.getInstancia().closeConnection();
 		return idMax;
 	}
 	

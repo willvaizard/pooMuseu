@@ -13,20 +13,10 @@ import javax.swing.JOptionPane;
 import entity.Obras;
 
 public class ObrasDAO implements iObrasDAO{
-	Connection con;
-	public ObrasDAO() {
-	
-		try {
-			con = JDBCUtil.getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
-		}
-		
-	}
 	@Override
 	public List<Obras> getLista() throws SQLException{
 		List<Obras> lista = new ArrayList<Obras>();
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql = "Select obra_id,obra_sysdata, obra_nome, obra_autor, obra_data,	obra_biografia,"
 				 +"tip.nome as tipoObra, cat.nome as categoria, loc.nome as localizacao, obra_disponibilidade from obra "
 				 +"inner join obra_tipo_obra tip "
@@ -52,18 +42,16 @@ public class ObrasDAO implements iObrasDAO{
 			ob.setDisponiblidade(rs.getString("obra_disponibilidade"));
 			lista.add(ob);
 		}
-		ps.close();
 		rs.close();
-		
-		
+		JDBCUtil.getInstancia().closeConnection();
 		return lista;
 		
 				
 	}
 	@Override
 	public List<Obras> ConsultaByObras (String nomeObra) throws SQLException{
-		
 		List<Obras> lista = new ArrayList<Obras>();
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql = "SELECT obra_id,obra_sysdata, obra_nome, obra_autor, obra_data,	obra_biografia, "
 				+ "tip.nome as tipoObra, cat.nome as categoria, loc.nome as localizacao, obra_disponibilidade from obra  "
 				+ "inner join obra_tipo_obra tip  ON tip.id=obra.obra_id_tipo  "
@@ -72,8 +60,6 @@ public class ObrasDAO implements iObrasDAO{
 				+ "where obra_nome like ?";
 	
 		PreparedStatement ps = con.prepareStatement(sql);
-		
-		
 		ps.setString(1,"%"+nomeObra+"%");
 		ResultSet rs = ps.executeQuery();
 		
@@ -92,28 +78,22 @@ public class ObrasDAO implements iObrasDAO{
 			lista.add(obras);
 			
 		}
-		ps.close();
 		rs.close();
 		
-		
+		JDBCUtil.getInstancia().closeConnection();
 		return lista;
-		
-		
-		
 	}
 
 	@Override
 	public void Inserir(Obras ob) throws SQLException {
-		
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String SQL = "INSERT INTO obra (obra_nome, obra_autor, obra_data, obra_biografia,"
 				+ "obra_id_tipo, obra_id_categoria,obra_id_localizacao,obra_disponibilidade) values (?,?,?,?,?,?,?,?)";
 		PreparedStatement ps = con.prepareStatement(SQL);
 		ps.setString(1, ob.getNomeObra());
 		ps.setString(2, ob.getNomeAutor());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		
 		java.sql.Date d = new java.sql.Date( ob.getDataObra().getTime());
-
 		ps.setDate(3,   d);
 		ps.setString(4,ob.getBiografia());
 		ps.setInt(5, ob.getIdTipoObra());
@@ -121,13 +101,13 @@ public class ObrasDAO implements iObrasDAO{
 		ps.setInt(7, ob.getIdLocalizacao());
 		ps.setString(8, ob.getDisponiblidade());
 		ps.executeUpdate();
-		
-		ps.close();	
+
+		JDBCUtil.getInstancia().closeConnection();
 	}
 
 	@Override
 	public Obras ConsultaObraById(int id) throws SQLException {
-		
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql =  "SELECT obra_id,obra_sysdata, obra_nome, obra_autor, obra_data,	obra_biografia, "
 				+ "obra_id_tipo, obra_id_categoria, obra_id_localizacao,"
 				+ "tip.nome as tipoObra, cat.nome as categoria, loc.nome as localizacao, obra_disponibilidade from obra  "
@@ -155,15 +135,15 @@ public class ObrasDAO implements iObrasDAO{
 			ob.setLocalizacao(rs.getString("localizacao"));
 			ob.setDisponiblidade(rs.getString("obra_disponibilidade"));
 		}
-		ps.close();
 		rs.close();
-
+		JDBCUtil.getInstancia().closeConnection();
 		return ob;
 	}
 	
 	@Override
 	public List<Obras> ConsultaObrasDaExposicao(long idExposicao) throws SQLException {
 		List<Obras> list = new ArrayList<Obras>();
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql =  "SELECT ob.obra_id, ob.obra_nome, ob.obra_autor, loc.nome as localizacao from exposicao_obra "+
 				" inner join obra ob"+ 
                 " on ob.obra_id = exposicao_obra.obra_id"+
@@ -183,15 +163,15 @@ public class ObrasDAO implements iObrasDAO{
 			ob.setLocalizacao(rs.getString("localizacao"));
 			list.add(ob);
 		}
-		ps.close();
 		rs.close();
-
+		JDBCUtil.getInstancia().closeConnection();
 		return list;
 	}
 
 	
 	@Override
 	public void update (Obras ob) throws SQLException{
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql = "UPDATE obra SET  obra_nome = ? , obra_autor  = ? , obra_data  = ? , obra_biografia  = ? ,"
 				+ "obra_id_tipo  = ? , obra_id_categoria = ? ,obra_id_localizacao = ? ,obra_disponibilidade = ? where obra_id = ? ";
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -202,33 +182,29 @@ public class ObrasDAO implements iObrasDAO{
 		java.sql.Date d = new java.sql.Date( ob.getDataObra().getTime());
 		ps.setDate(3,   d);
 		ps.setString(4,ob.getBiografia());
-		ps.setInt(5, ob.getIdTipoObra());
-		
+		ps.setInt(5, ob.getIdTipoObra());		
 		ps.setInt(6, ob.getIdCategoria());
 		ps.setInt(7, ob.getIdLocalizacao());
 		ps.setString(8, ob.getDisponiblidade());
 		ps.setInt(9,ob.getIdObras());
-		ps.executeUpdate();
-		
-		ps.close();	
-		
-		
-		
+		ps.executeUpdate();		
+		JDBCUtil.getInstancia().closeConnection();			
 	}
+	
 	@Override
 	public void delete(int idObra) throws SQLException {
-		
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql = "DELETE FROM obra where obra_id = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1,idObra);
 		ps.execute();
-		ps.close();
-		
-		
+		JDBCUtil.getInstancia().closeConnection();
 	}
+	
 	@Override
 	public List<Obras> ConsultaByAutor(String nomeAutor) throws SQLException {
 		List<Obras> lista = new ArrayList<Obras>();
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql = "SELECT obra_id,obra_sysdata, obra_nome, obra_autor, obra_data,	obra_biografia, "
 				+ "tip.nome as tipoObra, cat.nome as categoria, loc.nome as localizacao, obra_disponibilidade from obra  "
 				+ "inner join obra_tipo_obra tip  ON tip.id=obra.obra_id_tipo  "
@@ -237,8 +213,6 @@ public class ObrasDAO implements iObrasDAO{
 				+ "where obra_autor like ?";
 	
 		PreparedStatement ps = con.prepareStatement(sql);
-		
-		
 		ps.setString(1,"%"+nomeAutor+"%");
 		ResultSet rs = ps.executeQuery();
 		
@@ -247,28 +221,19 @@ public class ObrasDAO implements iObrasDAO{
 			obras.setIdObras(rs.getInt("obra_id"));
 			obras.setDataCadastro(rs.getString("obra_sysdata"));
 			obras.setNomeObra(rs.getString("obra_nome"));
-			obras.setNomeAutor(rs.getString("obra_autor"));
-			
+			obras.setNomeAutor(rs.getString("obra_autor"));			
 			obras.setDataObra(rs.getDate("obra_data"));
 			obras.setTipoObra(rs.getString("tipoObra"));
 			obras.setCategoria(rs.getString("categoria"));
 			obras.setLocalizacao(rs.getString("localizacao"));
 			obras.setDisponiblidade(rs.getString("obra_disponibilidade"));
-			lista.add(obras);
-			
+			lista.add(obras);			
 		}
-		ps.close();
 		rs.close();
-		
+		JDBCUtil.getInstancia().closeConnection();
 		
 		return lista;
-		
-		
-		
 	}
 	
 	
-	
-	
-
 }

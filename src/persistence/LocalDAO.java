@@ -10,18 +10,8 @@ import java.util.List;
 import entity.Local;
 
 public class LocalDAO implements ILocalDAO{
-	Connection con;
-	
-	public LocalDAO() {
-		try {
-			con = JDBCUtil.getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	public void InsereLocal (Local local) {
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql = "INSERT INTO `local` (`Nome`, `Email`, `Telefone`, "
 				+ "`Responsavel`, `CEP`, `Logradouro`, `Numero`, `Complemento`, "
 				+ "`Bairro`, `Cidade`, `UF`)"
@@ -41,22 +31,22 @@ public class LocalDAO implements ILocalDAO{
 		ps.setString(10, local.getCidade());
 		ps.setString(11, local.getUf());
 		ps.execute();
-		ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		JDBCUtil.getInstancia().closeConnection();
 	}
 
 	public List<Local> ConsultaLocal(String nome) {
 		List<Local> list = new ArrayList<Local>();
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql ="SELECT * FROM local WHERE nome LIKE ?";
 		try{
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, "%" +nome +"%");
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()){
-			Local local = new Local();
-			
+			Local local = new Local();			
 			local.setCodigo(rs.getInt("Codigo"));
 			local.setNome(rs.getString("Nome"));
 			local.setEmail(rs.getString("Email"));
@@ -72,15 +62,15 @@ public class LocalDAO implements ILocalDAO{
 			list.add(local);
 		} 	
 		ps.execute();
-		ps.close();
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
+		JDBCUtil.getInstancia().closeConnection();
 		return list;
 	}
 	
 	public void AtualizaLocal (Local local){
-		
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql = "UPDATE local set Nome = ?, Email = ?, Telefone = ?, "
 				+ "Responsavel = ?, CEP = ?, Logradouro = ?, Numero = ?,"
 				+ "Complemento = ?, Bairro = ?, Cidade = ?, UF = ? where Codigo = ?";
@@ -100,14 +90,15 @@ public class LocalDAO implements ILocalDAO{
 		ps.setString(11, local.getUf());
 		ps.setInt(12, local.getCodigo());
 		ps.execute();
-		ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		JDBCUtil.getInstancia().closeConnection();
 	}
 
 	@Override
 	public void ExcluiLocal(int codigo) {
+		Connection con = JDBCUtil.getInstancia().getConnection();
 		String sql = "DELETE FROM local WHERE codigo LIKE ?";
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
@@ -117,6 +108,7 @@ public class LocalDAO implements ILocalDAO{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		JDBCUtil.getInstancia().closeConnection();
 	}
 
 
