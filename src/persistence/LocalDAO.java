@@ -104,7 +104,6 @@ public class LocalDAO implements ILocalDAO{
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setInt(1, codigo);
 			ps.execute();
-			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

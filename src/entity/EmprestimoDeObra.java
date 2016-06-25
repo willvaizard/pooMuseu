@@ -57,6 +57,12 @@ public class EmprestimoDeObra {
 	public void setIdLocal(int idLocal) {
 		this.idLocal = idLocal;
 	}
+	public String getNomeObra() {
+		return nomeObra;
+	}
+	public void setNomeObra(String nomeObra) {
+		this.nomeObra = nomeObra;
+	}
 	
 	
 }
