@@ -10,8 +10,8 @@ public class EmprestimoDeObraDAO implements iEmprestimoDeObraDAO{
 	@Override
 	public void insertEmprestimo(EmprestimoDeObra eo) throws SQLException {
 		Connection con = JDBCUtil.getInstancia().getConnection();
-		String sql = "INSERT INTO from emprestimo_obra(idEmprestimo, nomeLocal, nomeResponsavel, dataEmprestimo, dataDevolucao'+"
-				+ "idLocal, nomeObra, idObra) VALUES (?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO from emprestimo_obra(idEmprestimo, nomeLocal, nomeResponsavel, "
+				+ "dataEmprestimo, dataDevolucao, idLocal, nomeObra, idObra) VALUES (?,?,?,?,?,?,?,?)";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, eo.getIdEmprestimo());
 		ps.setString(2, eo.getNomeLocal());
